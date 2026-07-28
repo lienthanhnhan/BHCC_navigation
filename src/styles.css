@@ -81,8 +81,8 @@ h1 {
 .form-card {
   position: relative;
   z-index: 20;
-  margin-bottom: 18px;
-  padding: 18px;
+  margin-bottom: 12px;
+  padding: 12px;
   overflow: visible;
 }
 
@@ -91,16 +91,16 @@ h1 {
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr auto;
-  gap: 12px;
+  gap: 10px;
 }
 
 .route-form label {
   display: grid;
-  gap: 8px;
+  gap: 5px;
 }
 
 .route-form span {
-  font-size: 0.86rem;
+  font-size: 0.78rem;
   color: var(--muted);
 }
 
@@ -109,8 +109,8 @@ h1 {
   width: 100%;
   border: 1px solid rgba(48, 38, 28, 0.12);
   background: rgba(255, 255, 255, 0.92);
-  border-radius: 16px;
-  padding: 14px 16px;
+  border-radius: 12px;
+  padding: 10px 12px;
   color: var(--text);
 }
 
@@ -177,11 +177,11 @@ h1 {
   align-self: end;
   justify-self: stretch;
   border: 0;
-  border-radius: 16px;
+  border-radius: 12px;
   background: linear-gradient(135deg, var(--accent), #0f4c5c);
   color: white;
   font-weight: 700;
-  padding: 14px 20px;
+  padding: 10px 16px;
   box-shadow: 0 10px 30px rgba(15, 118, 110, 0.24);
   min-width: 128px;
 }
@@ -192,8 +192,12 @@ h1 {
 }
 
 .status {
-  margin-top: 12px;
+  margin-top: 8px;
   color: var(--muted);
+}
+
+.status:empty {
+  display: none;
 }
 
 .status[data-variant="error"] {
@@ -204,8 +208,9 @@ h1 {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(0, 1.35fr);
   gap: 18px;
+  align-items: start;
 }
 
 .grid > .card {
@@ -213,7 +218,7 @@ h1 {
 }
 
 .directions-card {
-  grid-row: span 2;
+  min-width: 0;
 }
 
 .card-header {
@@ -223,7 +228,7 @@ h1 {
 }
 
 .map-card {
-  grid-column: 1 / -1;
+  min-width: 0;
 }
 
 .map-header {
@@ -254,7 +259,7 @@ h1 {
 
 .map-frame {
   overflow: auto;
-  max-height: 62vh;
+  max-height: 58vh;
   border: 1px solid rgba(48, 38, 28, 0.08);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.64);
@@ -383,10 +388,6 @@ h1 {
 @media (max-width: 920px) {
   .grid {
     grid-template-columns: 1fr;
-  }
-
-  .grid > .card:first-child {
-    grid-row: auto;
   }
 
   .route-form {

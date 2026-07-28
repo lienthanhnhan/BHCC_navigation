@@ -26,6 +26,7 @@ type AppElements = {
   form: HTMLFormElement;
   status: HTMLParagraphElement;
   summary: HTMLParagraphElement;
+  directionsCard: HTMLElement;
   routeLoading: HTMLDivElement;
   directionsList: HTMLOListElement;
   trace: HTMLDivElement;
@@ -98,6 +99,7 @@ function getAppElements(): AppElements {
     form: getRequiredElement<HTMLFormElement>("#route-form"),
     status: getRequiredElement<HTMLParagraphElement>("#status"),
     summary: getRequiredElement<HTMLParagraphElement>("#summary"),
+    directionsCard: getRequiredElement<HTMLElement>("#directions-card"),
     routeLoading: getRequiredElement<HTMLDivElement>("#route-loading"),
     directionsList: getRequiredElement<HTMLOListElement>("#directions"),
     trace: getRequiredElement<HTMLDivElement>("#trace"),
@@ -122,6 +124,18 @@ function createAppMarkup(graph: BuildingGraph): string {
       </section>
 
       <section class="grid">
+        <article id="directions-card" class="card directions-card">
+          <div class="card-header">
+            <h2>Directions</h2>
+            <p id="summary" class="muted"></p>
+          </div>
+          <div id="route-loading" class="route-loading" role="status" aria-live="polite" hidden>
+            <span class="route-loader" aria-hidden="true"></span>
+            <span>Searching new route...</span>
+          </div>
+          <ol id="directions" class="directions"></ol>
+        </article>
+
         <article class="card map-card">
           <div class="card-header map-header">
             <div>
@@ -133,18 +147,6 @@ function createAppMarkup(graph: BuildingGraph): string {
           <div class="map-frame">
             <img id="map-image" alt="Selected BHCC floor map" />
           </div>
-        </article>
-
-        <article class="card directions-card">
-          <div class="card-header">
-            <h2>Directions</h2>
-            <p id="summary" class="muted"></p>
-          </div>
-          <div id="route-loading" class="route-loading" role="status" aria-live="polite" hidden>
-            <span class="route-loader" aria-hidden="true"></span>
-            <span>Searching new route...</span>
-          </div>
-          <ol id="directions" class="directions"></ol>
         </article>
 
         <article class="card">
@@ -218,6 +220,7 @@ function setupLocationSearch(input: HTMLInputElement, menu: HTMLDivElement): voi
 
 function runRouteWithLoading(): void {
   setRouteLoading(true);
+  elements.directionsCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
   window.requestAnimationFrame(() => {
     window.setTimeout(() => {
@@ -275,7 +278,7 @@ function renderRoute(route: PathResult): void {
   const directions = describeRoute(buildingGraph, route);
   const estimatedMinutes = Math.max(1, Math.round(route.distance / metersPerWalkingMinute));
 
-  setStatus("Route found using A*.", false);
+  setStatus("", false);
   elements.summary.textContent = `${route.distance.toFixed(1)} m estimated, about ${estimatedMinutes} min walking time.`;
 
   elements.directionsList.innerHTML = "";

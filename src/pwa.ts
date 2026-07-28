@@ -4,6 +4,6 @@ export function registerServiceWorker(): void {
   }
 
   window.addEventListener("load", () => {
-    void navigator.serviceWorker.register("/sw.js");
+    void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`);
   });
 }

@@ -24,8 +24,8 @@ const defaultStart = "N-111";
 const defaultGoal = "N-317";
 const metersPerWalkingMinute = 70;
 const floorMaps: FloorMap[] = [
-  { level: 1, label: "Level 1", src: "/maps/level-1.png" },
-  { level: 2, label: "Level 2", src: "/maps/level-2.png" },
+  { level: 1, label: "Level 1", src: `${import.meta.env.BASE_URL}maps/level-1.png` },
+  { level: 2, label: "Level 2", src: `${import.meta.env.BASE_URL}maps/level-2.png` },
 ];
 
 const app = getRequiredElement<HTMLDivElement>("#app");

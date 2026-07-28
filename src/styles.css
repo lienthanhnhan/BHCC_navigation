@@ -90,7 +90,7 @@ h1 {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1fr 1fr 0.75fr auto;
+  grid-template-columns: 1fr 1fr auto;
   gap: 12px;
 }
 
@@ -206,7 +206,7 @@ h1 {
   padding: 18px;
 }
 
-.grid > .card:first-child {
+.directions-card {
   grid-row: span 2;
 }
 
@@ -214,6 +214,51 @@ h1 {
   display: grid;
   gap: 6px;
   margin-bottom: 14px;
+}
+
+.map-card {
+  grid-column: 1 / -1;
+}
+
+.map-header {
+  grid-template-columns: 1fr auto;
+  align-items: end;
+}
+
+.map-tabs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.map-tab {
+  border: 1px solid rgba(48, 38, 28, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--muted);
+  padding: 10px 14px;
+}
+
+.map-tab[aria-selected="true"] {
+  border-color: rgba(15, 118, 110, 0.28);
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.map-frame {
+  overflow: auto;
+  max-height: 62vh;
+  border: 1px solid rgba(48, 38, 28, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.64);
+}
+
+.map-frame img {
+  display: block;
+  width: 100%;
+  min-width: 760px;
+  height: auto;
 }
 
 .muted {
@@ -288,11 +333,11 @@ h1 {
   }
 
   .route-form {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
 
   .primary {
-    grid-column: 1 / -1;
+    width: 100%;
   }
 }
 
@@ -310,5 +355,22 @@ h1 {
 
   .route-form {
     grid-template-columns: 1fr;
+  }
+
+  .map-header {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .map-tabs {
+    width: 100%;
+  }
+
+  .map-tab {
+    flex: 1;
+  }
+
+  .map-frame img {
+    min-width: 620px;
   }
 }

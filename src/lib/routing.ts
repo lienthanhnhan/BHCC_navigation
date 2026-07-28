@@ -1,9 +1,14 @@
 import { createGraphIndex } from "./graph";
-import type { BuildingGraph, BuildingNode, PathResult } from "./types";
+import type { BuildingEdge, BuildingGraph, BuildingNode, PathResult } from "./types";
 
 type QueueEntry = {
   nodeId: string;
   score: number;
+};
+
+type PreviousStep = {
+  previousNodeId: string;
+  edge: BuildingEdge;
 };
 
 function heuristic(a: BuildingNode, b: BuildingNode): number {
@@ -13,6 +18,10 @@ function heuristic(a: BuildingNode, b: BuildingNode): number {
 }
 
 function popLowest(queue: QueueEntry[]): QueueEntry | undefined {
+  if (!queue.length) {
+    return undefined;
+  }
+
   let bestIndex = 0;
   for (let index = 1; index < queue.length; index += 1) {
     if (queue[index].score < queue[bestIndex].score) {
@@ -20,19 +29,41 @@ function popLowest(queue: QueueEntry[]): QueueEntry | undefined {
     }
   }
 
-  if (!queue.length) {
-    return undefined;
-  }
-
   const [entry] = queue.splice(bestIndex, 1);
   return entry;
+}
+
+function reconstructPath(
+  nodesById: Map<string, BuildingNode>,
+  cameFrom: Map<string, PreviousStep>,
+  startId: string,
+  goal: BuildingNode,
+  distance: number,
+): PathResult | undefined {
+  const nodes: BuildingNode[] = [goal];
+  const edges: BuildingEdge[] = [];
+  let cursor = goal.id;
+
+  while (cursor !== startId) {
+    const step = cameFrom.get(cursor);
+    const previousNode = step ? nodesById.get(step.previousNodeId) : undefined;
+
+    if (!step || !previousNode) {
+      return undefined;
+    }
+
+    edges.unshift(step.edge);
+    nodes.unshift(previousNode);
+    cursor = step.previousNodeId;
+  }
+
+  return { nodes, edges, distance };
 }
 
 export function findShortestPath(
   graph: BuildingGraph,
   startId: string,
   goalId: string,
-  algorithm: "astar" | "dijkstra" = "astar",
 ): PathResult | undefined {
   const index = createGraphIndex(graph);
   const start = index.nodeById.get(startId);
@@ -43,7 +74,7 @@ export function findShortestPath(
   }
 
   const openSet: QueueEntry[] = [{ nodeId: start.id, score: 0 }];
-  const cameFrom = new Map<string, { previousNodeId: string; edgeId: string }>();
+  const cameFrom = new Map<string, PreviousStep>();
   const gScore = new Map<string, number>([[start.id, 0]]);
   const closed = new Set<string>();
 
@@ -59,33 +90,7 @@ export function findShortestPath(
     }
 
     if (currentNodeId === goal.id) {
-      const nodes: BuildingNode[] = [goal];
-      const edges = [] as PathResult["edges"];
-      let cursor = goal.id;
-
-      while (cursor !== start.id) {
-        const step = cameFrom.get(cursor);
-        if (!step) {
-          return undefined;
-        }
-
-        const edge = graph.edges.find((candidate) => candidate.id === step.edgeId);
-        const node = index.nodeById.get(step.previousNodeId);
-
-        if (!edge || !node) {
-          return undefined;
-        }
-
-        edges.unshift(edge);
-        nodes.unshift(node);
-        cursor = step.previousNodeId;
-      }
-
-      return {
-        nodes,
-        edges,
-        distance: gScore.get(goal.id) ?? 0,
-      };
+      return reconstructPath(index.nodeById, cameFrom, start.id, goal, gScore.get(goal.id) ?? 0);
     }
 
     closed.add(currentNodeId);
@@ -99,13 +104,11 @@ export function findShortestPath(
         continue;
       }
 
-      cameFrom.set(edge.to, { previousNodeId: currentNodeId, edgeId: edge.id });
+      cameFrom.set(edge.to, { previousNodeId: currentNodeId, edge });
       gScore.set(edge.to, neighborScore);
 
       const neighbor = index.nodeById.get(edge.to);
-      const priority = neighbor
-        ? neighborScore + (algorithm === "astar" ? heuristic(neighbor, goal) : 0)
-        : neighborScore;
+      const priority = neighbor ? neighborScore + heuristic(neighbor, goal) : neighborScore;
 
       openSet.push({ nodeId: edge.to, score: priority });
     }

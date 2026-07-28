@@ -58,6 +58,10 @@ function relationWord(fromBearing: number, toBearing: number): "left" | "right" 
   return "ahead";
 }
 
+function isSpecialKind(kind: string): boolean {
+  return kind === "stairs" || kind === "elevator" || kind === "door";
+}
+
 export function describeRoute(graph: BuildingGraph, path: PathResult): DirectionStep[] {
   const steps: DirectionStep[] = [];
   const nodes = path.nodes;
@@ -102,7 +106,18 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
   }
 
   let straightRunDistance = 0;
-  let straightRunActive = false;
+
+  const flushStraightRun = (): void => {
+    if (straightRunDistance <= 0) {
+      return;
+    }
+
+    steps.push({
+      text: "Walk to the end of the corridor",
+      distance: straightRunDistance,
+    });
+    straightRunDistance = 0;
+  };
 
   for (let edgeIndex = 1; edgeIndex < edges.length; edgeIndex += 1) {
     const previousEdge = edges[edgeIndex - 1];
@@ -111,19 +126,11 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
     const currentNode = nodes[edgeIndex + 1];
     const turn = classifyTurn(previousEdge.bearing, currentEdge.bearing);
     const relation = relationWord(previousEdge.bearing, currentEdge.bearing);
-    const currentNodeIsSpecial = Boolean(currentNode && (currentNode.kind === "stairs" || currentNode.kind === "elevator" || currentNode.kind === "door"));
-    const currentEdgeIsSpecial = currentEdge.kind === "stairs" || currentEdge.kind === "elevator" || currentEdge.kind === "door";
+    const currentNodeIsSpecial = Boolean(currentNode && isSpecialKind(currentNode.kind));
+    const currentEdgeIsSpecial = isSpecialKind(currentEdge.kind);
 
     if (currentEdgeIsSpecial && currentNode) {
-      if (straightRunActive && straightRunDistance > 0) {
-        steps.push({
-          text: "Walk to the end of the corridor",
-          distance: straightRunDistance,
-        });
-        straightRunDistance = 0;
-        straightRunActive = false;
-      }
-
+      flushStraightRun();
       steps.push({
         text: specialEdgeText(currentEdge.kind, previousNode, currentNode, relation),
         distance: currentEdge.weight,
@@ -133,7 +140,6 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
 
     if (turn === "straight" && currentNode.kind !== "room" && !currentNodeIsSpecial) {
       straightRunDistance += currentEdge.weight;
-      straightRunActive = true;
       continue;
     }
 
@@ -167,12 +173,7 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
     });
   }
 
-  if (straightRunActive && straightRunDistance > 0) {
-    steps.push({
-      text: "Walk to the end of the corridor",
-      distance: straightRunDistance,
-    });
-  }
+  flushStraightRun();
 
   const destination = nodes[nodes.length - 1];
   steps.push({

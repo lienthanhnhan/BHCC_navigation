@@ -22,9 +22,11 @@ type FloorMap = {
 type AppElements = {
   startInput: HTMLInputElement;
   goalInput: HTMLInputElement;
+  submitButton: HTMLButtonElement;
   form: HTMLFormElement;
   status: HTMLParagraphElement;
   summary: HTMLParagraphElement;
+  routeLoading: HTMLDivElement;
   directionsList: HTMLOListElement;
   trace: HTMLDivElement;
   startSuggestions: HTMLDivElement;
@@ -70,7 +72,7 @@ async function initializeApp(): Promise<void> {
 
     elements.form.addEventListener("submit", (event) => {
       event.preventDefault();
-      runRoute();
+      runRouteWithLoading();
     });
 
     registerServiceWorker();
@@ -92,9 +94,11 @@ function getAppElements(): AppElements {
   return {
     startInput: getRequiredElement<HTMLInputElement>("#start-input"),
     goalInput: getRequiredElement<HTMLInputElement>("#goal-input"),
+    submitButton: getRequiredElement<HTMLButtonElement>("#route-submit"),
     form: getRequiredElement<HTMLFormElement>("#route-form"),
     status: getRequiredElement<HTMLParagraphElement>("#status"),
     summary: getRequiredElement<HTMLParagraphElement>("#summary"),
+    routeLoading: getRequiredElement<HTMLDivElement>("#route-loading"),
     directionsList: getRequiredElement<HTMLOListElement>("#directions"),
     trace: getRequiredElement<HTMLDivElement>("#trace"),
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
@@ -112,7 +116,7 @@ function createAppMarkup(graph: BuildingGraph): string {
         <form id="route-form" class="route-form">
           ${createLocationFieldMarkup("Current location", "start", "N-111")}
           ${createLocationFieldMarkup("Destination", "goal", "E-229")}
-          <button class="primary" type="submit">Find route</button>
+          <button id="route-submit" class="primary" type="submit">Find route</button>
         </form>
         <p id="status" class="status">Ready to route through the BHCC directory graph.</p>
       </section>
@@ -135,6 +139,10 @@ function createAppMarkup(graph: BuildingGraph): string {
           <div class="card-header">
             <h2>Directions</h2>
             <p id="summary" class="muted"></p>
+          </div>
+          <div id="route-loading" class="route-loading" role="status" aria-live="polite" hidden>
+            <span class="route-loader" aria-hidden="true"></span>
+            <span>Searching new route...</span>
           </div>
           <ol id="directions" class="directions"></ol>
         </article>
@@ -206,6 +214,31 @@ function setupLocationSearch(input: HTMLInputElement, menu: HTMLDivElement): voi
     menu,
     onChoose: () => input.dispatchEvent(new Event("change", { bubbles: true })),
   });
+}
+
+function runRouteWithLoading(): void {
+  setRouteLoading(true);
+
+  window.requestAnimationFrame(() => {
+    window.setTimeout(() => {
+      runRoute();
+      setRouteLoading(false);
+    }, 350);
+  });
+}
+
+function setRouteLoading(isLoading: boolean): void {
+  elements.submitButton.disabled = isLoading;
+  elements.routeLoading.hidden = !isLoading;
+  elements.directionsList.toggleAttribute("aria-busy", isLoading);
+  elements.trace.toggleAttribute("aria-busy", isLoading);
+
+  if (isLoading) {
+    elements.summary.textContent = "";
+    elements.directionsList.innerHTML = "";
+    elements.trace.innerHTML = "";
+    setStatus("Searching for a new route...", false);
+  }
 }
 
 function runRoute(): void {

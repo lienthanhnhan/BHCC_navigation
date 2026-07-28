@@ -2,8 +2,8 @@ import "./styles.css";
 import { classifyTurn, compassLabel, findNodeId } from "./lib/graph";
 import { describeRoute } from "./lib/directions";
 import { findShortestPath } from "./lib/routing";
-import { sampleBuilding } from "./lib/sampleBuilding";
-import type { PathResult } from "./lib/types";
+import { loadBuildingDataset } from "./lib/sampleBuilding";
+import type { BuildingGraph, PathResult } from "./lib/types";
 import { registerServiceWorker } from "./pwa";
 import { setupAutocomplete } from "./ui/autocomplete";
 import { getRequiredElement } from "./ui/dom";
@@ -17,60 +17,101 @@ type FloorMap = {
   level: number;
   label: string;
   src: string;
+  title?: string;
+};
+type AppElements = {
+  startInput: HTMLInputElement;
+  goalInput: HTMLInputElement;
+  form: HTMLFormElement;
+  status: HTMLParagraphElement;
+  summary: HTMLParagraphElement;
+  directionsList: HTMLOListElement;
+  trace: HTMLDivElement;
+  startSuggestions: HTMLDivElement;
+  goalSuggestions: HTMLDivElement;
+  mapTabs: HTMLDivElement;
+  mapImage: HTMLImageElement;
+  mapCaption: HTMLParagraphElement;
 };
 
 const storageKey = "indoor-nav-state";
 const defaultStart = "N-111";
-const defaultGoal = "N-317";
+const defaultGoal = "E-229";
 const metersPerWalkingMinute = 70;
-const floorMaps: FloorMap[] = [
-  { level: 1, label: "Level 1", src: `${import.meta.env.BASE_URL}maps/level-1.png` },
-  { level: 2, label: "Level 2", src: `${import.meta.env.BASE_URL}maps/level-2.png` },
-];
 
 const app = getRequiredElement<HTMLDivElement>("#app");
-const savedState = readState();
+let buildingGraph: BuildingGraph;
+let elements: AppElements;
+let floorMaps: FloorMap[] = [];
 
-app.innerHTML = createAppMarkup();
+void initializeApp();
 
-const elements = {
-  startInput: getRequiredElement<HTMLInputElement>("#start-input"),
-  goalInput: getRequiredElement<HTMLInputElement>("#goal-input"),
-  form: getRequiredElement<HTMLFormElement>("#route-form"),
-  status: getRequiredElement<HTMLParagraphElement>("#status"),
-  summary: getRequiredElement<HTMLParagraphElement>("#summary"),
-  directionsList: getRequiredElement<HTMLOListElement>("#directions"),
-  trace: getRequiredElement<HTMLDivElement>("#trace"),
-  startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
-  goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
-  mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
-  mapImage: getRequiredElement<HTMLImageElement>("#map-image"),
-  mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
-};
+async function initializeApp(): Promise<void> {
+  try {
+    const dataset = await loadBuildingDataset();
+    buildingGraph = dataset.graph;
+    floorMaps = dataset.sourceMaps.map((map) => ({
+      level: map.level,
+      label: map.label,
+      title: map.title,
+      src: `${import.meta.env.BASE_URL}${map.file}`,
+    }));
 
-elements.startInput.value = validSavedLocation(savedState.start, defaultStart);
-elements.goalInput.value = validSavedLocation(savedState.goal, defaultGoal);
+    app.innerHTML = createAppMarkup(buildingGraph);
+    elements = getAppElements();
 
-setupLocationSearch(elements.startInput, elements.startSuggestions);
-setupLocationSearch(elements.goalInput, elements.goalSuggestions);
-setupFloorMapTabs();
+    const savedState = readState();
+    elements.startInput.value = validSavedLocation(savedState.start, defaultStart);
+    elements.goalInput.value = validSavedLocation(savedState.goal, defaultGoal);
 
-elements.form.addEventListener("submit", (event) => {
-  event.preventDefault();
-  runRoute();
-});
+    setupLocationSearch(elements.startInput, elements.startSuggestions);
+    setupLocationSearch(elements.goalInput, elements.goalSuggestions);
+    setupFloorMapTabs();
 
-registerServiceWorker();
-showFloorMap(floorMaps[0]);
-runRoute();
+    elements.form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      runRoute();
+    });
 
-function createAppMarkup(): string {
+    registerServiceWorker();
+    showFloorMap(floorMaps[0]);
+    runRoute();
+  } catch (error) {
+    app.innerHTML = `
+      <main class="shell">
+        <section class="card form-card">
+          <p class="status" data-variant="error">Could not load the BHCC map data.</p>
+        </section>
+      </main>
+    `;
+    console.error(error);
+  }
+}
+
+function getAppElements(): AppElements {
+  return {
+    startInput: getRequiredElement<HTMLInputElement>("#start-input"),
+    goalInput: getRequiredElement<HTMLInputElement>("#goal-input"),
+    form: getRequiredElement<HTMLFormElement>("#route-form"),
+    status: getRequiredElement<HTMLParagraphElement>("#status"),
+    summary: getRequiredElement<HTMLParagraphElement>("#summary"),
+    directionsList: getRequiredElement<HTMLOListElement>("#directions"),
+    trace: getRequiredElement<HTMLDivElement>("#trace"),
+    startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
+    goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
+    mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
+    mapImage: getRequiredElement<HTMLImageElement>("#map-image"),
+    mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
+  };
+}
+
+function createAppMarkup(graph: BuildingGraph): string {
   return `
     <main class="shell">
       <section class="card form-card">
         <form id="route-form" class="route-form">
           ${createLocationFieldMarkup("Current location", "start", "N-111")}
-          ${createLocationFieldMarkup("Destination", "goal", "N-317")}
+          ${createLocationFieldMarkup("Destination", "goal", "E-229")}
           <button class="primary" type="submit">Find route</button>
         </form>
         <p id="status" class="status">Ready to route through the BHCC directory graph.</p>
@@ -109,11 +150,11 @@ function createAppMarkup(): string {
         <article class="card">
           <div class="card-header">
             <h2>BHCC graph</h2>
-            <p class="muted">Rooms, floor cores, corridor connectors, stairs, and elevators are represented as graph vertices.</p>
+          <p class="muted">Rooms, floor cores, corridor connectors, stairs, and elevators are represented as graph vertices.</p>
           </div>
           <ul class="meta-list">
-            <li><strong>${sampleBuilding.nodes.length}</strong> nodes</li>
-            <li><strong>${sampleBuilding.edges.length}</strong> directed edges</li>
+            <li><strong>${graph.nodes.length}</strong> nodes</li>
+            <li><strong>${graph.edges.length}</strong> directed edges</li>
             <li><strong>floor-aware</strong> weights</li>
           </ul>
         </article>
@@ -138,7 +179,7 @@ function setupFloorMapTabs(): void {
 function showFloorMap(map: FloorMap): void {
   elements.mapImage.src = map.src;
   elements.mapImage.alt = `${map.label} BHCC floor map`;
-  elements.mapCaption.textContent = `${map.label} drawn campus map`;
+  elements.mapCaption.textContent = map.title ?? `${map.label} drawn campus map`;
 
   for (const tab of elements.mapTabs.querySelectorAll<HTMLButtonElement>(".map-tab")) {
     const isSelected = tab.dataset.level === String(map.level);
@@ -160,7 +201,7 @@ function createLocationFieldMarkup(label: string, fieldName: "start" | "goal", p
 
 function setupLocationSearch(input: HTMLInputElement, menu: HTMLDivElement): void {
   setupAutocomplete({
-    graph: sampleBuilding,
+    graph: buildingGraph,
     input,
     menu,
     onChoose: () => input.dispatchEvent(new Event("change", { bubbles: true })),
@@ -172,15 +213,15 @@ function runRoute(): void {
 
   saveState(state);
 
-  const startId = findNodeId(sampleBuilding, state.start);
-  const goalId = findNodeId(sampleBuilding, state.goal);
+  const startId = findNodeId(buildingGraph, state.start);
+  const goalId = findNodeId(buildingGraph, state.goal);
 
   if (!startId || !goalId) {
     showEmptyRoute("Could not match one or both locations. Try using a room code or directory name from the BHCC graph.");
     return;
   }
 
-  const route = findShortestPath(sampleBuilding, startId, goalId);
+  const route = findShortestPath(buildingGraph, startId, goalId);
 
   if (!route) {
     showEmptyRoute("No route could be found between those locations in the BHCC graph.");
@@ -198,7 +239,7 @@ function getRouteFormState(): RouteFormState {
 }
 
 function renderRoute(route: PathResult): void {
-  const directions = describeRoute(sampleBuilding, route);
+  const directions = describeRoute(buildingGraph, route);
   const estimatedMinutes = Math.max(1, Math.round(route.distance / metersPerWalkingMinute));
 
   setStatus("Route found using A*.", false);
@@ -277,5 +318,5 @@ function saveState(state: RouteFormState): void {
 }
 
 function validSavedLocation(savedValue: string | undefined, fallback: string): string {
-  return savedValue && findNodeId(sampleBuilding, savedValue) ? savedValue : fallback;
+  return savedValue && findNodeId(buildingGraph, savedValue) ? savedValue : fallback;
 }

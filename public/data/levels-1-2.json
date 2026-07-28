@@ -1,0 +1,3481 @@
+{
+  "schemaVersion": 1,
+  "name": "BHCC navigation levels 1 and 2",
+  "sourceMaps": [
+    {
+      "level": 1,
+      "file": "maps/level-1.png",
+      "originalFile": "Level 1.pdf",
+      "label": "Level 1",
+      "title": "Level 1 map"
+    },
+    {
+      "level": 2,
+      "file": "maps/level-2.png",
+      "originalFile": "Level 2.pdf",
+      "label": "Level 2",
+      "title": "Level 2 map"
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "label": "Level 1",
+      "mapFile": "maps/level-1.png",
+      "nodes": [
+        {
+          "id": "n1-core",
+          "label": "N1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": 0,
+          "y": 0,
+          "exitBearing": 180
+        },
+        {
+          "id": "n1-stairs",
+          "label": "N1 Stairs",
+          "kind": "stairs",
+          "floor": 1,
+          "x": -10,
+          "y": -4
+        },
+        {
+          "id": "n1-elevator",
+          "label": "N1 Elevator",
+          "kind": "elevator",
+          "floor": 1,
+          "x": 10,
+          "y": -4
+        },
+        {
+          "id": "n1-west",
+          "label": "N1 West Hall",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -20,
+          "y": 0
+        },
+        {
+          "id": "n1-east",
+          "label": "N1 East Hall",
+          "kind": "corridor",
+          "floor": 1,
+          "x": 20,
+          "y": 0
+        },
+        {
+          "id": "b1-core",
+          "label": "B1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": -34,
+          "y": -3
+        },
+        {
+          "id": "c1-core",
+          "label": "C1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": -16,
+          "y": -2
+        },
+        {
+          "id": "d1-core",
+          "label": "D1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": -2,
+          "y": -2
+        },
+        {
+          "id": "e1-core",
+          "label": "E1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": 18,
+          "y": 6
+        },
+        {
+          "id": "g1-core",
+          "label": "G1 Core",
+          "kind": "intersection",
+          "floor": 1,
+          "x": 34,
+          "y": 3
+        },
+        {
+          "id": "N-102",
+          "label": "N-102",
+          "kind": "room",
+          "floor": 1,
+          "x": -4,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "N102",
+            "N-Building Security Desk"
+          ]
+        },
+        {
+          "id": "N-111",
+          "label": "N-111",
+          "kind": "room",
+          "floor": 1,
+          "x": 6,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "N111",
+            "Internships & Career Development",
+            "Workforce & Economic Development"
+          ]
+        },
+        {
+          "id": "N-113",
+          "label": "N-113",
+          "kind": "room",
+          "floor": 1,
+          "x": 10,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "N113",
+            "Single Stop"
+          ]
+        },
+        {
+          "id": "N-114",
+          "label": "N-114",
+          "kind": "room",
+          "floor": 1,
+          "x": 14,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "N114",
+            "Center for Self-Directed Learning",
+            "CSDL"
+          ]
+        },
+        {
+          "id": "N-116",
+          "label": "N-116",
+          "kind": "room",
+          "floor": 1,
+          "x": 18,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "N116",
+            "Veterans Center"
+          ]
+        },
+        {
+          "id": "N-119",
+          "label": "N-119",
+          "kind": "room",
+          "floor": 1,
+          "x": 22,
+          "y": 10,
+          "exitBearing": 180,
+          "aliases": [
+            "N119",
+            "N-Building Lounge, 1st Floor"
+          ]
+        },
+        {
+          "id": "G-102",
+          "label": "G-102",
+          "kind": "room",
+          "floor": 1,
+          "x": 36,
+          "y": 10,
+          "exitBearing": 180,
+          "aliases": [
+            "G102",
+            "Fitness Center"
+          ]
+        },
+        {
+          "id": "G-110",
+          "label": "G-110",
+          "kind": "room",
+          "floor": 1,
+          "x": 38,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "G110",
+            "Gymnasium"
+          ]
+        },
+        {
+          "id": "G-117",
+          "label": "G-117",
+          "kind": "room",
+          "floor": 1,
+          "x": 40,
+          "y": 6,
+          "exitBearing": 180,
+          "aliases": [
+            "G117",
+            "Athletic Office Suite"
+          ]
+        },
+        {
+          "id": "G-130",
+          "label": "G-130",
+          "kind": "room",
+          "floor": 1,
+          "x": 42,
+          "y": 4,
+          "exitBearing": 180,
+          "aliases": [
+            "G130",
+            "Faculty Offices Suite"
+          ]
+        },
+        {
+          "id": "G-229",
+          "label": "G-229",
+          "kind": "room",
+          "floor": 1,
+          "x": 44,
+          "y": 2,
+          "exitBearing": 180,
+          "aliases": [
+            "G229",
+            "Health Center Lobby"
+          ]
+        },
+        {
+          "id": "B-101",
+          "label": "B-101",
+          "kind": "room",
+          "floor": 1,
+          "x": -42,
+          "y": -8,
+          "exitBearing": 90,
+          "aliases": [
+            "B101",
+            "DISH Food Pantry"
+          ]
+        },
+        {
+          "id": "B-118",
+          "label": "B-118",
+          "kind": "room",
+          "floor": 1,
+          "x": -44,
+          "y": -4,
+          "exitBearing": 90,
+          "aliases": [
+            "B118",
+            "Assessment & Testing Center"
+          ]
+        },
+        {
+          "id": "B-138",
+          "label": "B-138",
+          "kind": "room",
+          "floor": 1,
+          "x": -45,
+          "y": -2,
+          "exitBearing": 90,
+          "aliases": [
+            "B138",
+            "Student Counseling",
+            "Prevention and Wellness Center"
+          ]
+        },
+        {
+          "id": "B-150",
+          "label": "B-150",
+          "kind": "room",
+          "floor": 1,
+          "x": -46,
+          "y": 0,
+          "exitBearing": 90,
+          "aliases": [
+            "B150"
+          ]
+        },
+        {
+          "id": "B-200",
+          "label": "B-200",
+          "kind": "room",
+          "floor": 1,
+          "x": -48,
+          "y": 4,
+          "exitBearing": 90,
+          "aliases": [
+            "B200",
+            "Admissions Office",
+            "Student Central",
+            "Academic Records",
+            "Financial Aid",
+            "Student Payment"
+          ]
+        },
+        {
+          "id": "E-144",
+          "label": "E-144",
+          "kind": "room",
+          "floor": 1,
+          "x": 20,
+          "y": 14,
+          "exitBearing": 180,
+          "aliases": [
+            "E144",
+            "Language Lab"
+          ]
+        },
+        {
+          "id": "E-173B",
+          "label": "E-173B",
+          "kind": "room",
+          "floor": 1,
+          "x": 24,
+          "y": 12,
+          "exitBearing": 180,
+          "aliases": [
+            "E173B",
+            "E-Building Lounge",
+            "1st Floor"
+          ]
+        },
+        {
+          "id": "C-102",
+          "label": "C-102",
+          "kind": "room",
+          "floor": 1,
+          "x": -18,
+          "y": 8,
+          "exitBearing": 90,
+          "aliases": [
+            "C102",
+            "C-Lounge"
+          ]
+        },
+        {
+          "id": "D-113",
+          "label": "D-113",
+          "kind": "room",
+          "floor": 1,
+          "x": 0,
+          "y": 10,
+          "exitBearing": 180,
+          "aliases": [
+            "D113",
+            "Academic Computing Center"
+          ]
+        },
+        {
+          "id": "D-201",
+          "label": "D-201",
+          "kind": "room",
+          "floor": 1,
+          "x": 2,
+          "y": 12,
+          "exitBearing": 180,
+          "aliases": [
+            "D201",
+            "D-Lounge"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "n1-hall-f",
+          "from": "n1-west",
+          "to": "n1-core",
+          "weight": 8,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-hall-r",
+          "from": "n1-core",
+          "to": "n1-west",
+          "weight": 8,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-hall-east-f",
+          "from": "n1-core",
+          "to": "n1-east",
+          "weight": 8,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-hall-east-r",
+          "from": "n1-east",
+          "to": "n1-core",
+          "weight": 8,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-vertical-stairs-f",
+          "from": "n1-core",
+          "to": "n1-stairs",
+          "weight": 5,
+          "bearing": 180,
+          "kind": "stairs"
+        },
+        {
+          "id": "n1-vertical-stairs-r",
+          "from": "n1-stairs",
+          "to": "n1-core",
+          "weight": 5,
+          "bearing": 0,
+          "kind": "stairs"
+        },
+        {
+          "id": "n1-vertical-elevator-f",
+          "from": "n1-core",
+          "to": "n1-elevator",
+          "weight": 5,
+          "bearing": 0,
+          "kind": "elevator"
+        },
+        {
+          "id": "n1-vertical-elevator-r",
+          "from": "n1-elevator",
+          "to": "n1-core",
+          "weight": 5,
+          "bearing": 180,
+          "kind": "elevator"
+        },
+        {
+          "id": "n1-b1-f",
+          "from": "n1-west",
+          "to": "b1-core",
+          "weight": 6,
+          "bearing": 180,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-b1-r",
+          "from": "b1-core",
+          "to": "n1-west",
+          "weight": 6,
+          "bearing": 0,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-c1-f",
+          "from": "n1-west",
+          "to": "c1-core",
+          "weight": 8,
+          "bearing": 180,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-c1-r",
+          "from": "c1-core",
+          "to": "n1-west",
+          "weight": 8,
+          "bearing": 0,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-d1-f",
+          "from": "n1-core",
+          "to": "d1-core",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-d1-r",
+          "from": "d1-core",
+          "to": "n1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-e1-f",
+          "from": "n1-east",
+          "to": "e1-core",
+          "weight": 8,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-e1-r",
+          "from": "e1-core",
+          "to": "n1-east",
+          "weight": 8,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-g1-f",
+          "from": "n1-east",
+          "to": "g1-core",
+          "weight": 8,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-g1-r",
+          "from": "g1-core",
+          "to": "n1-east",
+          "weight": 8,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "n1-102-f",
+          "from": "n1-west",
+          "to": "N-102",
+          "weight": 5,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n1-102-r",
+          "from": "N-102",
+          "to": "n1-west",
+          "weight": 5,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-111-f",
+          "from": "n1-core",
+          "to": "N-111",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-111-r",
+          "from": "N-111",
+          "to": "n1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n1-113-f",
+          "from": "n1-core",
+          "to": "N-113",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-113-r",
+          "from": "N-113",
+          "to": "n1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n1-114-f",
+          "from": "n1-core",
+          "to": "N-114",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-114-r",
+          "from": "N-114",
+          "to": "n1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n1-116-f",
+          "from": "n1-east",
+          "to": "N-116",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-116-r",
+          "from": "N-116",
+          "to": "n1-east",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n1-119-f",
+          "from": "n1-east",
+          "to": "N-119",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n1-119-r",
+          "from": "N-119",
+          "to": "n1-east",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "g1-102-f",
+          "from": "g1-core",
+          "to": "G-102",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "g1-102-r",
+          "from": "G-102",
+          "to": "g1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "g1-110-f",
+          "from": "g1-core",
+          "to": "G-110",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "g1-110-r",
+          "from": "G-110",
+          "to": "g1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "g1-117-f",
+          "from": "g1-core",
+          "to": "G-117",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "g1-117-r",
+          "from": "G-117",
+          "to": "g1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "g1-130-f",
+          "from": "g1-core",
+          "to": "G-130",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "g1-130-r",
+          "from": "G-130",
+          "to": "g1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "g1-229-f",
+          "from": "g1-core",
+          "to": "G-229",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "g1-229-r",
+          "from": "G-229",
+          "to": "g1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "b1-101-f",
+          "from": "b1-core",
+          "to": "B-101",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b1-101-r",
+          "from": "B-101",
+          "to": "b1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "b1-118-f",
+          "from": "b1-core",
+          "to": "B-118",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b1-118-r",
+          "from": "B-118",
+          "to": "b1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "b1-138-f",
+          "from": "b1-core",
+          "to": "B-138",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b1-138-r",
+          "from": "B-138",
+          "to": "b1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "b1-150-f",
+          "from": "b1-core",
+          "to": "B-150",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b1-150-r",
+          "from": "B-150",
+          "to": "b1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "b1-200-f",
+          "from": "b1-core",
+          "to": "B-200",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b1-200-r",
+          "from": "B-200",
+          "to": "b1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "e1-144-f",
+          "from": "e1-core",
+          "to": "E-144",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e1-144-r",
+          "from": "E-144",
+          "to": "e1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e1-173b-f",
+          "from": "e1-core",
+          "to": "E-173B",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e1-173b-r",
+          "from": "E-173B",
+          "to": "e1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "c1-102-f",
+          "from": "c1-core",
+          "to": "C-102",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "c1-102-r",
+          "from": "C-102",
+          "to": "c1-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "d1-113-f",
+          "from": "d1-core",
+          "to": "D-113",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "d1-113-r",
+          "from": "D-113",
+          "to": "d1-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        }
+      ]
+    },
+    {
+      "level": 2,
+      "label": "Level 2",
+      "mapFile": "maps/level-2.png",
+      "nodes": [
+        {
+          "id": "b2-core",
+          "label": "B2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": -34,
+          "y": -3
+        },
+        {
+          "id": "c2-core",
+          "label": "C2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": -16,
+          "y": -2
+        },
+        {
+          "id": "d2-core",
+          "label": "D2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": -2,
+          "y": -2
+        },
+        {
+          "id": "e2-core",
+          "label": "E2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": 18,
+          "y": 6
+        },
+        {
+          "id": "g2-core",
+          "label": "G2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": 34,
+          "y": 3
+        },
+        {
+          "id": "n2-core",
+          "label": "N2 Corridor",
+          "kind": "intersection",
+          "floor": 2,
+          "x": 52,
+          "y": 0
+        },
+        {
+          "id": "n2-stairs",
+          "label": "N2 Stairs",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 46,
+          "y": 2
+        },
+        {
+          "id": "n2-elevator",
+          "label": "N2 Elevator",
+          "kind": "elevator",
+          "floor": 2,
+          "x": 48,
+          "y": -4
+        },
+        {
+          "id": "n2-east",
+          "label": "N2 East Hall",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 60,
+          "y": 0
+        },
+        {
+          "id": "B-204",
+          "label": "B-204",
+          "kind": "room",
+          "floor": 2,
+          "x": -42,
+          "y": -8,
+          "exitBearing": 90,
+          "aliases": [
+            "B204",
+            "Central Café"
+          ]
+        },
+        {
+          "id": "C-202",
+          "label": "C-202",
+          "kind": "room",
+          "floor": 2,
+          "x": -18,
+          "y": 8,
+          "exitBearing": 90,
+          "aliases": [
+            "C202"
+          ]
+        },
+        {
+          "id": "D-206",
+          "label": "D-206",
+          "kind": "room",
+          "floor": 2,
+          "x": -10,
+          "y": 12,
+          "exitBearing": 180,
+          "aliases": [
+            "D206",
+            "College Connection"
+          ]
+        },
+        {
+          "id": "E-023",
+          "label": "E-023",
+          "kind": "room",
+          "floor": 2,
+          "x": 14,
+          "y": 16,
+          "exitBearing": 180,
+          "aliases": [
+            "E023",
+            "Facilities Management"
+          ]
+        },
+        {
+          "id": "E-120",
+          "label": "E-120",
+          "kind": "room",
+          "floor": 2,
+          "x": 20,
+          "y": 14,
+          "exitBearing": 180,
+          "aliases": [
+            "E120",
+            "Bookstore"
+          ]
+        },
+        {
+          "id": "E-138",
+          "label": "E-138",
+          "kind": "room",
+          "floor": 2,
+          "x": 22,
+          "y": 12,
+          "exitBearing": 180,
+          "aliases": [
+            "E138",
+            "Print Center"
+          ]
+        },
+        {
+          "id": "E-145",
+          "label": "E-145",
+          "kind": "room",
+          "floor": 2,
+          "x": 24,
+          "y": 10,
+          "exitBearing": 180,
+          "aliases": [
+            "E145",
+            "Commonwealth Honors"
+          ]
+        },
+        {
+          "id": "E-154",
+          "label": "E-154",
+          "kind": "room",
+          "floor": 2,
+          "x": 26,
+          "y": 8,
+          "exitBearing": 180,
+          "aliases": [
+            "E154",
+            "Health Services"
+          ]
+        },
+        {
+          "id": "E-174",
+          "label": "E-174",
+          "kind": "room",
+          "floor": 2,
+          "x": 28,
+          "y": 6,
+          "exitBearing": 180,
+          "aliases": [
+            "E174",
+            "Welcome Back Center"
+          ]
+        },
+        {
+          "id": "E-175",
+          "label": "E-175",
+          "kind": "room",
+          "floor": 2,
+          "x": 30,
+          "y": 4,
+          "exitBearing": 180,
+          "aliases": [
+            "E175",
+            "Conference Room"
+          ]
+        },
+        {
+          "id": "E-222",
+          "label": "E-222",
+          "kind": "room",
+          "floor": 2,
+          "x": 32,
+          "y": 2,
+          "exitBearing": 180,
+          "aliases": [
+            "E222",
+            "Disability Support Services"
+          ]
+        },
+        {
+          "id": "E-223",
+          "label": "E-223",
+          "kind": "room",
+          "floor": 2,
+          "x": 34,
+          "y": 0,
+          "exitBearing": 180,
+          "aliases": [
+            "E223",
+            "STEM Study"
+          ]
+        },
+        {
+          "id": "E-224-226",
+          "label": "E-224-226",
+          "kind": "room",
+          "floor": 2,
+          "x": 36,
+          "y": -2,
+          "exitBearing": 180,
+          "aliases": [
+            "E224226",
+            "E-224",
+            "E-225",
+            "E-226",
+            "MathSpace"
+          ]
+        },
+        {
+          "id": "E-225",
+          "label": "E-225",
+          "kind": "room",
+          "floor": 2,
+          "x": 37,
+          "y": -3,
+          "exitBearing": 180,
+          "aliases": [
+            "E225",
+            "Community Connect"
+          ]
+        },
+        {
+          "id": "E-229",
+          "label": "E-229",
+          "kind": "room",
+          "floor": 2,
+          "x": 38,
+          "y": -4,
+          "exitBearing": 180,
+          "aliases": [
+            "E229",
+            "TASC",
+            "Tutoring + Academic Support Center"
+          ]
+        },
+        {
+          "id": "E-230",
+          "label": "E-230",
+          "kind": "room",
+          "floor": 2,
+          "x": 40,
+          "y": -6,
+          "exitBearing": 180,
+          "aliases": [
+            "E230",
+            "Academic Innovation and Distance Education",
+            "Innovation Lab"
+          ]
+        },
+        {
+          "id": "E-235",
+          "label": "E-235",
+          "kind": "room",
+          "floor": 2,
+          "x": -40,
+          "y": 0,
+          "exitBearing": 90,
+          "aliases": [
+            "E235",
+            "Cafe"
+          ]
+        },
+        {
+          "id": "N-210",
+          "label": "N-210",
+          "kind": "room",
+          "floor": 2,
+          "x": 54,
+          "y": 6,
+          "exitBearing": 180,
+          "aliases": [
+            "N210",
+            "LifeMap Commons",
+            "Advising",
+            "Transfer Services",
+            "Career Counseling"
+          ]
+        },
+        {
+          "id": "N-216",
+          "label": "N-216",
+          "kind": "room",
+          "floor": 2,
+          "x": 56,
+          "y": 4,
+          "exitBearing": 180,
+          "aliases": [
+            "N216",
+            "Learning Communities",
+            "Ace Mentors"
+          ]
+        },
+        {
+          "id": "N-217",
+          "label": "N-217",
+          "kind": "room",
+          "floor": 2,
+          "x": 58,
+          "y": 2,
+          "exitBearing": 180,
+          "aliases": [
+            "N217",
+            "TRiO Student Success Program"
+          ]
+        },
+        {
+          "id": "N-221",
+          "label": "N-221",
+          "kind": "room",
+          "floor": 2,
+          "x": 60,
+          "y": 0,
+          "exitBearing": 180,
+          "aliases": [
+            "N221",
+            "International Center"
+          ]
+        },
+        {
+          "id": "N-222",
+          "label": "N-222",
+          "kind": "room",
+          "floor": 2,
+          "x": 62,
+          "y": -2,
+          "exitBearing": 180,
+          "aliases": [
+            "N222",
+            "N-Building Lounge, 2nd Floor"
+          ]
+        },
+        {
+          "id": "A-206",
+          "label": "A-206",
+          "kind": "room",
+          "floor": 2,
+          "x": -24,
+          "y": -10,
+          "exitBearing": 90,
+          "aliases": [
+            "A206",
+            "Public Safety",
+            "Campus Police"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "id": "n2-stairs-link-f",
+          "from": "n2-core",
+          "to": "n2-stairs",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs"
+        },
+        {
+          "id": "n2-stairs-link-r",
+          "from": "n2-stairs",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs"
+        },
+        {
+          "id": "n2-elevator-link-f",
+          "from": "n2-core",
+          "to": "n2-elevator",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "elevator"
+        },
+        {
+          "id": "n2-elevator-link-r",
+          "from": "n2-elevator",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "elevator"
+        },
+        {
+          "id": "floor2-bc-f",
+          "from": "b2-core",
+          "to": "c2-core",
+          "weight": 18,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-bc-r",
+          "from": "c2-core",
+          "to": "b2-core",
+          "weight": 18,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-cd-f",
+          "from": "c2-core",
+          "to": "d2-core",
+          "weight": 14,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-cd-r",
+          "from": "d2-core",
+          "to": "c2-core",
+          "weight": 14,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-de-f",
+          "from": "d2-core",
+          "to": "e2-core",
+          "weight": 20,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-de-r",
+          "from": "e2-core",
+          "to": "d2-core",
+          "weight": 20,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-eg-f",
+          "from": "e2-core",
+          "to": "g2-core",
+          "weight": 16,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-eg-r",
+          "from": "g2-core",
+          "to": "e2-core",
+          "weight": 16,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-gn-f",
+          "from": "g2-core",
+          "to": "n2-core",
+          "weight": 18,
+          "bearing": 90,
+          "kind": "walk"
+        },
+        {
+          "id": "floor2-gn-r",
+          "from": "n2-core",
+          "to": "g2-core",
+          "weight": 18,
+          "bearing": 270,
+          "kind": "walk"
+        },
+        {
+          "id": "b2-204-f",
+          "from": "b2-core",
+          "to": "B-204",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "b2-204-r",
+          "from": "B-204",
+          "to": "b2-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "c2-202-f",
+          "from": "c2-core",
+          "to": "C-202",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door"
+        },
+        {
+          "id": "c2-202-r",
+          "from": "C-202",
+          "to": "c2-core",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door"
+        },
+        {
+          "id": "d2-206-f",
+          "from": "d2-core",
+          "to": "D-206",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "d2-206-r",
+          "from": "D-206",
+          "to": "d2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-120-f",
+          "from": "e2-core",
+          "to": "E-120",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-120-r",
+          "from": "E-120",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-138-f",
+          "from": "e2-core",
+          "to": "E-138",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-138-r",
+          "from": "E-138",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-145-f",
+          "from": "e2-core",
+          "to": "E-145",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-145-r",
+          "from": "E-145",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-154-f",
+          "from": "e2-core",
+          "to": "E-154",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-154-r",
+          "from": "E-154",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-174-f",
+          "from": "e2-core",
+          "to": "E-174",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-174-r",
+          "from": "E-174",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-175-f",
+          "from": "e2-core",
+          "to": "E-175",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-175-r",
+          "from": "E-175",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-222-f",
+          "from": "e2-core",
+          "to": "E-222",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-222-r",
+          "from": "E-222",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-223-f",
+          "from": "e2-core",
+          "to": "E-223",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-223-r",
+          "from": "E-223",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-224-f",
+          "from": "e2-core",
+          "to": "E-224-226",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-224-r",
+          "from": "E-224-226",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-225-f",
+          "from": "e2-core",
+          "to": "E-225",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-225-r",
+          "from": "E-225",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-229-f",
+          "from": "e2-core",
+          "to": "E-229",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-229-r",
+          "from": "E-229",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-230-f",
+          "from": "e2-core",
+          "to": "E-230",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-230-r",
+          "from": "E-230",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "e2-235-f",
+          "from": "e2-core",
+          "to": "E-235",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "e2-235-r",
+          "from": "E-235",
+          "to": "e2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n2-210-f",
+          "from": "n2-core",
+          "to": "N-210",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n2-210-r",
+          "from": "N-210",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n2-216-f",
+          "from": "n2-core",
+          "to": "N-216",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n2-216-r",
+          "from": "N-216",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n2-217-f",
+          "from": "n2-core",
+          "to": "N-217",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n2-217-r",
+          "from": "N-217",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n2-221-f",
+          "from": "n2-core",
+          "to": "N-221",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n2-221-r",
+          "from": "N-221",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "n2-222-f",
+          "from": "n2-core",
+          "to": "N-222",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door"
+        },
+        {
+          "id": "n2-222-r",
+          "from": "N-222",
+          "to": "n2-core",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "a2-206-f",
+          "from": "c2-core",
+          "to": "A-206",
+          "weight": 6,
+          "bearing": 180,
+          "kind": "door"
+        },
+        {
+          "id": "a2-206-r",
+          "from": "A-206",
+          "to": "c2-core",
+          "weight": 6,
+          "bearing": 0,
+          "kind": "door"
+        }
+      ]
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "n1-core",
+        "label": "N1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": 0,
+        "y": 0,
+        "exitBearing": 180
+      },
+      {
+        "id": "n1-stairs",
+        "label": "N1 Stairs",
+        "kind": "stairs",
+        "floor": 1,
+        "x": -10,
+        "y": -4
+      },
+      {
+        "id": "n1-elevator",
+        "label": "N1 Elevator",
+        "kind": "elevator",
+        "floor": 1,
+        "x": 10,
+        "y": -4
+      },
+      {
+        "id": "n1-west",
+        "label": "N1 West Hall",
+        "kind": "corridor",
+        "floor": 1,
+        "x": -20,
+        "y": 0
+      },
+      {
+        "id": "n1-east",
+        "label": "N1 East Hall",
+        "kind": "corridor",
+        "floor": 1,
+        "x": 20,
+        "y": 0
+      },
+      {
+        "id": "b1-core",
+        "label": "B1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": -34,
+        "y": -3
+      },
+      {
+        "id": "c1-core",
+        "label": "C1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": -16,
+        "y": -2
+      },
+      {
+        "id": "d1-core",
+        "label": "D1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": -2,
+        "y": -2
+      },
+      {
+        "id": "e1-core",
+        "label": "E1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": 18,
+        "y": 6
+      },
+      {
+        "id": "g1-core",
+        "label": "G1 Core",
+        "kind": "intersection",
+        "floor": 1,
+        "x": 34,
+        "y": 3
+      },
+      {
+        "id": "b2-core",
+        "label": "B2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": -34,
+        "y": -3
+      },
+      {
+        "id": "c2-core",
+        "label": "C2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": -16,
+        "y": -2
+      },
+      {
+        "id": "d2-core",
+        "label": "D2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": -2,
+        "y": -2
+      },
+      {
+        "id": "e2-core",
+        "label": "E2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": 18,
+        "y": 6
+      },
+      {
+        "id": "g2-core",
+        "label": "G2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": 34,
+        "y": 3
+      },
+      {
+        "id": "n2-core",
+        "label": "N2 Corridor",
+        "kind": "intersection",
+        "floor": 2,
+        "x": 52,
+        "y": 0
+      },
+      {
+        "id": "n2-stairs",
+        "label": "N2 Stairs",
+        "kind": "stairs",
+        "floor": 2,
+        "x": 46,
+        "y": 2
+      },
+      {
+        "id": "n2-elevator",
+        "label": "N2 Elevator",
+        "kind": "elevator",
+        "floor": 2,
+        "x": 48,
+        "y": -4
+      },
+      {
+        "id": "n2-east",
+        "label": "N2 East Hall",
+        "kind": "corridor",
+        "floor": 2,
+        "x": 60,
+        "y": 0
+      },
+      {
+        "id": "N-102",
+        "label": "N-102",
+        "kind": "room",
+        "floor": 1,
+        "x": -4,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "N102",
+          "N-Building Security Desk"
+        ]
+      },
+      {
+        "id": "N-111",
+        "label": "N-111",
+        "kind": "room",
+        "floor": 1,
+        "x": 6,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "N111",
+          "Internships & Career Development",
+          "Workforce & Economic Development"
+        ]
+      },
+      {
+        "id": "N-113",
+        "label": "N-113",
+        "kind": "room",
+        "floor": 1,
+        "x": 10,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "N113",
+          "Single Stop"
+        ]
+      },
+      {
+        "id": "N-114",
+        "label": "N-114",
+        "kind": "room",
+        "floor": 1,
+        "x": 14,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "N114",
+          "Center for Self-Directed Learning",
+          "CSDL"
+        ]
+      },
+      {
+        "id": "N-116",
+        "label": "N-116",
+        "kind": "room",
+        "floor": 1,
+        "x": 18,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "N116",
+          "Veterans Center"
+        ]
+      },
+      {
+        "id": "N-119",
+        "label": "N-119",
+        "kind": "room",
+        "floor": 1,
+        "x": 22,
+        "y": 10,
+        "exitBearing": 180,
+        "aliases": [
+          "N119",
+          "N-Building Lounge, 1st Floor"
+        ]
+      },
+      {
+        "id": "G-102",
+        "label": "G-102",
+        "kind": "room",
+        "floor": 1,
+        "x": 36,
+        "y": 10,
+        "exitBearing": 180,
+        "aliases": [
+          "G102",
+          "Fitness Center"
+        ]
+      },
+      {
+        "id": "G-110",
+        "label": "G-110",
+        "kind": "room",
+        "floor": 1,
+        "x": 38,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "G110",
+          "Gymnasium"
+        ]
+      },
+      {
+        "id": "G-117",
+        "label": "G-117",
+        "kind": "room",
+        "floor": 1,
+        "x": 40,
+        "y": 6,
+        "exitBearing": 180,
+        "aliases": [
+          "G117",
+          "Athletic Office Suite"
+        ]
+      },
+      {
+        "id": "G-130",
+        "label": "G-130",
+        "kind": "room",
+        "floor": 1,
+        "x": 42,
+        "y": 4,
+        "exitBearing": 180,
+        "aliases": [
+          "G130",
+          "Faculty Offices Suite"
+        ]
+      },
+      {
+        "id": "G-229",
+        "label": "G-229",
+        "kind": "room",
+        "floor": 1,
+        "x": 44,
+        "y": 2,
+        "exitBearing": 180,
+        "aliases": [
+          "G229",
+          "Health Center Lobby"
+        ]
+      },
+      {
+        "id": "B-101",
+        "label": "B-101",
+        "kind": "room",
+        "floor": 1,
+        "x": -42,
+        "y": -8,
+        "exitBearing": 90,
+        "aliases": [
+          "B101",
+          "DISH Food Pantry"
+        ]
+      },
+      {
+        "id": "B-118",
+        "label": "B-118",
+        "kind": "room",
+        "floor": 1,
+        "x": -44,
+        "y": -4,
+        "exitBearing": 90,
+        "aliases": [
+          "B118",
+          "Assessment & Testing Center"
+        ]
+      },
+      {
+        "id": "B-138",
+        "label": "B-138",
+        "kind": "room",
+        "floor": 1,
+        "x": -45,
+        "y": -2,
+        "exitBearing": 90,
+        "aliases": [
+          "B138",
+          "Student Counseling",
+          "Prevention and Wellness Center"
+        ]
+      },
+      {
+        "id": "B-150",
+        "label": "B-150",
+        "kind": "room",
+        "floor": 1,
+        "x": -46,
+        "y": 0,
+        "exitBearing": 90,
+        "aliases": [
+          "B150"
+        ]
+      },
+      {
+        "id": "B-200",
+        "label": "B-200",
+        "kind": "room",
+        "floor": 1,
+        "x": -48,
+        "y": 4,
+        "exitBearing": 90,
+        "aliases": [
+          "B200",
+          "Admissions Office",
+          "Student Central",
+          "Academic Records",
+          "Financial Aid",
+          "Student Payment"
+        ]
+      },
+      {
+        "id": "E-144",
+        "label": "E-144",
+        "kind": "room",
+        "floor": 1,
+        "x": 20,
+        "y": 14,
+        "exitBearing": 180,
+        "aliases": [
+          "E144",
+          "Language Lab"
+        ]
+      },
+      {
+        "id": "E-173B",
+        "label": "E-173B",
+        "kind": "room",
+        "floor": 1,
+        "x": 24,
+        "y": 12,
+        "exitBearing": 180,
+        "aliases": [
+          "E173B",
+          "E-Building Lounge",
+          "1st Floor"
+        ]
+      },
+      {
+        "id": "C-102",
+        "label": "C-102",
+        "kind": "room",
+        "floor": 1,
+        "x": -18,
+        "y": 8,
+        "exitBearing": 90,
+        "aliases": [
+          "C102",
+          "C-Lounge"
+        ]
+      },
+      {
+        "id": "D-113",
+        "label": "D-113",
+        "kind": "room",
+        "floor": 1,
+        "x": 0,
+        "y": 10,
+        "exitBearing": 180,
+        "aliases": [
+          "D113",
+          "Academic Computing Center"
+        ]
+      },
+      {
+        "id": "D-201",
+        "label": "D-201",
+        "kind": "room",
+        "floor": 1,
+        "x": 2,
+        "y": 12,
+        "exitBearing": 180,
+        "aliases": [
+          "D201",
+          "D-Lounge"
+        ]
+      },
+      {
+        "id": "B-204",
+        "label": "B-204",
+        "kind": "room",
+        "floor": 2,
+        "x": -42,
+        "y": -8,
+        "exitBearing": 90,
+        "aliases": [
+          "B204",
+          "Central Café"
+        ]
+      },
+      {
+        "id": "C-202",
+        "label": "C-202",
+        "kind": "room",
+        "floor": 2,
+        "x": -18,
+        "y": 8,
+        "exitBearing": 90,
+        "aliases": [
+          "C202"
+        ]
+      },
+      {
+        "id": "D-206",
+        "label": "D-206",
+        "kind": "room",
+        "floor": 2,
+        "x": -10,
+        "y": 12,
+        "exitBearing": 180,
+        "aliases": [
+          "D206",
+          "College Connection"
+        ]
+      },
+      {
+        "id": "E-023",
+        "label": "E-023",
+        "kind": "room",
+        "floor": 2,
+        "x": 14,
+        "y": 16,
+        "exitBearing": 180,
+        "aliases": [
+          "E023",
+          "Facilities Management"
+        ]
+      },
+      {
+        "id": "E-120",
+        "label": "E-120",
+        "kind": "room",
+        "floor": 2,
+        "x": 20,
+        "y": 14,
+        "exitBearing": 180,
+        "aliases": [
+          "E120",
+          "Bookstore"
+        ]
+      },
+      {
+        "id": "E-138",
+        "label": "E-138",
+        "kind": "room",
+        "floor": 2,
+        "x": 22,
+        "y": 12,
+        "exitBearing": 180,
+        "aliases": [
+          "E138",
+          "Print Center"
+        ]
+      },
+      {
+        "id": "E-145",
+        "label": "E-145",
+        "kind": "room",
+        "floor": 2,
+        "x": 24,
+        "y": 10,
+        "exitBearing": 180,
+        "aliases": [
+          "E145",
+          "Commonwealth Honors"
+        ]
+      },
+      {
+        "id": "E-154",
+        "label": "E-154",
+        "kind": "room",
+        "floor": 2,
+        "x": 26,
+        "y": 8,
+        "exitBearing": 180,
+        "aliases": [
+          "E154",
+          "Health Services"
+        ]
+      },
+      {
+        "id": "E-174",
+        "label": "E-174",
+        "kind": "room",
+        "floor": 2,
+        "x": 28,
+        "y": 6,
+        "exitBearing": 180,
+        "aliases": [
+          "E174",
+          "Welcome Back Center"
+        ]
+      },
+      {
+        "id": "E-175",
+        "label": "E-175",
+        "kind": "room",
+        "floor": 2,
+        "x": 30,
+        "y": 4,
+        "exitBearing": 180,
+        "aliases": [
+          "E175",
+          "Conference Room"
+        ]
+      },
+      {
+        "id": "E-222",
+        "label": "E-222",
+        "kind": "room",
+        "floor": 2,
+        "x": 32,
+        "y": 2,
+        "exitBearing": 180,
+        "aliases": [
+          "E222",
+          "Disability Support Services"
+        ]
+      },
+      {
+        "id": "E-223",
+        "label": "E-223",
+        "kind": "room",
+        "floor": 2,
+        "x": 34,
+        "y": 0,
+        "exitBearing": 180,
+        "aliases": [
+          "E223",
+          "STEM Study"
+        ]
+      },
+      {
+        "id": "E-224-226",
+        "label": "E-224-226",
+        "kind": "room",
+        "floor": 2,
+        "x": 36,
+        "y": -2,
+        "exitBearing": 180,
+        "aliases": [
+          "E224226",
+          "E-224",
+          "E-225",
+          "E-226",
+          "MathSpace"
+        ]
+      },
+      {
+        "id": "E-225",
+        "label": "E-225",
+        "kind": "room",
+        "floor": 2,
+        "x": 37,
+        "y": -3,
+        "exitBearing": 180,
+        "aliases": [
+          "E225",
+          "Community Connect"
+        ]
+      },
+      {
+        "id": "E-229",
+        "label": "E-229",
+        "kind": "room",
+        "floor": 2,
+        "x": 38,
+        "y": -4,
+        "exitBearing": 180,
+        "aliases": [
+          "E229",
+          "TASC",
+          "Tutoring + Academic Support Center"
+        ]
+      },
+      {
+        "id": "E-230",
+        "label": "E-230",
+        "kind": "room",
+        "floor": 2,
+        "x": 40,
+        "y": -6,
+        "exitBearing": 180,
+        "aliases": [
+          "E230",
+          "Academic Innovation and Distance Education",
+          "Innovation Lab"
+        ]
+      },
+      {
+        "id": "E-235",
+        "label": "E-235",
+        "kind": "room",
+        "floor": 2,
+        "x": -40,
+        "y": 0,
+        "exitBearing": 90,
+        "aliases": [
+          "E235",
+          "Cafe"
+        ]
+      },
+      {
+        "id": "N-210",
+        "label": "N-210",
+        "kind": "room",
+        "floor": 2,
+        "x": 54,
+        "y": 6,
+        "exitBearing": 180,
+        "aliases": [
+          "N210",
+          "LifeMap Commons",
+          "Advising",
+          "Transfer Services",
+          "Career Counseling"
+        ]
+      },
+      {
+        "id": "N-216",
+        "label": "N-216",
+        "kind": "room",
+        "floor": 2,
+        "x": 56,
+        "y": 4,
+        "exitBearing": 180,
+        "aliases": [
+          "N216",
+          "Learning Communities",
+          "Ace Mentors"
+        ]
+      },
+      {
+        "id": "N-217",
+        "label": "N-217",
+        "kind": "room",
+        "floor": 2,
+        "x": 58,
+        "y": 2,
+        "exitBearing": 180,
+        "aliases": [
+          "N217",
+          "TRiO Student Success Program"
+        ]
+      },
+      {
+        "id": "N-221",
+        "label": "N-221",
+        "kind": "room",
+        "floor": 2,
+        "x": 60,
+        "y": 0,
+        "exitBearing": 180,
+        "aliases": [
+          "N221",
+          "International Center"
+        ]
+      },
+      {
+        "id": "N-222",
+        "label": "N-222",
+        "kind": "room",
+        "floor": 2,
+        "x": 62,
+        "y": -2,
+        "exitBearing": 180,
+        "aliases": [
+          "N222",
+          "N-Building Lounge, 2nd Floor"
+        ]
+      },
+      {
+        "id": "A-206",
+        "label": "A-206",
+        "kind": "room",
+        "floor": 2,
+        "x": -24,
+        "y": -10,
+        "exitBearing": 90,
+        "aliases": [
+          "A206",
+          "Public Safety",
+          "Campus Police"
+        ]
+      }
+    ],
+    "edges": [
+      {
+        "id": "n1-hall-f",
+        "from": "n1-west",
+        "to": "n1-core",
+        "weight": 8,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-hall-r",
+        "from": "n1-core",
+        "to": "n1-west",
+        "weight": 8,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-hall-east-f",
+        "from": "n1-core",
+        "to": "n1-east",
+        "weight": 8,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-hall-east-r",
+        "from": "n1-east",
+        "to": "n1-core",
+        "weight": 8,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-vertical-stairs-f",
+        "from": "n1-core",
+        "to": "n1-stairs",
+        "weight": 5,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "n1-vertical-stairs-r",
+        "from": "n1-stairs",
+        "to": "n1-core",
+        "weight": 5,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "n1-vertical-elevator-f",
+        "from": "n1-core",
+        "to": "n1-elevator",
+        "weight": 5,
+        "bearing": 0,
+        "kind": "elevator"
+      },
+      {
+        "id": "n1-vertical-elevator-r",
+        "from": "n1-elevator",
+        "to": "n1-core",
+        "weight": 5,
+        "bearing": 180,
+        "kind": "elevator"
+      },
+      {
+        "id": "n1-b1-f",
+        "from": "n1-west",
+        "to": "b1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-b1-r",
+        "from": "b1-core",
+        "to": "n1-west",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-c1-f",
+        "from": "n1-west",
+        "to": "c1-core",
+        "weight": 8,
+        "bearing": 180,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-c1-r",
+        "from": "c1-core",
+        "to": "n1-west",
+        "weight": 8,
+        "bearing": 0,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-d1-f",
+        "from": "n1-core",
+        "to": "d1-core",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-d1-r",
+        "from": "d1-core",
+        "to": "n1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-e1-f",
+        "from": "n1-east",
+        "to": "e1-core",
+        "weight": 8,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-e1-r",
+        "from": "e1-core",
+        "to": "n1-east",
+        "weight": 8,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-g1-f",
+        "from": "n1-east",
+        "to": "g1-core",
+        "weight": 8,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-g1-r",
+        "from": "g1-core",
+        "to": "n1-east",
+        "weight": 8,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "b-vert-1-f",
+        "from": "b1-core",
+        "to": "b2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "b-vert-1-r",
+        "from": "b2-core",
+        "to": "b1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "c-vert-1-f",
+        "from": "c1-core",
+        "to": "c2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "c-vert-1-r",
+        "from": "c2-core",
+        "to": "c1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "d-vert-1-f",
+        "from": "d1-core",
+        "to": "d2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "d-vert-1-r",
+        "from": "d2-core",
+        "to": "d1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "e-vert-1-f",
+        "from": "e1-core",
+        "to": "e2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "e-vert-1-r",
+        "from": "e2-core",
+        "to": "e1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "g-vert-1-f",
+        "from": "g1-core",
+        "to": "g2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "g-vert-1-r",
+        "from": "g2-core",
+        "to": "g1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "n-vert-1-f",
+        "from": "n1-core",
+        "to": "n2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "n-vert-1-r",
+        "from": "n2-core",
+        "to": "n1-core",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "n2-stairs-link-f",
+        "from": "n2-core",
+        "to": "n2-stairs",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "stairs"
+      },
+      {
+        "id": "n2-stairs-link-r",
+        "from": "n2-stairs",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "stairs"
+      },
+      {
+        "id": "n2-elevator-link-f",
+        "from": "n2-core",
+        "to": "n2-elevator",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "elevator"
+      },
+      {
+        "id": "n2-elevator-link-r",
+        "from": "n2-elevator",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "elevator"
+      },
+      {
+        "id": "floor2-bc-f",
+        "from": "b2-core",
+        "to": "c2-core",
+        "weight": 18,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-bc-r",
+        "from": "c2-core",
+        "to": "b2-core",
+        "weight": 18,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-cd-f",
+        "from": "c2-core",
+        "to": "d2-core",
+        "weight": 14,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-cd-r",
+        "from": "d2-core",
+        "to": "c2-core",
+        "weight": 14,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-de-f",
+        "from": "d2-core",
+        "to": "e2-core",
+        "weight": 20,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-de-r",
+        "from": "e2-core",
+        "to": "d2-core",
+        "weight": 20,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-eg-f",
+        "from": "e2-core",
+        "to": "g2-core",
+        "weight": 16,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-eg-r",
+        "from": "g2-core",
+        "to": "e2-core",
+        "weight": 16,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-gn-f",
+        "from": "g2-core",
+        "to": "n2-core",
+        "weight": 18,
+        "bearing": 90,
+        "kind": "walk"
+      },
+      {
+        "id": "floor2-gn-r",
+        "from": "n2-core",
+        "to": "g2-core",
+        "weight": 18,
+        "bearing": 270,
+        "kind": "walk"
+      },
+      {
+        "id": "n1-102-f",
+        "from": "n1-west",
+        "to": "N-102",
+        "weight": 5,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n1-102-r",
+        "from": "N-102",
+        "to": "n1-west",
+        "weight": 5,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-111-f",
+        "from": "n1-core",
+        "to": "N-111",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-111-r",
+        "from": "N-111",
+        "to": "n1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n1-113-f",
+        "from": "n1-core",
+        "to": "N-113",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-113-r",
+        "from": "N-113",
+        "to": "n1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n1-114-f",
+        "from": "n1-core",
+        "to": "N-114",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-114-r",
+        "from": "N-114",
+        "to": "n1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n1-116-f",
+        "from": "n1-east",
+        "to": "N-116",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-116-r",
+        "from": "N-116",
+        "to": "n1-east",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n1-119-f",
+        "from": "n1-east",
+        "to": "N-119",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n1-119-r",
+        "from": "N-119",
+        "to": "n1-east",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "g1-102-f",
+        "from": "g1-core",
+        "to": "G-102",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "g1-102-r",
+        "from": "G-102",
+        "to": "g1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "g1-110-f",
+        "from": "g1-core",
+        "to": "G-110",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "g1-110-r",
+        "from": "G-110",
+        "to": "g1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "g1-117-f",
+        "from": "g1-core",
+        "to": "G-117",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "g1-117-r",
+        "from": "G-117",
+        "to": "g1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "g1-130-f",
+        "from": "g1-core",
+        "to": "G-130",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "g1-130-r",
+        "from": "G-130",
+        "to": "g1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "g1-229-f",
+        "from": "g1-core",
+        "to": "G-229",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "g1-229-r",
+        "from": "G-229",
+        "to": "g1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "b1-101-f",
+        "from": "b1-core",
+        "to": "B-101",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b1-101-r",
+        "from": "B-101",
+        "to": "b1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "b1-118-f",
+        "from": "b1-core",
+        "to": "B-118",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b1-118-r",
+        "from": "B-118",
+        "to": "b1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "b1-138-f",
+        "from": "b1-core",
+        "to": "B-138",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b1-138-r",
+        "from": "B-138",
+        "to": "b1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "b1-150-f",
+        "from": "b1-core",
+        "to": "B-150",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b1-150-r",
+        "from": "B-150",
+        "to": "b1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "b1-200-f",
+        "from": "b1-core",
+        "to": "B-200",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b1-200-r",
+        "from": "B-200",
+        "to": "b1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "e1-144-f",
+        "from": "e1-core",
+        "to": "E-144",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e1-144-r",
+        "from": "E-144",
+        "to": "e1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e1-173b-f",
+        "from": "e1-core",
+        "to": "E-173B",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e1-173b-r",
+        "from": "E-173B",
+        "to": "e1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "c1-102-f",
+        "from": "c1-core",
+        "to": "C-102",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "c1-102-r",
+        "from": "C-102",
+        "to": "c1-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "d1-113-f",
+        "from": "d1-core",
+        "to": "D-113",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "d1-113-r",
+        "from": "D-113",
+        "to": "d1-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "b2-204-f",
+        "from": "b2-core",
+        "to": "B-204",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "b2-204-r",
+        "from": "B-204",
+        "to": "b2-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "c2-202-f",
+        "from": "c2-core",
+        "to": "C-202",
+        "weight": 4,
+        "bearing": 90,
+        "kind": "door"
+      },
+      {
+        "id": "c2-202-r",
+        "from": "C-202",
+        "to": "c2-core",
+        "weight": 4,
+        "bearing": 270,
+        "kind": "door"
+      },
+      {
+        "id": "d2-206-f",
+        "from": "d2-core",
+        "to": "D-206",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "d2-206-r",
+        "from": "D-206",
+        "to": "d2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-120-f",
+        "from": "e2-core",
+        "to": "E-120",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-120-r",
+        "from": "E-120",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-138-f",
+        "from": "e2-core",
+        "to": "E-138",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-138-r",
+        "from": "E-138",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-145-f",
+        "from": "e2-core",
+        "to": "E-145",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-145-r",
+        "from": "E-145",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-154-f",
+        "from": "e2-core",
+        "to": "E-154",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-154-r",
+        "from": "E-154",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-174-f",
+        "from": "e2-core",
+        "to": "E-174",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-174-r",
+        "from": "E-174",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-175-f",
+        "from": "e2-core",
+        "to": "E-175",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-175-r",
+        "from": "E-175",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-222-f",
+        "from": "e2-core",
+        "to": "E-222",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-222-r",
+        "from": "E-222",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-223-f",
+        "from": "e2-core",
+        "to": "E-223",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-223-r",
+        "from": "E-223",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-224-f",
+        "from": "e2-core",
+        "to": "E-224-226",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-224-r",
+        "from": "E-224-226",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-225-f",
+        "from": "e2-core",
+        "to": "E-225",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-225-r",
+        "from": "E-225",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-229-f",
+        "from": "e2-core",
+        "to": "E-229",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-229-r",
+        "from": "E-229",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-230-f",
+        "from": "e2-core",
+        "to": "E-230",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-230-r",
+        "from": "E-230",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "e2-235-f",
+        "from": "e2-core",
+        "to": "E-235",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "e2-235-r",
+        "from": "E-235",
+        "to": "e2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n2-210-f",
+        "from": "n2-core",
+        "to": "N-210",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n2-210-r",
+        "from": "N-210",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n2-216-f",
+        "from": "n2-core",
+        "to": "N-216",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n2-216-r",
+        "from": "N-216",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n2-217-f",
+        "from": "n2-core",
+        "to": "N-217",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n2-217-r",
+        "from": "N-217",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n2-221-f",
+        "from": "n2-core",
+        "to": "N-221",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n2-221-r",
+        "from": "N-221",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "n2-222-f",
+        "from": "n2-core",
+        "to": "N-222",
+        "weight": 4,
+        "bearing": 0,
+        "kind": "door"
+      },
+      {
+        "id": "n2-222-r",
+        "from": "N-222",
+        "to": "n2-core",
+        "weight": 4,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "a2-206-f",
+        "from": "c2-core",
+        "to": "A-206",
+        "weight": 6,
+        "bearing": 180,
+        "kind": "door"
+      },
+      {
+        "id": "a2-206-r",
+        "from": "A-206",
+        "to": "c2-core",
+        "weight": 6,
+        "bearing": 0,
+        "kind": "door"
+      }
+    ]
+  },
+  "title": "BHCC navigation levels 1 and 2"
+}

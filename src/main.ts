@@ -114,6 +114,11 @@ function getAppElements(): AppElements {
 function createAppMarkup(graph: BuildingGraph): string {
   return `
     <main class="shell">
+      <section class="content-intro">
+        <h2>Charlestown Campus Indoor Navigation</h2>
+        <p>Choose your current location and destination to view directions through the BHCC campus map.</p>
+      </section>
+
       <section class="card form-card">
         <form id="route-form" class="route-form">
           ${createLocationFieldMarkup("Current location", "start", "N-111")}
@@ -160,7 +165,7 @@ function createAppMarkup(graph: BuildingGraph): string {
         <article class="card">
           <div class="card-header">
             <h2>BHCC graph</h2>
-          <p class="muted">Rooms, floor cores, corridor connectors, stairs, and elevators are represented as graph vertices.</p>
+            <p class="muted">Rooms, floor cores, corridor connectors, stairs, and elevators are represented as graph vertices.</p>
           </div>
           <ul class="meta-list">
             <li><strong>${graph.nodes.length}</strong> nodes</li>

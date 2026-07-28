@@ -1,14 +1,16 @@
 :root {
   color-scheme: light;
-  --bg: #f4efe7;
-  --bg-2: #ece4d8;
-  --panel: rgba(255, 255, 255, 0.78);
-  --panel-border: rgba(48, 38, 28, 0.08);
-  --text: #24180f;
-  --muted: #6d5a45;
-  --accent: #0f766e;
-  --accent-2: #d97706;
-  --shadow: 0 24px 80px rgba(55, 42, 20, 0.16);
+  --bg: #ffffff;
+  --panel: #ffffff;
+  --panel-border: #d7d7d7;
+  --text: #111111;
+  --muted: #444444;
+  --accent: #c40000;
+  --accent-dark: #8f0000;
+  --navy: #102744;
+  --link: #0048c8;
+  --warning: #fff36a;
+  --shadow: none;
 }
 
 * {
@@ -22,24 +24,9 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: Inter, "Segoe UI", system-ui, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 30%),
-    radial-gradient(circle at top right, rgba(217, 119, 6, 0.12), transparent 28%),
-    linear-gradient(180deg, var(--bg), var(--bg-2));
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.14) 1px, transparent 1px);
-  background-size: 40px 40px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.2), transparent 82%);
+  background: var(--bg);
 }
 
 button,
@@ -53,16 +40,15 @@ select {
 }
 
 .shell {
-  width: min(1120px, calc(100% - 24px));
+  width: min(1920px, calc(100% - 80px));
   margin: 0 auto;
-  padding: 14px 0 36px;
+  padding: 12px 0 42px;
 }
 
 .card {
   background: var(--panel);
   border: 1px solid var(--panel-border);
-  backdrop-filter: blur(16px);
-  border-radius: 28px;
+  border-radius: 0;
   box-shadow: var(--shadow);
 }
 
@@ -73,16 +59,18 @@ p {
 }
 
 h1 {
-  font-size: clamp(2.1rem, 5vw, 4rem);
-  line-height: 0.95;
-  max-width: 11ch;
+  color: white;
+  font-size: clamp(2.25rem, 4vw, 3.4rem);
+  line-height: 1;
+  text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.85);
 }
 
 .form-card {
   position: relative;
   z-index: 20;
-  margin-bottom: 12px;
-  padding: 12px;
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  border-color: var(--accent);
   overflow: visible;
 }
 
@@ -100,16 +88,16 @@ h1 {
 }
 
 .route-form span {
-  font-size: 0.78rem;
-  color: var(--muted);
+  font-size: 0.95rem;
+  color: var(--text);
 }
 
 .route-form input,
 .route-form select {
   width: 100%;
-  border: 1px solid rgba(48, 38, 28, 0.12);
-  background: rgba(255, 255, 255, 0.92);
-  border-radius: 12px;
+  border: 1px solid #bbbbbb;
+  background: white;
+  border-radius: 0;
   padding: 10px 12px;
   color: var(--text);
 }
@@ -129,9 +117,9 @@ h1 {
   gap: 6px;
   padding: 8px;
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.96);
-  border: 1px solid rgba(48, 38, 28, 0.12);
-  box-shadow: 0 20px 40px rgba(55, 42, 20, 0.16);
+  background: white;
+  border: 1px solid #bbbbbb;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
   max-height: 260px;
   overflow-y: auto;
 }
@@ -145,7 +133,7 @@ h1 {
   gap: 3px;
   width: 100%;
   border: 0;
-  border-radius: 14px;
+  border-radius: 0;
   background: transparent;
   padding: 10px 12px;
   text-align: left;
@@ -163,13 +151,13 @@ h1 {
 
 .suggestion[aria-selected="true"],
 .suggestion:hover {
-  background: rgba(15, 118, 110, 0.1);
+  background: rgba(196, 0, 0, 0.08);
 }
 
 .route-form input:focus,
 .route-form select:focus,
 .primary:focus {
-  outline: 2px solid rgba(15, 118, 110, 0.24);
+  outline: 2px solid rgba(196, 0, 0, 0.32);
   outline-offset: 2px;
 }
 
@@ -177,13 +165,17 @@ h1 {
   align-self: end;
   justify-self: stretch;
   border: 0;
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--accent), #0f4c5c);
+  border-radius: 0;
+  background: var(--accent);
   color: white;
   font-weight: 700;
   padding: 10px 16px;
-  box-shadow: 0 10px 30px rgba(15, 118, 110, 0.24);
+  box-shadow: none;
   min-width: 128px;
+}
+
+.primary:hover {
+  background: var(--accent-dark);
 }
 
 .primary:disabled {
@@ -214,7 +206,7 @@ h1 {
 }
 
 .grid > .card {
-  padding: 18px;
+  padding: 16px;
 }
 
 .directions-card {
@@ -225,6 +217,11 @@ h1 {
   display: grid;
   gap: 6px;
   margin-bottom: 14px;
+}
+
+.card-header h2 {
+  color: var(--text);
+  font-size: 1.15rem;
 }
 
 .map-card {
@@ -243,26 +240,26 @@ h1 {
 }
 
 .map-tab {
-  border: 1px solid rgba(48, 38, 28, 0.12);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid #bbbbbb;
+  border-radius: 0;
+  background: white;
   color: var(--muted);
   padding: 10px 14px;
 }
 
 .map-tab[aria-selected="true"] {
-  border-color: rgba(15, 118, 110, 0.28);
-  background: rgba(15, 118, 110, 0.12);
-  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
   font-weight: 700;
 }
 
 .map-frame {
   overflow: auto;
   max-height: 58vh;
-  border: 1px solid rgba(48, 38, 28, 0.08);
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.64);
+  border: 1px solid var(--accent);
+  border-radius: 0;
+  background: #e8e8e8;
 }
 
 .map-frame img {
@@ -291,12 +288,10 @@ h1 {
   align-items: center;
   margin-bottom: 14px;
   padding: 14px 16px;
-  border-radius: 16px;
+  border-radius: 0;
   color: var(--accent);
-  background:
-    linear-gradient(90deg, rgba(15, 118, 110, 0.08), rgba(217, 119, 6, 0.08)),
-    rgba(255, 255, 255, 0.74);
-  border: 1px solid rgba(15, 118, 110, 0.14);
+  background: #fff5f5;
+  border: 1px solid var(--accent);
 }
 
 .route-loading[hidden] {
@@ -309,7 +304,7 @@ h1 {
   height: 8px;
   border-radius: 999px;
   background:
-    linear-gradient(90deg, rgba(15, 118, 110, 0.08), rgba(15, 118, 110, 0.28), rgba(15, 118, 110, 0.08));
+    linear-gradient(90deg, rgba(196, 0, 0, 0.08), rgba(196, 0, 0, 0.28), rgba(196, 0, 0, 0.08));
   background-size: 220% 100%;
   animation: route-scan 1s ease-in-out infinite;
 }
@@ -317,7 +312,7 @@ h1 {
 .route-loader {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(15, 118, 110, 0.22);
+  border: 2px solid rgba(196, 0, 0, 0.22);
   border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
@@ -354,9 +349,9 @@ h1 {
   display: grid;
   gap: 4px;
   padding: 14px 16px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.82);
-  border: 1px solid rgba(48, 38, 28, 0.08);
+  border-radius: 0;
+  background: #f7f7f7;
+  border: 1px solid #dddddd;
 }
 
 .trace-chip strong {
@@ -381,11 +376,16 @@ h1 {
   justify-content: space-between;
   gap: 16px;
   padding: 14px 16px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.8);
+  border-radius: 0;
+  background: #f7f7f7;
+  border: 1px solid #dddddd;
 }
 
 @media (max-width: 920px) {
+  .shell {
+    width: min(100% - 32px, 1120px);
+  }
+
   .grid {
     grid-template-columns: 1fr;
   }
@@ -403,12 +403,6 @@ h1 {
   .shell {
     width: min(100% - 16px, 1120px);
     padding-top: 12px;
-  }
-
-  .hero,
-  .form-card,
-  .grid > .card {
-    border-radius: 22px;
   }
 
   .route-form {

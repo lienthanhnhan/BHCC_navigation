@@ -7,18 +7,14 @@ import type { BuildingGraph, PathResult } from "./lib/types";
 import { registerServiceWorker } from "./pwa";
 import { setupAutocomplete } from "./ui/autocomplete";
 import { getRequiredElement } from "./ui/dom";
+import { renderSignMap, type SignMapData } from "./ui/signMap";
 
 type SavedState = Partial<RouteFormState>;
 type RouteFormState = {
   start: string;
   goal: string;
 };
-type FloorMap = {
-  level: number;
-  label: string;
-  src: string;
-  title?: string;
-};
+type FloorMap = SignMapData;
 type AppElements = {
   startInput: HTMLInputElement;
   goalInput: HTMLInputElement;
@@ -33,7 +29,7 @@ type AppElements = {
   startSuggestions: HTMLDivElement;
   goalSuggestions: HTMLDivElement;
   mapTabs: HTMLDivElement;
-  mapImage: HTMLImageElement;
+  mapVisual: HTMLDivElement;
   mapCaption: HTMLParagraphElement;
 };
 
@@ -46,6 +42,10 @@ const app = getRequiredElement<HTMLDivElement>("#app");
 let buildingGraph: BuildingGraph;
 let elements: AppElements;
 let floorMaps: FloorMap[] = [];
+let currentFloorMap: FloorMap | undefined;
+let currentRoute: PathResult | undefined;
+let currentStartId: string | undefined;
+let currentGoalId: string | undefined;
 
 void initializeApp();
 
@@ -53,12 +53,17 @@ async function initializeApp(): Promise<void> {
   try {
     const dataset = await loadBuildingDataset();
     buildingGraph = dataset.graph;
-    floorMaps = dataset.sourceMaps.map((map) => ({
-      level: map.level,
-      label: map.label,
-      title: map.title,
-      src: `${import.meta.env.BASE_URL}${map.file}`,
-    }));
+    floorMaps = dataset.levels.map((level) => {
+      const sourceMap = dataset.sourceMaps.find((map) => map.level === level.level);
+
+      return {
+        level: level.level,
+        label: level.label,
+        title: sourceMap?.title ?? level.label,
+        nodes: level.nodes,
+        edges: level.edges,
+      };
+    });
 
     app.innerHTML = createAppMarkup(buildingGraph);
     elements = getAppElements();
@@ -106,7 +111,7 @@ function getAppElements(): AppElements {
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
     goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
     mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
-    mapImage: getRequiredElement<HTMLImageElement>("#map-image"),
+    mapVisual: getRequiredElement<HTMLDivElement>("#map-visual"),
     mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
   };
 }
@@ -117,6 +122,7 @@ function createAppMarkup(graph: BuildingGraph): string {
       <section class="content-intro">
         <h2>Charlestown Campus Indoor Navigation</h2>
         <p>Choose your current location and destination to view directions through the BHCC campus map.</p>
+        <p><a class="editor-link" href="${import.meta.env.BASE_URL}editor.html">Open map data editor</a></p>
       </section>
 
       <section class="card form-card">
@@ -149,9 +155,7 @@ function createAppMarkup(graph: BuildingGraph): string {
             </div>
             <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
           </div>
-          <div class="map-frame">
-            <img id="map-image" alt="Selected BHCC floor map" />
-          </div>
+          <div id="map-visual" class="map-frame sign-map-frame"></div>
         </article>
 
         <article class="card">
@@ -192,14 +196,28 @@ function setupFloorMapTabs(): void {
 }
 
 function showFloorMap(map: FloorMap): void {
-  elements.mapImage.src = map.src;
-  elements.mapImage.alt = `${map.label} BHCC floor map`;
-  elements.mapCaption.textContent = map.title ?? `${map.label} drawn campus map`;
+  currentFloorMap = map;
+  elements.mapCaption.textContent = map.title ?? `${map.label} simplified campus map`;
 
   for (const tab of elements.mapTabs.querySelectorAll<HTMLButtonElement>(".map-tab")) {
     const isSelected = tab.dataset.level === String(map.level);
     tab.setAttribute("aria-selected", String(isSelected));
   }
+
+  renderFloorMap();
+}
+
+function renderFloorMap(): void {
+  if (!currentFloorMap) {
+    return;
+  }
+
+  elements.mapVisual.innerHTML = renderSignMap({
+    map: currentFloorMap,
+    route: currentRoute,
+    startId: currentStartId,
+    goalId: currentGoalId,
+  });
 }
 
 function createLocationFieldMarkup(label: string, fieldName: "start" | "goal", placeholderRoom: string): string {
@@ -257,7 +275,12 @@ function runRoute(): void {
   const startId = findNodeId(buildingGraph, state.start);
   const goalId = findNodeId(buildingGraph, state.goal);
 
+  currentStartId = startId;
+  currentGoalId = goalId;
+
   if (!startId || !goalId) {
+    currentRoute = undefined;
+    renderFloorMap();
     showEmptyRoute("Could not match one or both locations. Try using a room code or directory name from the BHCC graph.");
     return;
   }
@@ -265,11 +288,25 @@ function runRoute(): void {
   const route = findShortestPath(buildingGraph, startId, goalId);
 
   if (!route) {
+    currentRoute = undefined;
+    renderFloorMap();
     showEmptyRoute("No route could be found between those locations in the BHCC graph.");
     return;
   }
 
+  currentRoute = route;
+  showRouteFloor(route);
+  renderFloorMap();
   renderRoute(route);
+}
+
+function showRouteFloor(route: PathResult): void {
+  const routeFloor = route.nodes[0]?.floor;
+  const routeMap = floorMaps.find((map) => map.level === routeFloor);
+
+  if (routeMap && routeMap !== currentFloorMap) {
+    showFloorMap(routeMap);
+  }
 }
 
 function getRouteFormState(): RouteFormState {

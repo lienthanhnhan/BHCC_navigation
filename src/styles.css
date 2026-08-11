@@ -81,6 +81,13 @@ h1 {
   line-height: 1.5;
 }
 
+.editor-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: var(--link);
+  font-weight: 700;
+}
+
 .form-card {
   position: relative;
   z-index: 20;
@@ -275,14 +282,174 @@ h1 {
   max-height: 58vh;
   border: 1px solid var(--accent);
   border-radius: 0;
-  background: #e8e8e8;
+  background: #f7f7f2;
 }
 
-.map-frame img {
+.sign-map-frame {
+  padding: 10px;
+}
+
+.sign-map {
   display: block;
   width: 100%;
   min-width: 760px;
   height: auto;
+  background: #f7f7f2;
+}
+
+.sign-map-background {
+  fill: #f7f7f2;
+}
+
+.floor-plate {
+  fill: #fbfbf8;
+  stroke: #1f1f1f;
+  stroke-width: 6;
+  stroke-linejoin: miter;
+}
+
+.room-cell rect {
+  fill: #ffffff;
+  stroke: #555555;
+  stroke-width: 1.4;
+}
+
+.room-cell text {
+  fill: #222222;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.room-route rect {
+  fill: #fff7d8;
+  stroke: #c40000;
+  stroke-width: 2.2;
+}
+
+.room-start rect {
+  fill: #ffeaea;
+  stroke: #c40000;
+  stroke-width: 3;
+}
+
+.room-goal rect {
+  fill: #edf4ff;
+  stroke: #102744;
+  stroke-width: 3;
+}
+
+.corridor-wall {
+  stroke: #222222;
+  stroke-width: 36;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.corridor-line {
+  stroke: #f7f7f2;
+  stroke-width: 29;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.route-line {
+  stroke: #c40000;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-dasharray: 1 14;
+}
+
+.special-area rect {
+  stroke: #222222;
+  stroke-width: 1.8;
+}
+
+.special-area text {
+  fill: #111111;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  text-transform: uppercase;
+}
+
+.stairs-area rect {
+  fill: #f5dd28;
+}
+
+.elevator-area rect {
+  fill: #8fd0e8;
+}
+
+.map-node circle {
+  fill: #222222;
+  stroke: #ffffff;
+  stroke-width: 1.4;
+}
+
+.map-node text {
+  fill: #111111;
+  font-size: 15px;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: #f7f7f2;
+  stroke-width: 4;
+}
+
+.room-node circle {
+  display: none;
+}
+
+.route-node circle {
+  fill: #c40000;
+  display: initial;
+}
+
+.start-node circle {
+  fill: #c40000;
+  display: initial;
+  r: 8;
+}
+
+.goal-node circle {
+  fill: #102744;
+  display: initial;
+  r: 8;
+}
+
+.map-callout circle {
+  fill: #111111;
+}
+
+.map-callout path {
+  fill: none;
+  stroke: #333333;
+  stroke-width: 1.5;
+}
+
+.map-callout text {
+  fill: #111111;
+  font-size: 22px;
+}
+
+.here-callout text {
+  fill: #b00000;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.floor-mark {
+  fill: none;
+  stroke: #111111;
+  stroke-width: 3;
+  font-size: 116px;
+  font-weight: 800;
+  letter-spacing: -8px;
+}
+
+.empty-map {
+  padding: 32px;
+  color: var(--muted);
 }
 
 .muted {

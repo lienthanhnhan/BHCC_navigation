@@ -291,9 +291,7 @@ h1 {
 
 .sign-map {
   display: block;
-  width: 100%;
-  min-width: 760px;
-  height: auto;
+  min-width: 100%;
   background: #f7f7f2;
 }
 
@@ -304,117 +302,145 @@ h1 {
 .floor-plate {
   fill: #fbfbf8;
   stroke: #1f1f1f;
-  stroke-width: 6;
-  stroke-linejoin: miter;
+  stroke-width: 1.2;
+  vector-effect: non-scaling-stroke;
+}
+
+.building-label {
+  fill: #333333;
+  font-size: 3px;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
 .room-cell rect {
-  fill: #ffffff;
-  stroke: #555555;
-  stroke-width: 1.4;
+  fill: #fff36a;
+  stroke: var(--accent);
+  stroke-width: 0.65;
+  vector-effect: non-scaling-stroke;
 }
 
 .room-cell text {
-  fill: #222222;
-  font-size: 14px;
-  font-weight: 700;
+  fill: #111111;
+  font-size: 2.7px;
+  font-weight: 900;
   text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 0.65;
 }
 
 .room-route rect {
   fill: #fff7d8;
   stroke: #c40000;
-  stroke-width: 2.2;
+  stroke-width: 1.1;
 }
 
 .room-start rect {
   fill: #ffeaea;
   stroke: #c40000;
-  stroke-width: 3;
+  stroke-width: 1.4;
 }
 
 .room-goal rect {
   fill: #edf4ff;
   stroke: #102744;
-  stroke-width: 3;
-}
-
-.corridor-wall {
-  stroke: #222222;
-  stroke-width: 36;
-  stroke-linecap: square;
-  stroke-linejoin: miter;
-}
-
-.corridor-line {
-  stroke: #f7f7f2;
-  stroke-width: 29;
-  stroke-linecap: square;
-  stroke-linejoin: miter;
-}
-
-.route-line {
-  stroke: #c40000;
-  stroke-width: 8;
-  stroke-linecap: round;
-  stroke-dasharray: 1 14;
-}
-
-.special-area rect {
-  stroke: #222222;
-  stroke-width: 1.8;
-}
-
-.special-area text {
-  fill: #111111;
-  font-size: 11px;
-  font-weight: 700;
-  text-anchor: middle;
-  text-transform: uppercase;
-}
-
-.stairs-area rect {
-  fill: #f5dd28;
-}
-
-.elevator-area rect {
-  fill: #8fd0e8;
-}
-
-.map-node circle {
-  fill: #222222;
-  stroke: #ffffff;
   stroke-width: 1.4;
 }
 
-.map-node text {
-  fill: #111111;
-  font-size: 15px;
-  font-weight: 700;
-  paint-order: stroke;
+.corridor-wall,
+.building-connector-wall {
+  fill: none;
+  stroke: #222222;
+  stroke-width: 2.8;
+  stroke-linecap: square;
+  vector-effect: non-scaling-stroke;
+}
+
+.corridor-floor,
+.building-connector-floor {
+  fill: none;
   stroke: #f7f7f2;
-  stroke-width: 4;
+  stroke-width: 2;
+  stroke-linecap: square;
+  vector-effect: non-scaling-stroke;
 }
 
-.room-node circle {
-  display: none;
+.corridor-wall {
+  stroke-width: 2.2;
 }
 
-.route-node circle {
-  fill: #c40000;
-  display: initial;
+.corridor-floor {
+  stroke-width: 1.6;
 }
 
-.start-node circle {
-  fill: #c40000;
-  display: initial;
-  r: 8;
+.room-connector {
+  fill: none;
+  stroke: #777777;
+  stroke-width: 0.65;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  vector-effect: non-scaling-stroke;
 }
 
-.goal-node circle {
-  fill: #102744;
-  display: initial;
-  r: 8;
+.route-line {
+  fill: none;
+  stroke: #c40000;
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 7;
+  vector-effect: non-scaling-stroke;
+}
+
+.navigation-node rect {
+  fill: #fbfbf8;
+  stroke: #222222;
+  stroke-width: 1.1;
+  vector-effect: non-scaling-stroke;
+}
+
+.navigation-node text {
+  fill: #111111;
+  font-size: 2.2px;
+  font-weight: 900;
+  text-anchor: middle;
+  dominant-baseline: central;
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 0.35;
+}
+
+.stairs-node rect {
+  fill: var(--navy);
+  stroke: white;
+}
+
+.elevator-node rect {
+  fill: #8fd0e8;
+  stroke: white;
+}
+
+.stairs-node text,
+.elevator-node text,
+.start-node text,
+.goal-node text {
+  fill: white;
+  stroke: #111111;
+}
+
+.route-node rect {
+  stroke: var(--accent);
+  stroke-width: 1.3;
+}
+
+.start-node rect {
+  fill: var(--accent);
+}
+
+.goal-node rect {
+  fill: var(--navy);
 }
 
 .map-callout circle {
@@ -424,27 +450,29 @@ h1 {
 .map-callout path {
   fill: none;
   stroke: #333333;
-  stroke-width: 1.5;
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
 }
 
 .map-callout text {
   fill: #111111;
-  font-size: 22px;
+  font-size: 3.2px;
+  font-weight: 800;
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 0.8;
 }
 
 .here-callout text {
   fill: #b00000;
-  font-size: 24px;
-  font-weight: 800;
 }
 
 .floor-mark {
-  fill: none;
-  stroke: #111111;
-  stroke-width: 3;
-  font-size: 116px;
+  fill: #111111;
+  font-size: 15px;
   font-weight: 800;
-  letter-spacing: -8px;
+  text-anchor: end;
+  opacity: 0.14;
 }
 
 .empty-map {

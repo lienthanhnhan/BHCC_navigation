@@ -169,11 +169,11 @@ function createAppMarkup(graph: BuildingGraph): string {
         <article class="card">
           <div class="card-header">
             <h2>BHCC graph</h2>
-            <p class="muted">Rooms, floor cores, corridor connectors, stairs, and elevators are represented as graph vertices.</p>
+            <p class="muted">Rooms, corridors, corridor endpoints, stairs, and elevators are represented in the navigation graph.</p>
           </div>
           <ul class="meta-list">
             <li><strong>${graph.nodes.length}</strong> nodes</li>
-            <li><strong>${graph.edges.length}</strong> pathway connections</li>
+            <li><strong>${graph.edges.length}</strong> corridor connections</li>
             <li><strong>floor-aware</strong> weights</li>
           </ul>
         </article>

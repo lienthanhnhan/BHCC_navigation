@@ -1,10 +1,11 @@
 export type NodeKind =
   | "room"
   | "corridor"
-  | "intersection"
   | "stairs"
   | "elevator"
   | "door";
+
+export type CorridorEndpoint = "start" | "end";
 
 export interface BuildingNode {
   id: string;
@@ -13,6 +14,7 @@ export interface BuildingNode {
   x: number;
   y: number;
   floor: number;
+  orientation?: "horizontal" | "vertical";
   aliases?: string[];
   exitBearing?: number;
 }
@@ -25,6 +27,8 @@ export interface BuildingEdge {
   bearing: number;
   kind: "walk" | "stairs" | "elevator" | "door";
   bidirectional?: boolean;
+  fromEndpoint?: CorridorEndpoint;
+  toEndpoint?: CorridorEndpoint;
   label?: string;
 }
 

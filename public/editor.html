@@ -22,8 +22,7 @@
       .shape-tool:active { cursor: grabbing; }
       .shape-tool.active { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); color: var(--accent); }
       .shape-swatch { width: 18px; height: 12px; border: 1px solid var(--accent); background: #fff36a; display: inline-block; }
-      .shape-swatch.pathway { background: white; border-color: #222; }
-      .shape-swatch.intersection { background: white; border-color: var(--accent); }
+      .shape-swatch.corridor { width: 24px; height: 8px; background: white; border: 2px solid #222; }
       .shape-swatch.stairs { background: var(--navy); border-color: var(--navy); }
       .shape-swatch.elevator { background: #8fd0e8; border-color: #27748e; }
       .shape-swatch.door { background: white; border-color: #777; }
@@ -53,9 +52,11 @@
       .graph-node:active { cursor: grabbing; }
       .graph-node rect { fill: #fff; stroke: var(--accent); stroke-width: .65; vector-effect: non-scaling-stroke; }
       .graph-node-room rect { fill: #fff36a; }
+      .graph-node-corridor rect { fill: #fbfbf8; stroke: #222; stroke-width: 1.1; }
       .graph-node-stairs rect, .graph-node-elevator rect { fill: var(--navy); stroke: #fff; }
       .graph-node.selected rect { fill: var(--accent); stroke: #111; stroke-width: 1; }
       .graph-node text { fill: #111; paint-order: stroke; stroke: #fff; stroke-width: .65; font-size: 2.7px; font-weight: 900; text-anchor: middle; dominant-baseline: central; pointer-events: none; vector-effect: non-scaling-stroke; }
+      .graph-node-corridor text { font-size: 2.2px; stroke-width: .35; }
       .graph-node-stairs text, .graph-node-elevator text, .graph-node.selected text { fill: #fff; stroke: #111; }
       .hint { margin: 10px 0 0; color: var(--muted); font-size: .92rem; }
       .forms { display: grid; gap: 14px; }
@@ -95,8 +96,7 @@
           <div class="panel-body"><div id="shape-palette" class="shape-palette" aria-label="Create map item palette">
             <span>Create</span>
             <button class="shape-tool" type="button" draggable="true" data-kind="room"><i class="shape-swatch"></i>Room</button>
-            <button class="shape-tool" type="button" draggable="true" data-kind="corridor"><i class="shape-swatch pathway"></i>Pathway</button>
-            <button class="shape-tool" type="button" draggable="true" data-kind="intersection"><i class="shape-swatch intersection"></i>Core</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="corridor"><i class="shape-swatch corridor"></i>Corridor</button>
             <button class="shape-tool" type="button" draggable="true" data-kind="stairs"><i class="shape-swatch stairs"></i>Stairs</button>
             <button class="shape-tool" type="button" draggable="true" data-kind="elevator"><i class="shape-swatch elevator"></i>Elevator</button>
             <button class="shape-tool" type="button" draggable="true" data-kind="door"><i class="shape-swatch door"></i>Door</button>
@@ -104,15 +104,15 @@
         </article>
         <aside class="forms">
           <article class="panel"><div class="panel-header"><h2>Nodes</h2><span id="node-status" class="status"></span></div><div class="panel-body"><ul id="node-list" class="list"></ul></div></article>
-          <article class="panel"><div class="panel-header"><h2>Selected node</h2></div><div class="panel-body"><form id="node-form" class="field-grid"><label class="field"><span>ID</span><input id="node-id" /></label><label class="field"><span>Label</span><input id="node-label" /></label><label class="field"><span>Kind</span><select id="node-kind"><option>room</option><option>corridor</option><option>intersection</option><option>stairs</option><option>elevator</option><option>door</option></select></label><label class="field"><span>Floor</span><input id="node-floor" type="number" /></label><label class="field"><span>X</span><input id="node-x" type="number" step="0.1" /></label><label class="field"><span>Y</span><input id="node-y" type="number" step="0.1" /></label><label class="field"><span>Exit bearing</span><input id="node-exit-bearing" type="number" step="1" placeholder="optional" /></label><label class="field full"><span>Aliases, one per line</span><textarea id="node-aliases"></textarea></label></form><code id="node-json" class="code-preview"></code></div></article>
-          <article class="panel"><div class="panel-header"><h2>Edges</h2><div class="toolbar"><button id="add-edge" class="button secondary" type="button">Add edge</button><button id="delete-edge" class="button danger" type="button">Delete edge</button></div></div><div class="panel-body forms"><ul id="edge-list" class="list"></ul><form id="edge-form" class="field-grid"><label class="field full"><span>ID</span><input id="edge-id" /></label><label class="field"><span>From</span><select id="edge-from"></select></label><label class="field"><span>To</span><select id="edge-to"></select></label><label class="field"><span>Weight</span><input id="edge-weight" type="number" step="0.1" /></label><label class="field"><span>Bearing</span><input id="edge-bearing" type="number" step="1" /></label><label class="field full"><span>Kind</span><select id="edge-kind"><option>walk</option><option>door</option><option>stairs</option><option>elevator</option></select></label><label class="field full"><span><input id="edge-bidirectional" type="checkbox" /> Two-way connection</span></label></form></div></article>
+          <article class="panel"><div class="panel-header"><h2>Selected node</h2></div><div class="panel-body"><form id="node-form" class="field-grid"><label class="field"><span>ID</span><input id="node-id" /></label><label class="field"><span>Label</span><input id="node-label" /></label><label class="field"><span>Kind</span><select id="node-kind"><option>room</option><option>corridor</option><option>stairs</option><option>elevator</option><option>door</option></select></label><label class="field"><span>Orientation</span><select id="node-orientation"><option value="horizontal">Horizontal</option><option value="vertical">Vertical</option></select></label><label class="field"><span>Floor</span><input id="node-floor" type="number" /></label><label class="field"><span>X</span><input id="node-x" type="number" step="0.1" /></label><label class="field"><span>Y</span><input id="node-y" type="number" step="0.1" /></label><label class="field"><span>Exit bearing</span><input id="node-exit-bearing" type="number" step="1" placeholder="optional" /></label><label class="field full"><span>Aliases, one per line</span><textarea id="node-aliases"></textarea></label></form><code id="node-json" class="code-preview"></code></div></article>
+          <article class="panel"><div class="panel-header"><h2>Connections</h2><div class="toolbar"><button id="add-edge" class="button secondary" type="button">Add connection</button><button id="delete-edge" class="button danger" type="button">Delete connection</button></div></div><div class="panel-body forms"><ul id="edge-list" class="list"></ul><form id="edge-form" class="field-grid"><label class="field full"><span>ID</span><input id="edge-id" /></label><label class="field"><span>From</span><select id="edge-from"></select></label><label class="field"><span>From corridor point</span><select id="edge-from-endpoint"><option value="">Side / center</option><option value="start">Start (left / top)</option><option value="end">End (right / bottom)</option></select></label><label class="field"><span>To</span><select id="edge-to"></select></label><label class="field"><span>To corridor point</span><select id="edge-to-endpoint"><option value="">Side / center</option><option value="start">Start (left / top)</option><option value="end">End (right / bottom)</option></select></label><label class="field"><span>Weight</span><input id="edge-weight" type="number" step="0.1" /></label><label class="field"><span>Bearing</span><input id="edge-bearing" type="number" step="1" /></label><label class="field full"><span>Kind</span><select id="edge-kind"><option>walk</option><option>door</option><option>stairs</option><option>elevator</option></select></label><label class="field full"><span><input id="edge-bidirectional" type="checkbox" /> Two-way connection</span></label></form></div></article>
         </aside>
       </section>
     </main>
     <script type="module">
       const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), manualPositions: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, movedNode: false };
       const $ = (id) => document.getElementById(id);
-      const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','export-json'].map(id => [camel(id), $(id)]));
+      const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','export-json'].map(id => [camel(id), $(id)]));
 
       init().catch(error => { document.body.innerHTML = '<main class="editor-shell"><p>Could not load editor data.</p><pre>' + escapeHtml(error) + '</pre></main>'; });
 
@@ -166,8 +166,8 @@
         const edges = visibleEdges();
         ids.mapTitle.textContent = state.level.label + ' architectural graph';
         const roomCount = nodes.filter(node => node.kind === 'room').length;
-        const pathwayCount = nodes.filter(isPathNode).length;
-        ids.mapCount.textContent = roomCount + ' rooms, ' + pathwayCount + ' pathways, ' + edges.length + ' links';
+        const corridorCount = nodes.filter(node => node.kind === 'corridor').length;
+        ids.mapCount.textContent = roomCount + ' rooms, ' + corridorCount + ' corridors, ' + edges.length + ' connections';
         state.displayNodes = layoutNodes(nodes);
         state.bounds = displayBounds(state.displayNodes, nodes.length ? nodes : state.level.nodes);
         ids.mapOverlay.setAttribute('viewBox', state.bounds.minX + ' ' + state.bounds.minY + ' ' + state.bounds.width + ' ' + state.bounds.height);
@@ -179,10 +179,9 @@
 
       function renderArchitecturalBase(nodes, edges) {
         renderFloorPlate();
-        renderLongHallways(nodes);
         renderBuildingConnections(nodes, edges);
-        renderPathwayConnections(nodes, edges);
-        renderCorridors(nodes, edges);
+        renderCorridorConnections(nodes, edges);
+        renderRoomConnections(nodes, edges);
       }
 
       function renderFloorPlate() {
@@ -194,31 +193,14 @@
         }
       }
 
-      function renderPathwayConnections(nodes, edges) {
+      function renderCorridorConnections(nodes, edges) {
         const nodeById = new Map(nodes.map(node => [node.id, node]));
         for (const edge of uniqueConnections(edges)) {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
           if (!from || !to || !isPathNode(from) || !isPathNode(to) || buildingKey(from) !== buildingKey(to)) continue;
-          const fromPoint = displayPoint(from), toPoint = displayPoint(to);
-          ids.mapOverlay.append(svg('line', { class: 'corridor-wall', x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
-          ids.mapOverlay.append(svg('line', { class: 'corridor-floor', x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
-        }
-      }
-
-      function renderLongHallways(nodes) {
-        for (const [building, group] of groupNodesByBuilding(nodes)) {
-          if (!group.some(isPathNode)) continue;
-          const bounds = state.displayBuildings.get(building);
-          const pathPoints = group.filter(isPathNode).map(displayPoint);
-          if (!bounds || !pathPoints.length) continue;
-          const orientation = buildingOrientation(group);
-          const averagePathX = pathPoints.reduce((total, point) => total + point.x, 0) / pathPoints.length;
-          const averagePathY = pathPoints.reduce((total, point) => total + point.y, 0) / pathPoints.length;
-          const attrs = orientation === 'vertical'
-            ? { x1: averagePathX, y1: bounds.y + 7, x2: averagePathX, y2: bounds.y + bounds.height - 7 }
-            : { x1: bounds.x + 7, y1: averagePathY, x2: bounds.x + bounds.width - 7, y2: averagePathY };
-          ids.mapOverlay.append(svg('line', { class: 'corridor-wall', ...attrs }));
-          ids.mapOverlay.append(svg('line', { class: 'corridor-floor', ...attrs }));
+          const fromPoint = connectionPoint(from, edge.fromEndpoint), toPoint = connectionPoint(to, edge.toEndpoint);
+          ids.mapOverlay.append(svg('line', { class: 'corridor-wall', 'data-edge-id': edge.id, x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
+          ids.mapOverlay.append(svg('line', { class: 'corridor-floor', 'data-edge-id': edge.id, x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
         }
       }
 
@@ -227,24 +209,28 @@
         for (const edge of uniqueConnections(edges)) {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
           if (!from || !to || buildingKey(from) === buildingKey(to)) continue;
-          const start = displayPoint(from), end = displayPoint(to);
-          const path = 'M ' + start.x + ' ' + start.y + ' L ' + end.x + ' ' + end.y;
-          ids.mapOverlay.append(svg('path', { class: 'building-connector-wall', d: path }));
-          ids.mapOverlay.append(svg('path', { class: 'building-connector-floor', d: path }));
+          const start = connectionPoint(from, edge.fromEndpoint), end = connectionPoint(to, edge.toEndpoint);
+          const path = buildingConnectionPath(start, end, edge.bearing);
+          ids.mapOverlay.append(svg('path', { class: 'building-connector-wall', 'data-edge-id': edge.id, d: path }));
+          ids.mapOverlay.append(svg('path', { class: 'building-connector-floor', 'data-edge-id': edge.id, d: path }));
         }
       }
 
-      function renderCorridors(nodes, edges) {
+      function renderRoomConnections(nodes, edges) {
         const nodeById = new Map(nodes.map(node => [node.id, node]));
         const orientationByBuilding = new Map([...groupNodesByBuilding(nodes)].map(([building, group]) => [building, buildingOrientation(group)]));
         for (const edge of edges) {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
           if (!from || !to) continue;
+          if (buildingKey(from) !== buildingKey(to)) continue;
           const fromPoint = displayPoint(from), toPoint = displayPoint(to);
           if (!isPathNode(from) || !isPathNode(to)) {
-            const pathPoint = isPathNode(from) ? fromPoint : toPoint;
+            const navigationNode = isPathNode(from) ? from : to;
+            const pathPoint = navigationNode.kind === 'corridor'
+              ? corridorSidePoint(navigationNode, isPathNode(from) ? toPoint : fromPoint)
+              : (isPathNode(from) ? fromPoint : toPoint);
             const roomPoint = isPathNode(from) ? toPoint : fromPoint;
-            ids.mapOverlay.append(svg('path', { class: 'room-connector', d: orthogonalPath(pathPoint, roomPoint, orientationByBuilding.get(buildingKey(from)) || 'horizontal') }));
+            ids.mapOverlay.append(svg('path', { class: 'room-connector', 'data-edge-id': edge.id, d: orthogonalPath(pathPoint, roomPoint, orientationByBuilding.get(buildingKey(from)) || 'horizontal') }));
             continue;
           }
         }
@@ -252,11 +238,20 @@
 
       function renderEditableNode(node) {
         const group = svg('g', { class: 'graph-node graph-node-' + node.kind + (node === state.selectedNode ? ' selected' : '') });
+        const layout = state.displayNodes.get(node.id);
         const point = displayPoint(node);
-        const width = nodeRectWidth(node), height = 5.8;
+        const width = layout?.width || nodeRectWidth(node), height = layout?.height || 5.8;
         group.append(svg('rect', { x: point.x - width / 2, y: point.y - height / 2, width, height, rx: .35 }));
-        const text = svg('text', { x: point.x, y: point.y, textLength: Math.max(2, width - 1.8), lengthAdjust: 'spacingAndGlyphs' });
-        text.textContent = fitLabel(node.label, width);
+        const orientation = node.kind === 'corridor' ? corridorOrientation(node) : 'horizontal';
+        const labelLength = orientation === 'vertical' ? height : width;
+        const textAttrs = { x: point.x, y: point.y };
+        if (node.kind !== 'corridor') {
+          textAttrs.textLength = Math.max(2, labelLength - 2.4);
+          textAttrs.lengthAdjust = 'spacingAndGlyphs';
+        }
+        if (orientation === 'vertical') textAttrs.transform = 'rotate(90 ' + point.x + ' ' + point.y + ')';
+        const text = svg('text', textAttrs);
+        text.textContent = node.kind === 'corridor' ? node.label : fitLabel(node.label, labelLength);
         group.append(text);
         group.addEventListener('pointerdown', event => startDraggingNode(event, node));
         group.addEventListener('click', event => { event.stopPropagation(); selectNode(node); });
@@ -270,29 +265,103 @@
         ids.nodeList.querySelectorAll('button').forEach(button => button.addEventListener('click', () => selectNode(nodes.find(node => node.id === button.dataset.id))));
       }
 
-      function renderNodeForm() { const node = state.selectedNode; ids.nodeForm.querySelectorAll('input, select, textarea').forEach(field => field.disabled = !node); if (!node) { ids.nodeForm.reset(); ids.nodeJson.textContent = ''; return; } ids.nodeId.value = node.id; ids.nodeLabel.value = node.label; ids.nodeKind.value = node.kind; ids.nodeFloor.value = node.floor; ids.nodeX.value = node.x; ids.nodeY.value = node.y; ids.nodeExitBearing.value = node.exitBearing ?? ''; ids.nodeAliases.value = (node.aliases || []).join('\n'); ids.nodeJson.textContent = JSON.stringify(node, null, 2); }
+      function renderNodeForm() {
+        const node = state.selectedNode;
+        ids.nodeForm.querySelectorAll('input, select, textarea').forEach(field => field.disabled = !node);
+        if (!node) { ids.nodeForm.reset(); ids.nodeJson.textContent = ''; return; }
+        ids.nodeId.value = node.id;
+        ids.nodeLabel.value = node.label;
+        ids.nodeKind.value = node.kind;
+        ids.nodeOrientation.value = corridorOrientation(node);
+        ids.nodeOrientation.disabled = node.kind !== 'corridor';
+        ids.nodeFloor.value = node.floor;
+        ids.nodeX.value = node.x;
+        ids.nodeY.value = node.y;
+        ids.nodeExitBearing.value = node.exitBearing ?? '';
+        ids.nodeAliases.value = (node.aliases || []).join('\n');
+        ids.nodeJson.textContent = JSON.stringify(node, null, 2);
+      }
 
       function renderEdgeList() {
         const edges = visibleEdges();
-        ids.edgeList.innerHTML = edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + escapeHtml(edge.from) + (edge.bidirectional ? ' &harr; ' : ' &rarr; ') + escapeHtml(edge.to) + '</small></button></li>').join('');
+        ids.edgeList.innerHTML = edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + endpointLabel(edge.from, edge.fromEndpoint) + (edge.bidirectional ? ' &harr; ' : ' &rarr; ') + endpointLabel(edge.to, edge.toEndpoint) + '</small></button></li>').join('');
         ids.edgeList.querySelectorAll('button').forEach(button => button.addEventListener('click', () => selectEdge(edges.find(edge => edge.id === button.dataset.id))));
         const options = visibleNodes().map(node => '<option value="' + escapeHtml(node.id) + '">' + escapeHtml(node.label) + '</option>').join('');
         ids.edgeFrom.innerHTML = options;
         ids.edgeTo.innerHTML = options;
       }
 
-      function renderEdgeForm() { const edge = state.selectedEdge; ids.edgeForm.querySelectorAll('input, select').forEach(field => field.disabled = !edge); if (!edge) { ids.edgeForm.reset(); return; } ids.edgeId.value = edge.id; ids.edgeFrom.value = edge.from; ids.edgeTo.value = edge.to; ids.edgeWeight.value = edge.weight; ids.edgeBearing.value = edge.bearing; ids.edgeKind.value = edge.kind; ids.edgeBidirectional.checked = Boolean(edge.bidirectional); }
+      function renderEdgeForm() {
+        const edge = state.selectedEdge;
+        ids.edgeForm.querySelectorAll('input, select').forEach(field => field.disabled = !edge);
+        if (!edge) { ids.edgeForm.reset(); return; }
+        ids.edgeId.value = edge.id;
+        ids.edgeFrom.value = edge.from;
+        ids.edgeTo.value = edge.to;
+        ids.edgeFromEndpoint.value = edge.fromEndpoint || '';
+        ids.edgeToEndpoint.value = edge.toEndpoint || '';
+        ids.edgeWeight.value = edge.weight;
+        ids.edgeBearing.value = edge.bearing;
+        ids.edgeKind.value = edge.kind;
+        ids.edgeBidirectional.checked = Boolean(edge.bidirectional);
+        const nodeById = new Map(state.level.nodes.map(node => [node.id, node]));
+        const joinsCorridors = nodeById.get(edge.from)?.kind === 'corridor' && nodeById.get(edge.to)?.kind === 'corridor';
+        ids.edgeFromEndpoint.disabled = !joinsCorridors;
+        ids.edgeToEndpoint.disabled = !joinsCorridors;
+      }
       function selectNode(node) { state.selectedNode = node; renderAll(); }
       function selectEdge(edge) { state.selectedEdge = edge; renderEdgeList(); renderEdgeForm(); }
 
-      function updateSelectedNode() { const node = state.selectedNode; if (!node) return; const oldId = node.id; node.id = ids.nodeId.value.trim() || oldId; node.label = ids.nodeLabel.value.trim() || node.id; node.kind = ids.nodeKind.value; node.floor = Number(ids.nodeFloor.value) || state.level.level; node.x = Number(ids.nodeX.value) || 0; node.y = Number(ids.nodeY.value) || 0; const exitBearing = ids.nodeExitBearing.value.trim(); if (exitBearing === '') delete node.exitBearing; else node.exitBearing = Number(exitBearing); const aliases = ids.nodeAliases.value.split('\n').map(value => value.trim()).filter(Boolean); if (aliases.length) node.aliases = aliases; else delete node.aliases; if (oldId !== node.id) { renameNodeReferences(oldId, node.id); renameManualPosition(oldId, node.id); } if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node); renderAll(); }
-      function updateSelectedEdge() { const edge = state.selectedEdge; if (!edge) return; edge.id = ids.edgeId.value.trim() || edge.id; edge.from = ids.edgeFrom.value; edge.to = ids.edgeTo.value; edge.weight = Number(ids.edgeWeight.value) || 1; edge.bearing = normalizedBearing(Number(ids.edgeBearing.value) || 0); edge.kind = ids.edgeKind.value; if (ids.edgeBidirectional.checked) edge.bidirectional = true; else delete edge.bidirectional; renderAll(); }
+      function updateSelectedNode() {
+        const node = state.selectedNode;
+        if (!node) return;
+        const oldId = node.id;
+        node.id = ids.nodeId.value.trim() || oldId;
+        node.label = ids.nodeLabel.value.trim() || node.id;
+        node.kind = ids.nodeKind.value;
+        if (node.kind === 'corridor') node.orientation = ids.nodeOrientation.value;
+        else delete node.orientation;
+        node.floor = Number(ids.nodeFloor.value) || state.level.level;
+        node.x = Number(ids.nodeX.value) || 0;
+        node.y = Number(ids.nodeY.value) || 0;
+        const exitBearing = ids.nodeExitBearing.value.trim();
+        if (exitBearing === '') delete node.exitBearing;
+        else node.exitBearing = Number(exitBearing);
+        const aliases = ids.nodeAliases.value.split('\n').map(value => value.trim()).filter(Boolean);
+        if (aliases.length) node.aliases = aliases;
+        else delete node.aliases;
+        if (oldId !== node.id) { renameNodeReferences(oldId, node.id); renameManualPosition(oldId, node.id); }
+        if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node);
+        renderAll();
+      }
+
+      function updateSelectedEdge() {
+        const edge = state.selectedEdge;
+        if (!edge) return;
+        edge.id = ids.edgeId.value.trim() || edge.id;
+        edge.from = ids.edgeFrom.value;
+        edge.to = ids.edgeTo.value;
+        setOptionalProperty(edge, 'fromEndpoint', ids.edgeFromEndpoint.value);
+        setOptionalProperty(edge, 'toEndpoint', ids.edgeToEndpoint.value);
+        const nodeById = new Map(state.level.nodes.map(node => [node.id, node]));
+        const joinsCorridors = nodeById.get(edge.from)?.kind === 'corridor' && nodeById.get(edge.to)?.kind === 'corridor';
+        if (!joinsCorridors) {
+          delete edge.fromEndpoint;
+          delete edge.toEndpoint;
+        }
+        edge.weight = Number(ids.edgeWeight.value) || 1;
+        edge.bearing = normalizedBearing(Number(ids.edgeBearing.value) || 0);
+        edge.kind = ids.edgeKind.value;
+        if (ids.edgeBidirectional.checked) edge.bidirectional = true;
+        else delete edge.bidirectional;
+        renderAll();
+      }
       function addNode() {
         const point = { x: round((state.bounds?.minX || 0) + (state.bounds?.width || 0) / 2), y: round((state.bounds?.minY || 0) + (state.bounds?.height || 0) / 2) };
         createNodeAt(state.createKind || 'room', point);
       }
       function deleteNode() { const node = state.selectedNode; if (!node || !confirm('Delete ' + node.label + '? This also removes connected same-floor edges.')) return; state.level.nodes = state.level.nodes.filter(candidate => candidate !== node); state.level.edges = state.level.edges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.manualPositions.delete(node.id); state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
-      function addEdge() { const nodes = visibleNodes(); if (nodes.length < 2) return; const from = state.selectedNode?.id || nodes[0].id; const to = nodes.find(node => node.id !== from)?.id || from; const edge = { id: uniqueId('new-edge'), from, to, weight: 4, bearing: 90, kind: 'walk', bidirectional: true }; state.level.edges.push(edge); state.selectedEdge = edge; renderAll(); }
+      function addEdge() { const nodes = visibleNodes(); if (nodes.length < 2) return; const from = state.selectedNode?.id || nodes[0].id; const to = nodes.find(node => node.id !== from)?.id || from; const edge = { id: uniqueId('new-edge'), from, to, weight: 4, bearing: 90, kind: 'walk', bidirectional: true }; applyDefaultEndpoints(edge, nodes); state.level.edges.push(edge); state.selectedEdge = edge; renderAll(); }
       function deleteEdge() { const edge = state.selectedEdge; if (!edge || !confirm('Delete edge ' + edge.id + '?')) return; state.level.edges = state.level.edges.filter(candidate => candidate !== edge); state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
       function moveSelectedNodeFromMap(event) {
         if (state.movedNode) { state.movedNode = false; return; }
@@ -359,6 +428,7 @@
         const prefix = building.toLowerCase() + '-' + kindLabel(kind).toLowerCase();
         const id = uniqueId(prefix);
         const node = { id, label: defaultNodeLabel(kind, building, id), kind, floor: state.level.level, x: point.x, y: point.y };
+        if (kind === 'corridor') node.orientation = buildingOrientation(state.level.nodes.filter(candidate => buildingKey(candidate) === building));
         state.level.nodes.push(node);
         state.selectedNode = node;
         state.manualPositions.set(node.id, point);
@@ -373,9 +443,8 @@
       function layoutNodes(nodes) {
         const layouts = new Map();
         const groups = connectedBuildingGroups(nodes, visibleEdges());
-        const hubBuilding = state.building === 'all' ? findHubBuilding(groups, nodes, visibleEdges()) : null;
-        if (hubBuilding) {
-          layoutHubBuildings(groups, hubBuilding, layouts);
+        if (state.building === 'all') {
+          layoutCampusBuildings(groups, state.level.level, layouts);
           applyManualPositions(nodes, layouts);
           state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
           return layouts;
@@ -398,49 +467,102 @@
         return layouts;
       }
 
-      function findHubBuilding(groups, nodes, edges) {
-        const buildings = new Set(groups.map(([building]) => building));
-        const nodeById = new Map(nodes.map(node => [node.id, node]));
-        const neighbors = new Map([...buildings].map(building => [building, new Set()]));
-        for (const edge of edges) {
-          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
-          if (!from || !to) continue;
-          const fromBuilding = buildingKey(from), toBuilding = buildingKey(to);
-          if (fromBuilding === toBuilding) continue;
-          neighbors.get(fromBuilding)?.add(toBuilding);
-          neighbors.get(toBuilding)?.add(fromBuilding);
-        }
-        const ranked = [...neighbors].sort((left, right) => right[1].size - left[1].size);
-        return ranked[0]?.[1].size >= 4 ? ranked[0][0] : null;
-      }
-
-      function layoutHubBuildings(groups, hubBuilding, layouts) {
-        const groupByBuilding = new Map(groups);
-        const satellites = groups.filter(([building]) => building !== hubBuilding);
-        const split = Math.ceil(satellites.length / 2);
-        const top = satellites.slice(0, split), bottom = satellites.slice(split);
-        const hubNodes = groupByBuilding.get(hubBuilding);
-        const hubSize = buildingSchematicSize(hubNodes);
-        const topWidth = buildingRowWidth(top), bottomWidth = buildingRowWidth(bottom);
-        const totalWidth = Math.max(hubSize.width, topWidth, bottomWidth);
-        const topHeight = buildingRowHeight(top);
-        const hubY = topHeight + 22;
-        layoutBuildingRow(top, (totalWidth - topWidth) / 2, 0, layouts);
-        layoutBuildingNodes(hubNodes, (totalWidth - hubSize.width) / 2, hubY, hubSize, layouts);
-        layoutBuildingRow(bottom, (totalWidth - bottomWidth) / 2, hubY + hubSize.height + 22, layouts);
-      }
-
-      function layoutBuildingRow(groups, startX, originY, layouts) {
-        let cursorX = startX;
-        for (const [, nodes] of groups) {
+      function layoutCampusBuildings(groups, floor, layouts) {
+        const entries = groups.map(([building, nodes]) => {
           const size = buildingSchematicSize(nodes);
-          layoutBuildingNodes(nodes, cursorX, originY, size, layouts);
-          cursorX += size.width + 22;
+          layoutBuildingNodes(nodes, 0, 0, size, layouts);
+          return { building, nodes, size };
+        });
+        const measuredBounds = buildingBoundsFromLayouts(groups, layouts);
+        for (const entry of entries) entry.bounds = measuredBounds.get(entry.building);
+
+        const targets = floor === 1
+          ? floorOneBuildingTargets(entries)
+          : floorTwoBuildingTargets(entries);
+        for (const entry of entries) {
+          const target = targets.get(entry.building);
+          if (!entry.bounds || !target) continue;
+          translateBuildingLayout(entry.nodes, layouts, target.x - entry.bounds.x, target.y - entry.bounds.y);
         }
       }
 
-      function buildingRowWidth(groups) { return groups.reduce((total, [, nodes]) => total + buildingSchematicSize(nodes).width, 0) + Math.max(0, groups.length - 1) * 22; }
-      function buildingRowHeight(groups) { return Math.max(0, ...groups.map(([, nodes]) => buildingSchematicSize(nodes).height)); }
+      function floorOneBuildingTargets(entries) {
+        const gap = 4;
+        const byBuilding = new Map(entries.map(entry => [entry.building, entry]));
+        const targets = new Map();
+        const lowerRow = ['B', 'C', 'D', 'E'].filter(building => byBuilding.has(building));
+        let cursorX = 0;
+        for (const building of lowerRow) {
+          targets.set(building, { x: cursorX, y: 0 });
+          cursorX += byBuilding.get(building).bounds.width + gap;
+        }
+
+        const cTarget = targets.get('C');
+        const dTarget = targets.get('D');
+        const nEntry = byBuilding.get('N');
+        if (nEntry) {
+          const spanStart = cTarget?.x ?? 0;
+          const spanEnd = dTarget
+            ? dTarget.x + byBuilding.get('D').bounds.width
+            : spanStart + nEntry.bounds.width;
+          targets.set('N', { x: spanStart + (spanEnd - spanStart - nEntry.bounds.width) / 2, y: 0 });
+        }
+
+        const eEntry = byBuilding.get('E');
+        if (eEntry && nEntry) {
+          const minimumEastX = targets.get('N').x + nEntry.bounds.width + gap;
+          targets.get('E').x = Math.max(targets.get('E').x, minimumEastX);
+        }
+        if (byBuilding.has('G')) targets.set('G', { x: targets.get('E')?.x ?? cursorX, y: 0 });
+
+        const upperBuildings = ['N', 'G'].filter(building => byBuilding.has(building));
+        const upperHeight = Math.max(0, ...upperBuildings.map(building => byBuilding.get(building).bounds.height));
+        for (const building of lowerRow) targets.get(building).y = upperHeight + gap;
+        for (const building of upperBuildings) targets.get(building).y = (upperHeight - byBuilding.get(building).bounds.height) / 2;
+        placeRemainingBuildings(entries, targets, Math.max(cursorX, ...[...targets].map(([building, point]) => point.x + byBuilding.get(building).bounds.width)), upperHeight + gap);
+        return targets;
+      }
+
+      function floorTwoBuildingTargets(entries) {
+        const gap = 4;
+        const byBuilding = new Map(entries.map(entry => [entry.building, entry]));
+        const targets = new Map();
+        const corridorChain = ['B', 'C', 'D', 'E', 'G', 'N'].filter(building => byBuilding.has(building));
+        const chainHeight = Math.max(0, ...corridorChain.map(building => byBuilding.get(building).bounds.height));
+        let cursorX = 0;
+        for (const building of corridorChain) {
+          const entry = byBuilding.get(building);
+          targets.set(building, { x: cursorX, y: (chainHeight - entry.bounds.height) / 2 });
+          cursorX += entry.bounds.width + gap;
+        }
+        if (byBuilding.has('A')) {
+          const cTarget = targets.get('C') || { x: 0, y: 0 };
+          const cWidth = byBuilding.get('C')?.bounds.width || 0;
+          const aEntry = byBuilding.get('A');
+          targets.set('A', { x: cTarget.x + (cWidth - aEntry.bounds.width) / 2, y: chainHeight + gap });
+        }
+        placeRemainingBuildings(entries, targets, cursorX, chainHeight + gap);
+        return targets;
+      }
+
+      function placeRemainingBuildings(entries, targets, startX, startY) {
+        const gap = 4;
+        let cursorX = startX;
+        for (const entry of entries) {
+          if (targets.has(entry.building)) continue;
+          targets.set(entry.building, { x: cursorX, y: startY });
+          cursorX += entry.bounds.width + gap;
+        }
+      }
+
+      function translateBuildingLayout(nodes, layouts, offsetX, offsetY) {
+        for (const node of nodes) {
+          const layout = layouts.get(node.id);
+          if (!layout) continue;
+          layout.x = round(layout.x + offsetX);
+          layout.y = round(layout.y + offsetY);
+        }
+      }
 
       function connectedBuildingGroups(nodes, edges) {
         const groups = [...groupNodesByBuilding(nodes)];
@@ -514,7 +636,9 @@
         pathNodes.forEach((node, index) => {
           const axis = pathNodes.length > 1 ? axisStart + index * pathGap : (axisStart + axisEnd) / 2;
           const point = orientation === 'vertical' ? { x: corridorX, y: axis } : { x: axis, y: corridorY };
-          layouts.set(node.id, { node, x: round(point.x), y: round(point.y), ...nodeSize(node) });
+          const corridorLength = pathNodes.length > 1 ? Math.max(14, pathGap - 2) : Math.max(24, axisEnd - axisStart);
+          const size = node.kind === 'corridor' ? corridorNodeSize(orientation, corridorLength) : nodeSize(node);
+          layouts.set(node.id, { node, x: round(point.x), y: round(point.y), ...size });
         });
         const referencePath = averageNodePosition(pathNodes);
         const roomsBySide = splitRoomsBySide(roomNodes, referencePath, orientation);
@@ -563,6 +687,11 @@
       }
 
       function buildingOrientation(nodes) {
+        const explicit = nodes.filter(node => node.kind === 'corridor' && node.orientation).map(node => node.orientation);
+        if (explicit.length) {
+          const verticalCount = explicit.filter(value => value === 'vertical').length;
+          return verticalCount > explicit.length / 2 ? 'vertical' : 'horizontal';
+        }
         const bearings = nodes.filter(node => node.kind === 'room' && Number.isFinite(node.exitBearing)).map(node => cardinalBearing(node.exitBearing));
         const verticalScore = bearings.filter(bearing => bearing === 90 || bearing === 270).length;
         const horizontalScore = bearings.filter(bearing => bearing === 0 || bearing === 180).length;
@@ -599,6 +728,8 @@
         return { width: Math.max(8, node.label.length * .95 + 3.8), height: 5.8 };
       }
 
+      function corridorNodeSize(orientation, length) { return orientation === 'vertical' ? { width: 7, height: length } : { width: length, height: 7 }; }
+
       function displayPoint(node) {
         const layout = state.displayNodes.get(node.id);
         return layout ? { x: layout.x, y: layout.y } : { x: node.x, y: node.y };
@@ -627,7 +758,7 @@
       function visibleNodes() { return state.level.nodes.filter(node => state.building === 'all' || buildingKey(node) === state.building); }
       function visibleEdges() { const nodeIds = new Set(visibleNodes().map(node => node.id)); return state.level.edges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to)); }
       function uniqueConnections(edges) { const seen = new Set(); return edges.filter(edge => { const key = [edge.from, edge.to].sort().join('|'); if (seen.has(key)) return false; seen.add(key); return true; }); }
-      function isPathNode(node) { return ['corridor', 'intersection', 'stairs', 'elevator', 'door'].includes(node.kind); }
+      function isPathNode(node) { return ['corridor', 'stairs', 'elevator', 'door'].includes(node.kind); }
       function groupNodesByBuilding(nodes) {
         const groups = new Map();
         for (const node of nodes) {
@@ -646,7 +777,7 @@
         }
         return null;
       }
-      function kindLabel(kind) { return { room: 'Room', corridor: 'Pathway', intersection: 'Core', stairs: 'Stairs', elevator: 'Elevator', door: 'Door' }[kind] || 'Node'; }
+      function kindLabel(kind) { return { room: 'Room', corridor: 'Corridor', stairs: 'Stairs', elevator: 'Elevator', door: 'Door' }[kind] || 'Node'; }
       function defaultNodeLabel(kind, building, id) { const number = id.match(/-(\d+)$/)?.[1] || ''; return building + ' ' + kindLabel(kind) + (number ? ' ' + number : ''); }
       function orthogonalPath(pathPoint, roomPoint, orientation) {
         if (orientation === 'vertical') {
@@ -656,6 +787,55 @@
         const elbowY = roomPoint.y > pathPoint.y ? roomPoint.y - 4.2 : roomPoint.y + 4.2;
         return 'M ' + pathPoint.x + ' ' + pathPoint.y + ' L ' + pathPoint.x + ' ' + elbowY + ' L ' + roomPoint.x + ' ' + elbowY + ' L ' + roomPoint.x + ' ' + roomPoint.y;
       }
+      function buildingConnectionPath(start, end, bearing) {
+        if (Math.abs(start.x - end.x) < 1 || Math.abs(start.y - end.y) < 1) return 'M ' + start.x + ' ' + start.y + ' L ' + end.x + ' ' + end.y;
+        const direction = cardinalBearing(bearing);
+        if (direction === 90 || direction === 270) {
+          const middleX = round((start.x + end.x) / 2);
+          return 'M ' + start.x + ' ' + start.y + ' L ' + middleX + ' ' + start.y + ' L ' + middleX + ' ' + end.y + ' L ' + end.x + ' ' + end.y;
+        }
+        const middleY = round((start.y + end.y) / 2);
+        return 'M ' + start.x + ' ' + start.y + ' L ' + start.x + ' ' + middleY + ' L ' + end.x + ' ' + middleY + ' L ' + end.x + ' ' + end.y;
+      }
+      function corridorOrientation(node) { return node.kind === 'corridor' && node.orientation === 'vertical' ? 'vertical' : 'horizontal'; }
+      function connectionPoint(node, endpoint) {
+        const layout = state.displayNodes.get(node.id);
+        const center = displayPoint(node);
+        if (!layout || node.kind !== 'corridor' || !endpoint) return center;
+        const direction = endpoint === 'start' ? -1 : 1;
+        return corridorOrientation(node) === 'vertical'
+          ? { x: center.x, y: center.y + direction * layout.height / 2 }
+          : { x: center.x + direction * layout.width / 2, y: center.y };
+      }
+      function corridorSidePoint(corridor, targetPoint) {
+        const layout = state.displayNodes.get(corridor.id);
+        const center = displayPoint(corridor);
+        if (!layout) return center;
+        if (corridorOrientation(corridor) === 'vertical') {
+          return {
+            x: center.x + (targetPoint.x < center.x ? -layout.width / 2 : layout.width / 2),
+            y: clamp(targetPoint.y, center.y - layout.height / 2 + 2, center.y + layout.height / 2 - 2)
+          };
+        }
+        return {
+          x: clamp(targetPoint.x, center.x - layout.width / 2 + 2, center.x + layout.width / 2 - 2),
+          y: center.y + (targetPoint.y < center.y ? -layout.height / 2 : layout.height / 2)
+        };
+      }
+      function endpointForBearing(node, bearing) {
+        const normalized = normalizedBearing(bearing);
+        if (corridorOrientation(node) === 'vertical') return normalized < 90 || normalized >= 270 ? 'start' : 'end';
+        return normalized >= 180 ? 'start' : 'end';
+      }
+      function applyDefaultEndpoints(edge, nodes) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+        if (from?.kind !== 'corridor' || to?.kind !== 'corridor') return;
+        edge.fromEndpoint = endpointForBearing(from, edge.bearing);
+        edge.toEndpoint = endpointForBearing(to, normalizedBearing(edge.bearing + 180));
+      }
+      function endpointLabel(nodeId, endpoint) { return escapeHtml(nodeId) + (endpoint ? ' [' + escapeHtml(endpoint) + ']' : ''); }
+      function setOptionalProperty(target, property, value) { if (value) target[property] = value; else delete target[property]; }
       function mapPointFromEvent(event) {
         const matrix = ids.mapOverlay.getScreenCTM();
         if (!matrix) return { x: round(state.bounds.minX), y: round(state.bounds.minY) };
@@ -672,6 +852,7 @@
       function fitLabel(value, width) { const label = String(value); const limit = Math.max(3, Math.floor(width / .9)); return label.length <= limit ? label : label.slice(0, Math.max(1, limit - 3)) + '...'; }
       function normalizedBearing(value) { return ((value % 360) + 360) % 360; }
       function round(value) { return Math.round(value * 10) / 10; }
+      function clamp(value, minimum, maximum) { return Math.max(minimum, Math.min(maximum, value)); }
       function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char])); }
     </script>
   </body>

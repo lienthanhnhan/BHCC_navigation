@@ -41,6 +41,8 @@ function reverseEdge(edge: BuildingEdge): BuildingEdge {
     ...edge,
     from: edge.to,
     to: edge.from,
+    fromEndpoint: edge.toEndpoint,
+    toEndpoint: edge.fromEndpoint,
     bearing: reverseBearing(edge.bearing),
   };
 }

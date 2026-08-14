@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "name": "BHCC navigation levels 1 and 2",
   "sourceMaps": [
     {
@@ -25,12 +25,13 @@
       "nodes": [
         {
           "id": "n1-core",
-          "label": "N1 Core",
-          "kind": "intersection",
+          "label": "N1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": 0,
           "y": 0,
-          "exitBearing": 180
+          "exitBearing": 180,
+          "orientation": "horizontal"
         },
         {
           "id": "n1-stairs",
@@ -50,59 +51,66 @@
         },
         {
           "id": "n1-west",
-          "label": "N1 West Hall",
+          "label": "N1 West Corridor",
           "kind": "corridor",
           "floor": 1,
           "x": -20,
-          "y": 0
+          "y": 0,
+          "orientation": "horizontal"
         },
         {
           "id": "n1-east",
-          "label": "N1 East Hall",
+          "label": "N1 East Corridor",
           "kind": "corridor",
           "floor": 1,
           "x": 20,
-          "y": 0
+          "y": 0,
+          "orientation": "horizontal"
         },
         {
           "id": "b1-core",
-          "label": "B1 Core",
-          "kind": "intersection",
+          "label": "B1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": -34,
-          "y": -3
+          "y": -3,
+          "orientation": "vertical"
         },
         {
           "id": "c1-core",
-          "label": "C1 Core",
-          "kind": "intersection",
+          "label": "C1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": -16,
-          "y": -2
+          "y": -2,
+          "orientation": "vertical"
         },
         {
           "id": "d1-core",
-          "label": "D1 Core",
-          "kind": "intersection",
+          "label": "D1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": -2,
-          "y": -2
+          "y": -2,
+          "orientation": "horizontal"
         },
         {
           "id": "e1-core",
-          "label": "E1 Core",
-          "kind": "intersection",
+          "label": "E1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": 18,
-          "y": 6
+          "y": 6,
+          "orientation": "horizontal"
         },
         {
           "id": "g1-core",
-          "label": "G1 Core",
-          "kind": "intersection",
+          "label": "G1 Corridor",
+          "kind": "corridor",
           "floor": 1,
           "x": 34,
-          "y": 3
+          "y": 3,
+          "orientation": "horizontal"
         },
         {
           "id": "N-102",
@@ -393,7 +401,9 @@
           "weight": 8,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-hall-east",
@@ -402,7 +412,9 @@
           "weight": 8,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-vertical-stairs",
@@ -429,7 +441,9 @@
           "weight": 6,
           "bearing": 180,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "start",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-c1",
@@ -438,7 +452,9 @@
           "weight": 8,
           "bearing": 180,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "start",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-d1",
@@ -447,7 +463,9 @@
           "weight": 4,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-e1",
@@ -456,7 +474,9 @@
           "weight": 8,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-g1",
@@ -465,7 +485,9 @@
           "weight": 8,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "n1-102",
@@ -657,50 +679,56 @@
         {
           "id": "b2-core",
           "label": "B2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": -34,
-          "y": -3
+          "y": -3,
+          "orientation": "vertical"
         },
         {
           "id": "c2-core",
           "label": "C2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": -16,
-          "y": -2
+          "y": -2,
+          "orientation": "vertical"
         },
         {
           "id": "d2-core",
           "label": "D2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": -2,
-          "y": -2
+          "y": -2,
+          "orientation": "horizontal"
         },
         {
           "id": "e2-core",
           "label": "E2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": 18,
-          "y": 6
+          "y": 6,
+          "orientation": "horizontal"
         },
         {
           "id": "g2-core",
           "label": "G2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": 34,
-          "y": 3
+          "y": 3,
+          "orientation": "horizontal"
         },
         {
           "id": "n2-core",
           "label": "N2 Corridor",
-          "kind": "intersection",
+          "kind": "corridor",
           "floor": 2,
           "x": 52,
-          "y": 0
+          "y": 0,
+          "orientation": "horizontal"
         },
         {
           "id": "n2-stairs",
@@ -720,11 +748,12 @@
         },
         {
           "id": "n2-east",
-          "label": "N2 East Hall",
+          "label": "N2 East Corridor",
           "kind": "corridor",
           "floor": 2,
           "x": 60,
-          "y": 0
+          "y": 0,
+          "orientation": "horizontal"
         },
         {
           "id": "B-204",
@@ -1061,7 +1090,9 @@
           "weight": 18,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "floor2-cd",
@@ -1070,7 +1101,9 @@
           "weight": 14,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "floor2-de",
@@ -1079,7 +1112,9 @@
           "weight": 20,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "floor2-eg",
@@ -1088,7 +1123,9 @@
           "weight": 16,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "floor2-gn",
@@ -1097,7 +1134,9 @@
           "weight": 18,
           "bearing": 90,
           "kind": "walk",
-          "bidirectional": true
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
         },
         {
           "id": "b2-204",
@@ -1304,12 +1343,13 @@
     "nodes": [
       {
         "id": "n1-core",
-        "label": "N1 Core",
-        "kind": "intersection",
+        "label": "N1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": 0,
         "y": 0,
-        "exitBearing": 180
+        "exitBearing": 180,
+        "orientation": "horizontal"
       },
       {
         "id": "n1-stairs",
@@ -1329,107 +1369,120 @@
       },
       {
         "id": "n1-west",
-        "label": "N1 West Hall",
+        "label": "N1 West Corridor",
         "kind": "corridor",
         "floor": 1,
         "x": -20,
-        "y": 0
+        "y": 0,
+        "orientation": "horizontal"
       },
       {
         "id": "n1-east",
-        "label": "N1 East Hall",
+        "label": "N1 East Corridor",
         "kind": "corridor",
         "floor": 1,
         "x": 20,
-        "y": 0
+        "y": 0,
+        "orientation": "horizontal"
       },
       {
         "id": "b1-core",
-        "label": "B1 Core",
-        "kind": "intersection",
+        "label": "B1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": -34,
-        "y": -3
+        "y": -3,
+        "orientation": "vertical"
       },
       {
         "id": "c1-core",
-        "label": "C1 Core",
-        "kind": "intersection",
+        "label": "C1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": -16,
-        "y": -2
+        "y": -2,
+        "orientation": "vertical"
       },
       {
         "id": "d1-core",
-        "label": "D1 Core",
-        "kind": "intersection",
+        "label": "D1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": -2,
-        "y": -2
+        "y": -2,
+        "orientation": "horizontal"
       },
       {
         "id": "e1-core",
-        "label": "E1 Core",
-        "kind": "intersection",
+        "label": "E1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": 18,
-        "y": 6
+        "y": 6,
+        "orientation": "horizontal"
       },
       {
         "id": "g1-core",
-        "label": "G1 Core",
-        "kind": "intersection",
+        "label": "G1 Corridor",
+        "kind": "corridor",
         "floor": 1,
         "x": 34,
-        "y": 3
+        "y": 3,
+        "orientation": "horizontal"
       },
       {
         "id": "b2-core",
         "label": "B2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": -34,
-        "y": -3
+        "y": -3,
+        "orientation": "vertical"
       },
       {
         "id": "c2-core",
         "label": "C2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": -16,
-        "y": -2
+        "y": -2,
+        "orientation": "vertical"
       },
       {
         "id": "d2-core",
         "label": "D2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": -2,
-        "y": -2
+        "y": -2,
+        "orientation": "horizontal"
       },
       {
         "id": "e2-core",
         "label": "E2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": 18,
-        "y": 6
+        "y": 6,
+        "orientation": "horizontal"
       },
       {
         "id": "g2-core",
         "label": "G2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": 34,
-        "y": 3
+        "y": 3,
+        "orientation": "horizontal"
       },
       {
         "id": "n2-core",
         "label": "N2 Corridor",
-        "kind": "intersection",
+        "kind": "corridor",
         "floor": 2,
         "x": 52,
-        "y": 0
+        "y": 0,
+        "orientation": "horizontal"
       },
       {
         "id": "n2-stairs",
@@ -1449,11 +1502,12 @@
       },
       {
         "id": "n2-east",
-        "label": "N2 East Hall",
+        "label": "N2 East Corridor",
         "kind": "corridor",
         "floor": 2,
         "x": 60,
-        "y": 0
+        "y": 0,
+        "orientation": "horizontal"
       },
       {
         "id": "N-102",
@@ -2052,7 +2106,9 @@
         "weight": 8,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-hall-east",
@@ -2061,7 +2117,9 @@
         "weight": 8,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-vertical-stairs",
@@ -2088,7 +2146,9 @@
         "weight": 6,
         "bearing": 180,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "start",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-c1",
@@ -2097,7 +2157,9 @@
         "weight": 8,
         "bearing": 180,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "start",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-d1",
@@ -2106,7 +2168,9 @@
         "weight": 4,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-e1",
@@ -2115,7 +2179,9 @@
         "weight": 8,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-g1",
@@ -2124,7 +2190,9 @@
         "weight": 8,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "b-vert-1",
@@ -2133,7 +2201,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "start",
+        "toEndpoint": "end"
       },
       {
         "id": "c-vert-1",
@@ -2142,7 +2212,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "start",
+        "toEndpoint": "end"
       },
       {
         "id": "d-vert-1",
@@ -2151,7 +2223,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "e-vert-1",
@@ -2160,7 +2234,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "g-vert-1",
@@ -2169,7 +2245,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n-vert-1",
@@ -2178,7 +2256,9 @@
         "weight": 6,
         "bearing": 0,
         "kind": "stairs",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n2-stairs-link",
@@ -2205,7 +2285,9 @@
         "weight": 18,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "floor2-cd",
@@ -2214,7 +2296,9 @@
         "weight": 14,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "floor2-de",
@@ -2223,7 +2307,9 @@
         "weight": 20,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "floor2-eg",
@@ -2232,7 +2318,9 @@
         "weight": 16,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "floor2-gn",
@@ -2241,7 +2329,9 @@
         "weight": 18,
         "bearing": 90,
         "kind": "walk",
-        "bidirectional": true
+        "bidirectional": true,
+        "fromEndpoint": "end",
+        "toEndpoint": "start"
       },
       {
         "id": "n1-102",

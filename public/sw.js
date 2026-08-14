@@ -1,4 +1,4 @@
-const CACHE_NAME = "indoor-nav-pwa-v1";
+const CACHE_NAME = "indoor-nav-pwa-v2";
 const PRECACHE_URLS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.svg", "./icon-512.svg"];
 
 self.addEventListener("install", (event) => {
@@ -34,6 +34,19 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(async () => (await caches.match("./index.html")) || (await caches.match("./"))),
+    );
+    return;
+  }
+
+  if (requestUrl.pathname.includes("/data/")) {
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          const cloned = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+          return response;
+        })
+        .catch(() => caches.match(event.request)),
     );
     return;
   }

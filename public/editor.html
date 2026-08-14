@@ -119,7 +119,7 @@
       async function init() {
         const response = await fetch('./data/levels-1-2.json');
         state.data = await response.json();
-        state.crossLevelEdges = crossLevelEdges(state.data);
+        state.crossLevelEdges = [...(state.data.crossLevelEdges || [])];
         ids.floorSelect.innerHTML = state.data.levels.map(level => '<option value="' + level.level + '">' + escapeHtml(level.label) + '</option>').join('');
         ids.floorSelect.addEventListener('change', () => selectLevel(Number(ids.floorSelect.value)));
         ids.buildingSelect.addEventListener('change', () => selectBuilding(ids.buildingSelect.value));
@@ -146,10 +146,9 @@
       }
 
       function camel(id) { return id.replace(/-([a-z])/g, (_, c) => c.toUpperCase()); }
-      function crossLevelEdges(data) { const floorById = new Map(data.graph.nodes.map(node => [node.id, node.floor])); return data.graph.edges.filter(edge => floorById.get(edge.from) !== floorById.get(edge.to)); }
       function selectLevel(levelNumber) { state.level = state.data.levels.find(level => level.level === levelNumber); state.building = 'all'; state.selectedNode = visibleNodes()[0] || state.level.nodes[0] || null; state.selectedEdge = visibleEdges()[0] || state.level.edges[0] || null; renderAll(); }
       function selectBuilding(building) { state.building = building; state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
-      function renderAll() { rebuildGraph(); renderBuildingOptions(); renderPalette(); renderMap(); renderNodeList(); renderNodeForm(); renderEdgeList(); renderEdgeForm(); }
+      function renderAll() { syncDataset(); renderBuildingOptions(); renderPalette(); renderMap(); renderNodeList(); renderNodeForm(); renderEdgeList(); renderEdgeForm(); }
 
       function renderBuildingOptions() {
         const buildings = [...new Set(state.level.nodes.map(buildingKey))].sort();
@@ -316,12 +315,14 @@
         const node = state.selectedNode;
         if (!node) return;
         const oldId = node.id;
+        const oldFloor = node.floor;
         node.id = ids.nodeId.value.trim() || oldId;
         node.label = ids.nodeLabel.value.trim() || node.id;
         node.kind = ids.nodeKind.value;
         if (node.kind === 'corridor') node.orientation = ids.nodeOrientation.value;
         else delete node.orientation;
-        node.floor = Number(ids.nodeFloor.value) || state.level.level;
+        const requestedFloor = Number(ids.nodeFloor.value) || oldFloor;
+        node.floor = state.data.levels.some(level => level.level === requestedFloor) ? requestedFloor : oldFloor;
         node.x = Number(ids.nodeX.value) || 0;
         node.y = Number(ids.nodeY.value) || 0;
         const exitBearing = ids.nodeExitBearing.value.trim();
@@ -331,6 +332,7 @@
         if (aliases.length) node.aliases = aliases;
         else delete node.aliases;
         if (oldId !== node.id) { renameNodeReferences(oldId, node.id); renameManualPosition(oldId, node.id); }
+        if (oldFloor !== node.floor) moveNodeToLevel(node);
         if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node);
         renderAll();
       }
@@ -437,8 +439,40 @@
       }
       function renameNodeReferences(oldId, newId) { for (const level of state.data.levels) for (const edge of level.edges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } for (const edge of state.crossLevelEdges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } }
       function renameManualPosition(oldId, newId) { if (!state.manualPositions.has(oldId)) return; state.manualPositions.set(newId, state.manualPositions.get(oldId)); state.manualPositions.delete(oldId); }
-      function rebuildGraph() { const nodes = state.data.levels.flatMap(level => level.nodes); const nodeIds = new Set(nodes.map(node => node.id)); const sameFloorEdges = state.data.levels.flatMap(level => level.edges); const crossEdges = state.crossLevelEdges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to)); state.data.graph = { nodes, edges: [...sameFloorEdges, ...crossEdges] }; }
-      function exportJson() { rebuildGraph(); const blob = new Blob([JSON.stringify(state.data, null, 2) + '\n'], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'levels-1-2.updated.json'; link.click(); URL.revokeObjectURL(url); }
+      function moveNodeToLevel(node) {
+        const targetLevel = state.data.levels.find(level => level.level === node.floor);
+        if (!targetLevel) return;
+        for (const level of state.data.levels) level.nodes = level.nodes.filter(candidate => candidate !== node);
+        targetLevel.nodes.push(node);
+        state.manualPositions.delete(node.id);
+        reorganizeConnections();
+        state.level = targetLevel;
+        state.building = 'all';
+        state.selectedEdge = targetLevel.edges.find(edge => edge.from === node.id || edge.to === node.id) || targetLevel.edges[0] || null;
+        ids.floorSelect.value = String(targetLevel.level);
+      }
+      function reorganizeConnections() {
+        const allEdges = [...state.data.levels.flatMap(level => level.edges), ...state.crossLevelEdges];
+        const floorById = new Map(state.data.levels.flatMap(level => level.nodes.map(node => [node.id, level.level])));
+        for (const level of state.data.levels) level.edges = [];
+        state.crossLevelEdges = [];
+        for (const edge of allEdges) {
+          const fromFloor = floorById.get(edge.from), toFloor = floorById.get(edge.to);
+          if (!fromFloor || !toFloor) continue;
+          if (fromFloor === toFloor) {
+            state.data.levels.find(level => level.level === fromFloor).edges.push(edge);
+          } else if (edge.kind === 'stairs' || edge.kind === 'elevator') {
+            state.crossLevelEdges.push(edge);
+          }
+        }
+      }
+      function syncDataset() {
+        const nodeIds = new Set(state.data.levels.flatMap(level => level.nodes.map(node => node.id)));
+        state.crossLevelEdges = state.crossLevelEdges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to));
+        state.data.crossLevelEdges = state.crossLevelEdges;
+        delete state.data.graph;
+      }
+      function exportJson() { syncDataset(); const blob = new Blob([JSON.stringify(state.data, null, 2) + '\n'], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'levels-1-2.updated.json'; link.click(); URL.revokeObjectURL(url); }
 
       function layoutNodes(nodes) {
         const layouts = new Map();

@@ -173,7 +173,7 @@ function createAppMarkup(graph: BuildingGraph): string {
           </div>
           <ul class="meta-list">
             <li><strong>${graph.nodes.length}</strong> nodes</li>
-            <li><strong>${graph.edges.length}</strong> directed edges</li>
+            <li><strong>${graph.edges.length}</strong> pathway connections</li>
             <li><strong>floor-aware</strong> weights</li>
           </ul>
         </article>

@@ -387,468 +387,265 @@
       ],
       "edges": [
         {
-          "id": "n1-hall-f",
+          "id": "n1-hall",
           "from": "n1-west",
           "to": "n1-core",
           "weight": 8,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-hall-r",
-          "from": "n1-core",
-          "to": "n1-west",
-          "weight": 8,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-hall-east-f",
+          "id": "n1-hall-east",
           "from": "n1-core",
           "to": "n1-east",
           "weight": 8,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-hall-east-r",
-          "from": "n1-east",
-          "to": "n1-core",
-          "weight": 8,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-vertical-stairs-f",
+          "id": "n1-vertical-stairs",
           "from": "n1-core",
           "to": "n1-stairs",
           "weight": 5,
           "bearing": 180,
-          "kind": "stairs"
+          "kind": "stairs",
+          "bidirectional": true
         },
         {
-          "id": "n1-vertical-stairs-r",
-          "from": "n1-stairs",
-          "to": "n1-core",
-          "weight": 5,
-          "bearing": 0,
-          "kind": "stairs"
-        },
-        {
-          "id": "n1-vertical-elevator-f",
+          "id": "n1-vertical-elevator",
           "from": "n1-core",
           "to": "n1-elevator",
           "weight": 5,
           "bearing": 0,
-          "kind": "elevator"
+          "kind": "elevator",
+          "bidirectional": true
         },
         {
-          "id": "n1-vertical-elevator-r",
-          "from": "n1-elevator",
-          "to": "n1-core",
-          "weight": 5,
-          "bearing": 180,
-          "kind": "elevator"
-        },
-        {
-          "id": "n1-b1-f",
+          "id": "n1-b1",
           "from": "n1-west",
           "to": "b1-core",
           "weight": 6,
           "bearing": 180,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-b1-r",
-          "from": "b1-core",
-          "to": "n1-west",
-          "weight": 6,
-          "bearing": 0,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-c1-f",
+          "id": "n1-c1",
           "from": "n1-west",
           "to": "c1-core",
           "weight": 8,
           "bearing": 180,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-c1-r",
-          "from": "c1-core",
-          "to": "n1-west",
-          "weight": 8,
-          "bearing": 0,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-d1-f",
+          "id": "n1-d1",
           "from": "n1-core",
           "to": "d1-core",
           "weight": 4,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-d1-r",
-          "from": "d1-core",
-          "to": "n1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-e1-f",
+          "id": "n1-e1",
           "from": "n1-east",
           "to": "e1-core",
           "weight": 8,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-e1-r",
-          "from": "e1-core",
-          "to": "n1-east",
-          "weight": 8,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-g1-f",
+          "id": "n1-g1",
           "from": "n1-east",
           "to": "g1-core",
           "weight": 8,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "n1-g1-r",
-          "from": "g1-core",
-          "to": "n1-east",
-          "weight": 8,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "n1-102-f",
+          "id": "n1-102",
           "from": "n1-west",
           "to": "N-102",
           "weight": 5,
           "bearing": 180,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-102-r",
-          "from": "N-102",
-          "to": "n1-west",
-          "weight": 5,
-          "bearing": 0,
-          "kind": "door"
-        },
-        {
-          "id": "n1-111-f",
+          "id": "n1-111",
           "from": "n1-core",
           "to": "N-111",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-111-r",
-          "from": "N-111",
-          "to": "n1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n1-113-f",
+          "id": "n1-113",
           "from": "n1-core",
           "to": "N-113",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-113-r",
-          "from": "N-113",
-          "to": "n1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n1-114-f",
+          "id": "n1-114",
           "from": "n1-core",
           "to": "N-114",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-114-r",
-          "from": "N-114",
-          "to": "n1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n1-116-f",
+          "id": "n1-116",
           "from": "n1-east",
           "to": "N-116",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-116-r",
-          "from": "N-116",
-          "to": "n1-east",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n1-119-f",
+          "id": "n1-119",
           "from": "n1-east",
           "to": "N-119",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n1-119-r",
-          "from": "N-119",
-          "to": "n1-east",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "g1-102-f",
+          "id": "g1-102",
           "from": "g1-core",
           "to": "G-102",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "g1-102-r",
-          "from": "G-102",
-          "to": "g1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "g1-110-f",
+          "id": "g1-110",
           "from": "g1-core",
           "to": "G-110",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "g1-110-r",
-          "from": "G-110",
-          "to": "g1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "g1-117-f",
+          "id": "g1-117",
           "from": "g1-core",
           "to": "G-117",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "g1-117-r",
-          "from": "G-117",
-          "to": "g1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "g1-130-f",
+          "id": "g1-130",
           "from": "g1-core",
           "to": "G-130",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "g1-130-r",
-          "from": "G-130",
-          "to": "g1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "g1-229-f",
+          "id": "g1-229",
           "from": "g1-core",
           "to": "G-229",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "g1-229-r",
-          "from": "G-229",
-          "to": "g1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "b1-101-f",
+          "id": "b1-101",
           "from": "b1-core",
           "to": "B-101",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b1-101-r",
-          "from": "B-101",
-          "to": "b1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "b1-118-f",
+          "id": "b1-118",
           "from": "b1-core",
           "to": "B-118",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b1-118-r",
-          "from": "B-118",
-          "to": "b1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "b1-138-f",
+          "id": "b1-138",
           "from": "b1-core",
           "to": "B-138",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b1-138-r",
-          "from": "B-138",
-          "to": "b1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "b1-150-f",
+          "id": "b1-150",
           "from": "b1-core",
           "to": "B-150",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b1-150-r",
-          "from": "B-150",
-          "to": "b1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "b1-200-f",
+          "id": "b1-200",
           "from": "b1-core",
           "to": "B-200",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b1-200-r",
-          "from": "B-200",
-          "to": "b1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "e1-144-f",
+          "id": "e1-144",
           "from": "e1-core",
           "to": "E-144",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e1-144-r",
-          "from": "E-144",
-          "to": "e1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e1-173b-f",
+          "id": "e1-173b",
           "from": "e1-core",
           "to": "E-173B",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e1-173b-r",
-          "from": "E-173B",
-          "to": "e1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "c1-102-f",
+          "id": "c1-102",
           "from": "c1-core",
           "to": "C-102",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "c1-102-r",
-          "from": "C-102",
-          "to": "c1-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "d1-113-f",
+          "id": "d1-113",
           "from": "d1-core",
           "to": "D-113",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
-        },
-        {
-          "id": "d1-113-r",
-          "from": "D-113",
-          "to": "d1-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         }
       ]
     },
@@ -1240,468 +1037,265 @@
       ],
       "edges": [
         {
-          "id": "n2-stairs-link-f",
+          "id": "n2-stairs-link",
           "from": "n2-core",
           "to": "n2-stairs",
           "weight": 4,
           "bearing": 180,
-          "kind": "stairs"
+          "kind": "stairs",
+          "bidirectional": true
         },
         {
-          "id": "n2-stairs-link-r",
-          "from": "n2-stairs",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 0,
-          "kind": "stairs"
-        },
-        {
-          "id": "n2-elevator-link-f",
+          "id": "n2-elevator-link",
           "from": "n2-core",
           "to": "n2-elevator",
           "weight": 4,
           "bearing": 0,
-          "kind": "elevator"
+          "kind": "elevator",
+          "bidirectional": true
         },
         {
-          "id": "n2-elevator-link-r",
-          "from": "n2-elevator",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "elevator"
-        },
-        {
-          "id": "floor2-bc-f",
+          "id": "floor2-bc",
           "from": "b2-core",
           "to": "c2-core",
           "weight": 18,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "floor2-bc-r",
-          "from": "c2-core",
-          "to": "b2-core",
-          "weight": 18,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "floor2-cd-f",
+          "id": "floor2-cd",
           "from": "c2-core",
           "to": "d2-core",
           "weight": 14,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "floor2-cd-r",
-          "from": "d2-core",
-          "to": "c2-core",
-          "weight": 14,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "floor2-de-f",
+          "id": "floor2-de",
           "from": "d2-core",
           "to": "e2-core",
           "weight": 20,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "floor2-de-r",
-          "from": "e2-core",
-          "to": "d2-core",
-          "weight": 20,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "floor2-eg-f",
+          "id": "floor2-eg",
           "from": "e2-core",
           "to": "g2-core",
           "weight": 16,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "floor2-eg-r",
-          "from": "g2-core",
-          "to": "e2-core",
-          "weight": 16,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "floor2-gn-f",
+          "id": "floor2-gn",
           "from": "g2-core",
           "to": "n2-core",
           "weight": 18,
           "bearing": 90,
-          "kind": "walk"
+          "kind": "walk",
+          "bidirectional": true
         },
         {
-          "id": "floor2-gn-r",
-          "from": "n2-core",
-          "to": "g2-core",
-          "weight": 18,
-          "bearing": 270,
-          "kind": "walk"
-        },
-        {
-          "id": "b2-204-f",
+          "id": "b2-204",
           "from": "b2-core",
           "to": "B-204",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "b2-204-r",
-          "from": "B-204",
-          "to": "b2-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "c2-202-f",
+          "id": "c2-202",
           "from": "c2-core",
           "to": "C-202",
           "weight": 4,
           "bearing": 90,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "c2-202-r",
-          "from": "C-202",
-          "to": "c2-core",
-          "weight": 4,
-          "bearing": 270,
-          "kind": "door"
-        },
-        {
-          "id": "d2-206-f",
+          "id": "d2-206",
           "from": "d2-core",
           "to": "D-206",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "d2-206-r",
-          "from": "D-206",
-          "to": "d2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-120-f",
+          "id": "e2-120",
           "from": "e2-core",
           "to": "E-120",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-120-r",
-          "from": "E-120",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-138-f",
+          "id": "e2-138",
           "from": "e2-core",
           "to": "E-138",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-138-r",
-          "from": "E-138",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-145-f",
+          "id": "e2-145",
           "from": "e2-core",
           "to": "E-145",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-145-r",
-          "from": "E-145",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-154-f",
+          "id": "e2-154",
           "from": "e2-core",
           "to": "E-154",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-154-r",
-          "from": "E-154",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-174-f",
+          "id": "e2-174",
           "from": "e2-core",
           "to": "E-174",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-174-r",
-          "from": "E-174",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-175-f",
+          "id": "e2-175",
           "from": "e2-core",
           "to": "E-175",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-175-r",
-          "from": "E-175",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-222-f",
+          "id": "e2-222",
           "from": "e2-core",
           "to": "E-222",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-222-r",
-          "from": "E-222",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-223-f",
+          "id": "e2-223",
           "from": "e2-core",
           "to": "E-223",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-223-r",
-          "from": "E-223",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-224-f",
+          "id": "e2-224",
           "from": "e2-core",
           "to": "E-224-226",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-224-r",
-          "from": "E-224-226",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-225-f",
+          "id": "e2-225",
           "from": "e2-core",
           "to": "E-225",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-225-r",
-          "from": "E-225",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-229-f",
+          "id": "e2-229",
           "from": "e2-core",
           "to": "E-229",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-229-r",
-          "from": "E-229",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-230-f",
+          "id": "e2-230",
           "from": "e2-core",
           "to": "E-230",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-230-r",
-          "from": "E-230",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "e2-235-f",
+          "id": "e2-235",
           "from": "e2-core",
           "to": "E-235",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "e2-235-r",
-          "from": "E-235",
-          "to": "e2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n2-210-f",
+          "id": "n2-210",
           "from": "n2-core",
           "to": "N-210",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n2-210-r",
-          "from": "N-210",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n2-216-f",
+          "id": "n2-216",
           "from": "n2-core",
           "to": "N-216",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n2-216-r",
-          "from": "N-216",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n2-217-f",
+          "id": "n2-217",
           "from": "n2-core",
           "to": "N-217",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n2-217-r",
-          "from": "N-217",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n2-221-f",
+          "id": "n2-221",
           "from": "n2-core",
           "to": "N-221",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n2-221-r",
-          "from": "N-221",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "n2-222-f",
+          "id": "n2-222",
           "from": "n2-core",
           "to": "N-222",
           "weight": 4,
           "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         },
         {
-          "id": "n2-222-r",
-          "from": "N-222",
-          "to": "n2-core",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "a2-206-f",
+          "id": "a2-206",
           "from": "c2-core",
           "to": "A-206",
           "weight": 6,
           "bearing": 180,
-          "kind": "door"
-        },
-        {
-          "id": "a2-206-r",
-          "from": "A-206",
-          "to": "c2-core",
-          "weight": 6,
-          "bearing": 0,
-          "kind": "door"
+          "kind": "door",
+          "bidirectional": true
         }
       ]
     }
@@ -2452,1028 +2046,580 @@
     ],
     "edges": [
       {
-        "id": "n1-hall-f",
+        "id": "n1-hall",
         "from": "n1-west",
         "to": "n1-core",
         "weight": 8,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-hall-r",
-        "from": "n1-core",
-        "to": "n1-west",
-        "weight": 8,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-hall-east-f",
+        "id": "n1-hall-east",
         "from": "n1-core",
         "to": "n1-east",
         "weight": 8,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-hall-east-r",
-        "from": "n1-east",
-        "to": "n1-core",
-        "weight": 8,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-vertical-stairs-f",
+        "id": "n1-vertical-stairs",
         "from": "n1-core",
         "to": "n1-stairs",
         "weight": 5,
         "bearing": 180,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "n1-vertical-stairs-r",
-        "from": "n1-stairs",
-        "to": "n1-core",
-        "weight": 5,
-        "bearing": 0,
-        "kind": "stairs"
-      },
-      {
-        "id": "n1-vertical-elevator-f",
+        "id": "n1-vertical-elevator",
         "from": "n1-core",
         "to": "n1-elevator",
         "weight": 5,
         "bearing": 0,
-        "kind": "elevator"
+        "kind": "elevator",
+        "bidirectional": true
       },
       {
-        "id": "n1-vertical-elevator-r",
-        "from": "n1-elevator",
-        "to": "n1-core",
-        "weight": 5,
-        "bearing": 180,
-        "kind": "elevator"
-      },
-      {
-        "id": "n1-b1-f",
+        "id": "n1-b1",
         "from": "n1-west",
         "to": "b1-core",
         "weight": 6,
         "bearing": 180,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-b1-r",
-        "from": "b1-core",
-        "to": "n1-west",
-        "weight": 6,
-        "bearing": 0,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-c1-f",
+        "id": "n1-c1",
         "from": "n1-west",
         "to": "c1-core",
         "weight": 8,
         "bearing": 180,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-c1-r",
-        "from": "c1-core",
-        "to": "n1-west",
-        "weight": 8,
-        "bearing": 0,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-d1-f",
+        "id": "n1-d1",
         "from": "n1-core",
         "to": "d1-core",
         "weight": 4,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-d1-r",
-        "from": "d1-core",
-        "to": "n1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-e1-f",
+        "id": "n1-e1",
         "from": "n1-east",
         "to": "e1-core",
         "weight": 8,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-e1-r",
-        "from": "e1-core",
-        "to": "n1-east",
-        "weight": 8,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-g1-f",
+        "id": "n1-g1",
         "from": "n1-east",
         "to": "g1-core",
         "weight": 8,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "n1-g1-r",
-        "from": "g1-core",
-        "to": "n1-east",
-        "weight": 8,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "b-vert-1-f",
+        "id": "b-vert-1",
         "from": "b1-core",
         "to": "b2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "b-vert-1-r",
-        "from": "b2-core",
-        "to": "b1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "c-vert-1-f",
+        "id": "c-vert-1",
         "from": "c1-core",
         "to": "c2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "c-vert-1-r",
-        "from": "c2-core",
-        "to": "c1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "d-vert-1-f",
+        "id": "d-vert-1",
         "from": "d1-core",
         "to": "d2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "d-vert-1-r",
-        "from": "d2-core",
-        "to": "d1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "e-vert-1-f",
+        "id": "e-vert-1",
         "from": "e1-core",
         "to": "e2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "e-vert-1-r",
-        "from": "e2-core",
-        "to": "e1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "g-vert-1-f",
+        "id": "g-vert-1",
         "from": "g1-core",
         "to": "g2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "g-vert-1-r",
-        "from": "g2-core",
-        "to": "g1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "n-vert-1-f",
+        "id": "n-vert-1",
         "from": "n1-core",
         "to": "n2-core",
         "weight": 6,
         "bearing": 0,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "n-vert-1-r",
-        "from": "n2-core",
-        "to": "n1-core",
-        "weight": 6,
-        "bearing": 180,
-        "kind": "stairs"
-      },
-      {
-        "id": "n2-stairs-link-f",
+        "id": "n2-stairs-link",
         "from": "n2-core",
         "to": "n2-stairs",
         "weight": 4,
         "bearing": 180,
-        "kind": "stairs"
+        "kind": "stairs",
+        "bidirectional": true
       },
       {
-        "id": "n2-stairs-link-r",
-        "from": "n2-stairs",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 0,
-        "kind": "stairs"
-      },
-      {
-        "id": "n2-elevator-link-f",
+        "id": "n2-elevator-link",
         "from": "n2-core",
         "to": "n2-elevator",
         "weight": 4,
         "bearing": 0,
-        "kind": "elevator"
+        "kind": "elevator",
+        "bidirectional": true
       },
       {
-        "id": "n2-elevator-link-r",
-        "from": "n2-elevator",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "elevator"
-      },
-      {
-        "id": "floor2-bc-f",
+        "id": "floor2-bc",
         "from": "b2-core",
         "to": "c2-core",
         "weight": 18,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "floor2-bc-r",
-        "from": "c2-core",
-        "to": "b2-core",
-        "weight": 18,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "floor2-cd-f",
+        "id": "floor2-cd",
         "from": "c2-core",
         "to": "d2-core",
         "weight": 14,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "floor2-cd-r",
-        "from": "d2-core",
-        "to": "c2-core",
-        "weight": 14,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "floor2-de-f",
+        "id": "floor2-de",
         "from": "d2-core",
         "to": "e2-core",
         "weight": 20,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "floor2-de-r",
-        "from": "e2-core",
-        "to": "d2-core",
-        "weight": 20,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "floor2-eg-f",
+        "id": "floor2-eg",
         "from": "e2-core",
         "to": "g2-core",
         "weight": 16,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "floor2-eg-r",
-        "from": "g2-core",
-        "to": "e2-core",
-        "weight": 16,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "floor2-gn-f",
+        "id": "floor2-gn",
         "from": "g2-core",
         "to": "n2-core",
         "weight": 18,
         "bearing": 90,
-        "kind": "walk"
+        "kind": "walk",
+        "bidirectional": true
       },
       {
-        "id": "floor2-gn-r",
-        "from": "n2-core",
-        "to": "g2-core",
-        "weight": 18,
-        "bearing": 270,
-        "kind": "walk"
-      },
-      {
-        "id": "n1-102-f",
+        "id": "n1-102",
         "from": "n1-west",
         "to": "N-102",
         "weight": 5,
         "bearing": 180,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-102-r",
-        "from": "N-102",
-        "to": "n1-west",
-        "weight": 5,
-        "bearing": 0,
-        "kind": "door"
-      },
-      {
-        "id": "n1-111-f",
+        "id": "n1-111",
         "from": "n1-core",
         "to": "N-111",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-111-r",
-        "from": "N-111",
-        "to": "n1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n1-113-f",
+        "id": "n1-113",
         "from": "n1-core",
         "to": "N-113",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-113-r",
-        "from": "N-113",
-        "to": "n1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n1-114-f",
+        "id": "n1-114",
         "from": "n1-core",
         "to": "N-114",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-114-r",
-        "from": "N-114",
-        "to": "n1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n1-116-f",
+        "id": "n1-116",
         "from": "n1-east",
         "to": "N-116",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-116-r",
-        "from": "N-116",
-        "to": "n1-east",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n1-119-f",
+        "id": "n1-119",
         "from": "n1-east",
         "to": "N-119",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n1-119-r",
-        "from": "N-119",
-        "to": "n1-east",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "g1-102-f",
+        "id": "g1-102",
         "from": "g1-core",
         "to": "G-102",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "g1-102-r",
-        "from": "G-102",
-        "to": "g1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "g1-110-f",
+        "id": "g1-110",
         "from": "g1-core",
         "to": "G-110",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "g1-110-r",
-        "from": "G-110",
-        "to": "g1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "g1-117-f",
+        "id": "g1-117",
         "from": "g1-core",
         "to": "G-117",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "g1-117-r",
-        "from": "G-117",
-        "to": "g1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "g1-130-f",
+        "id": "g1-130",
         "from": "g1-core",
         "to": "G-130",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "g1-130-r",
-        "from": "G-130",
-        "to": "g1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "g1-229-f",
+        "id": "g1-229",
         "from": "g1-core",
         "to": "G-229",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "g1-229-r",
-        "from": "G-229",
-        "to": "g1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "b1-101-f",
+        "id": "b1-101",
         "from": "b1-core",
         "to": "B-101",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b1-101-r",
-        "from": "B-101",
-        "to": "b1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "b1-118-f",
+        "id": "b1-118",
         "from": "b1-core",
         "to": "B-118",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b1-118-r",
-        "from": "B-118",
-        "to": "b1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "b1-138-f",
+        "id": "b1-138",
         "from": "b1-core",
         "to": "B-138",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b1-138-r",
-        "from": "B-138",
-        "to": "b1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "b1-150-f",
+        "id": "b1-150",
         "from": "b1-core",
         "to": "B-150",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b1-150-r",
-        "from": "B-150",
-        "to": "b1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "b1-200-f",
+        "id": "b1-200",
         "from": "b1-core",
         "to": "B-200",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b1-200-r",
-        "from": "B-200",
-        "to": "b1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "e1-144-f",
+        "id": "e1-144",
         "from": "e1-core",
         "to": "E-144",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e1-144-r",
-        "from": "E-144",
-        "to": "e1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e1-173b-f",
+        "id": "e1-173b",
         "from": "e1-core",
         "to": "E-173B",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e1-173b-r",
-        "from": "E-173B",
-        "to": "e1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "c1-102-f",
+        "id": "c1-102",
         "from": "c1-core",
         "to": "C-102",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "c1-102-r",
-        "from": "C-102",
-        "to": "c1-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "d1-113-f",
+        "id": "d1-113",
         "from": "d1-core",
         "to": "D-113",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "d1-113-r",
-        "from": "D-113",
-        "to": "d1-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "b2-204-f",
+        "id": "b2-204",
         "from": "b2-core",
         "to": "B-204",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "b2-204-r",
-        "from": "B-204",
-        "to": "b2-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "c2-202-f",
+        "id": "c2-202",
         "from": "c2-core",
         "to": "C-202",
         "weight": 4,
         "bearing": 90,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "c2-202-r",
-        "from": "C-202",
-        "to": "c2-core",
-        "weight": 4,
-        "bearing": 270,
-        "kind": "door"
-      },
-      {
-        "id": "d2-206-f",
+        "id": "d2-206",
         "from": "d2-core",
         "to": "D-206",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "d2-206-r",
-        "from": "D-206",
-        "to": "d2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-120-f",
+        "id": "e2-120",
         "from": "e2-core",
         "to": "E-120",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-120-r",
-        "from": "E-120",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-138-f",
+        "id": "e2-138",
         "from": "e2-core",
         "to": "E-138",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-138-r",
-        "from": "E-138",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-145-f",
+        "id": "e2-145",
         "from": "e2-core",
         "to": "E-145",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-145-r",
-        "from": "E-145",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-154-f",
+        "id": "e2-154",
         "from": "e2-core",
         "to": "E-154",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-154-r",
-        "from": "E-154",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-174-f",
+        "id": "e2-174",
         "from": "e2-core",
         "to": "E-174",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-174-r",
-        "from": "E-174",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-175-f",
+        "id": "e2-175",
         "from": "e2-core",
         "to": "E-175",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-175-r",
-        "from": "E-175",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-222-f",
+        "id": "e2-222",
         "from": "e2-core",
         "to": "E-222",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-222-r",
-        "from": "E-222",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-223-f",
+        "id": "e2-223",
         "from": "e2-core",
         "to": "E-223",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-223-r",
-        "from": "E-223",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-224-f",
+        "id": "e2-224",
         "from": "e2-core",
         "to": "E-224-226",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-224-r",
-        "from": "E-224-226",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-225-f",
+        "id": "e2-225",
         "from": "e2-core",
         "to": "E-225",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-225-r",
-        "from": "E-225",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-229-f",
+        "id": "e2-229",
         "from": "e2-core",
         "to": "E-229",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-229-r",
-        "from": "E-229",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-230-f",
+        "id": "e2-230",
         "from": "e2-core",
         "to": "E-230",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-230-r",
-        "from": "E-230",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "e2-235-f",
+        "id": "e2-235",
         "from": "e2-core",
         "to": "E-235",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "e2-235-r",
-        "from": "E-235",
-        "to": "e2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n2-210-f",
+        "id": "n2-210",
         "from": "n2-core",
         "to": "N-210",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n2-210-r",
-        "from": "N-210",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n2-216-f",
+        "id": "n2-216",
         "from": "n2-core",
         "to": "N-216",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n2-216-r",
-        "from": "N-216",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n2-217-f",
+        "id": "n2-217",
         "from": "n2-core",
         "to": "N-217",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n2-217-r",
-        "from": "N-217",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n2-221-f",
+        "id": "n2-221",
         "from": "n2-core",
         "to": "N-221",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n2-221-r",
-        "from": "N-221",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "n2-222-f",
+        "id": "n2-222",
         "from": "n2-core",
         "to": "N-222",
         "weight": 4,
         "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       },
       {
-        "id": "n2-222-r",
-        "from": "N-222",
-        "to": "n2-core",
-        "weight": 4,
-        "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "a2-206-f",
+        "id": "a2-206",
         "from": "c2-core",
         "to": "A-206",
         "weight": 6,
         "bearing": 180,
-        "kind": "door"
-      },
-      {
-        "id": "a2-206-r",
-        "from": "A-206",
-        "to": "c2-core",
-        "weight": 6,
-        "bearing": 0,
-        "kind": "door"
+        "kind": "door",
+        "bidirectional": true
       }
     ]
   },

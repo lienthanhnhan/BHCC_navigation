@@ -24,6 +24,7 @@ export interface BuildingEdge {
   weight: number;
   bearing: number;
   kind: "walk" | "stairs" | "elevator" | "door";
+  bidirectional?: boolean;
   label?: string;
 }
 

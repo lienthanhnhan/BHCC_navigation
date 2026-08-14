@@ -16,6 +16,17 @@
       .editor-header p { margin: 6px 0 0; color: var(--muted); }
       .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
       .toolbar label { display: flex; gap: 8px; align-items: center; }
+      .shape-palette { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 12px; }
+      .shape-palette span { color: var(--muted); font-size: .9rem; font-weight: 700; }
+      .shape-tool { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); background: #fff; color: var(--text); padding: 8px 10px; cursor: grab; font-weight: 700; }
+      .shape-tool:active { cursor: grabbing; }
+      .shape-tool.active { border-color: var(--accent); box-shadow: inset 0 -3px 0 var(--accent); color: var(--accent); }
+      .shape-swatch { width: 18px; height: 12px; border: 1px solid var(--accent); background: #fff36a; display: inline-block; }
+      .shape-swatch.pathway { background: white; border-color: #222; }
+      .shape-swatch.intersection { background: white; border-color: var(--accent); }
+      .shape-swatch.stairs { background: var(--navy); border-color: var(--navy); }
+      .shape-swatch.elevator { background: #8fd0e8; border-color: #27748e; }
+      .shape-swatch.door { background: white; border-color: #777; }
       .button { border: 0; background: var(--accent); color: white; padding: 10px 14px; cursor: pointer; font-weight: 700; text-decoration: none; }
       .button:hover { background: var(--accent-dark); }
       .button.secondary { background: var(--navy); }
@@ -29,22 +40,22 @@
       .map-frame { overflow: auto; max-height: 72vh; border: 1px solid var(--accent); background: var(--paper); }
       .map-canvas { width: 1000px; min-width: 100%; height: 700px; background: var(--paper); }
       .map-overlay { display: block; width: 100%; height: 100%; cursor: crosshair; background: var(--paper); }
+      .map-overlay.drop-ready { outline: 3px solid rgba(196,0,0,.28); outline-offset: -6px; }
       .floor-plate { fill: #fbfbf8; stroke: #1f1f1f; stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+      .building-label { fill: #333; font-size: 3px; font-weight: 900; text-transform: uppercase; pointer-events: none; }
       .corridor-wall { stroke: #222; stroke-width: 2.2; stroke-linecap: square; vector-effect: non-scaling-stroke; }
       .corridor-floor { stroke: var(--paper); stroke-width: 1.6; stroke-linecap: square; vector-effect: non-scaling-stroke; }
-      .room-cell rect { fill: #fff; stroke: #555; stroke-width: .45; vector-effect: non-scaling-stroke; }
-      .room-cell text { fill: #111; font-size: 2.4px; font-weight: 800; text-anchor: middle; pointer-events: none; paint-order: stroke; stroke: #fff; stroke-width: .28; }
-      .service-cell rect { stroke: #222; stroke-width: .5; vector-effect: non-scaling-stroke; }
-      .service-cell text { fill: #111; font-size: 1.8px; font-weight: 800; text-anchor: middle; pointer-events: none; text-transform: uppercase; }
-      .stairs-cell rect { fill: #f5dd28; }
-      .elevator-cell rect { fill: #8fd0e8; }
-      .graph-edge { stroke: rgba(196,0,0,.35); stroke-width: .24; stroke-dasharray: 1 1.2; vector-effect: non-scaling-stroke; }
-      .graph-node { cursor: pointer; }
+      .room-connector { fill: none; stroke: #777; stroke-width: .65; stroke-linecap: square; stroke-linejoin: miter; vector-effect: non-scaling-stroke; }
+      .building-connector-wall { fill: none; stroke: #222; stroke-width: 2.8; stroke-linecap: square; vector-effect: non-scaling-stroke; }
+      .building-connector-floor { fill: none; stroke: var(--paper); stroke-width: 2; stroke-linecap: square; vector-effect: non-scaling-stroke; }
+      .graph-edge { stroke: rgba(196,0,0,.25); stroke-width: .24; stroke-dasharray: 1 1.2; vector-effect: non-scaling-stroke; }
+      .graph-node { cursor: grab; }
+      .graph-node:active { cursor: grabbing; }
       .graph-node rect { fill: #fff; stroke: var(--accent); stroke-width: .65; vector-effect: non-scaling-stroke; }
       .graph-node-room rect { fill: #fff36a; }
       .graph-node-stairs rect, .graph-node-elevator rect { fill: var(--navy); stroke: #fff; }
       .graph-node.selected rect { fill: var(--accent); stroke: #111; stroke-width: 1; }
-      .graph-node text { fill: #111; paint-order: stroke; stroke: #fff; stroke-width: .65; font-size: 2.7px; font-weight: 900; pointer-events: none; vector-effect: non-scaling-stroke; }
+      .graph-node text { fill: #111; paint-order: stroke; stroke: #fff; stroke-width: .65; font-size: 2.7px; font-weight: 900; text-anchor: middle; dominant-baseline: central; pointer-events: none; vector-effect: non-scaling-stroke; }
       .graph-node-stairs text, .graph-node-elevator text, .graph-node.selected text { fill: #fff; stroke: #111; }
       .hint { margin: 10px 0 0; color: var(--muted); font-size: .92rem; }
       .forms { display: grid; gap: 14px; }
@@ -53,6 +64,7 @@
       .field.full { grid-column: 1 / -1; }
       .field span { font-size: .86rem; color: var(--muted); }
       input, select, textarea { width: 100%; border: 1px solid #bbb; border-radius: 0; padding: 9px 10px; background: white; color: var(--text); }
+      input[type="checkbox"] { width: auto; margin-right: 7px; }
       textarea { min-height: 76px; resize: vertical; }
       .list { display: grid; gap: 6px; max-height: 220px; overflow: auto; padding: 0; margin: 0; list-style: none; }
       .list button { width: 100%; border: 1px solid var(--border); background: white; padding: 8px 10px; text-align: left; cursor: pointer; }
@@ -80,19 +92,27 @@
       <section class="editor-grid">
         <article class="panel">
           <div class="panel-header"><h2 id="map-title">Floor map</h2><span id="map-count" class="status"></span></div>
-          <div class="panel-body"><div class="map-frame"><div class="map-canvas"><svg id="map-overlay" class="map-overlay" preserveAspectRatio="xMidYMid meet" aria-label="Editable node map"></svg></div></div><p class="hint">Filter by floor, then building. Click a rectangle to edit it. Click empty map space to move the selected node.</p></div>
+          <div class="panel-body"><div id="shape-palette" class="shape-palette" aria-label="Create map item palette">
+            <span>Create</span>
+            <button class="shape-tool" type="button" draggable="true" data-kind="room"><i class="shape-swatch"></i>Room</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="corridor"><i class="shape-swatch pathway"></i>Pathway</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="intersection"><i class="shape-swatch intersection"></i>Core</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="stairs"><i class="shape-swatch stairs"></i>Stairs</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="elevator"><i class="shape-swatch elevator"></i>Elevator</button>
+            <button class="shape-tool" type="button" draggable="true" data-kind="door"><i class="shape-swatch door"></i>Door</button>
+          </div><div class="map-frame"><div class="map-canvas"><svg id="map-overlay" class="map-overlay" preserveAspectRatio="xMinYMin meet" aria-label="Editable node map"></svg></div></div><p class="hint">Drag a shape onto the map, or click a shape and then click the map. Existing rectangles can be dragged to reposition them.</p></div>
         </article>
         <aside class="forms">
           <article class="panel"><div class="panel-header"><h2>Nodes</h2><span id="node-status" class="status"></span></div><div class="panel-body"><ul id="node-list" class="list"></ul></div></article>
           <article class="panel"><div class="panel-header"><h2>Selected node</h2></div><div class="panel-body"><form id="node-form" class="field-grid"><label class="field"><span>ID</span><input id="node-id" /></label><label class="field"><span>Label</span><input id="node-label" /></label><label class="field"><span>Kind</span><select id="node-kind"><option>room</option><option>corridor</option><option>intersection</option><option>stairs</option><option>elevator</option><option>door</option></select></label><label class="field"><span>Floor</span><input id="node-floor" type="number" /></label><label class="field"><span>X</span><input id="node-x" type="number" step="0.1" /></label><label class="field"><span>Y</span><input id="node-y" type="number" step="0.1" /></label><label class="field"><span>Exit bearing</span><input id="node-exit-bearing" type="number" step="1" placeholder="optional" /></label><label class="field full"><span>Aliases, one per line</span><textarea id="node-aliases"></textarea></label></form><code id="node-json" class="code-preview"></code></div></article>
-          <article class="panel"><div class="panel-header"><h2>Edges</h2><div class="toolbar"><button id="add-edge" class="button secondary" type="button">Add edge</button><button id="delete-edge" class="button danger" type="button">Delete edge</button></div></div><div class="panel-body forms"><ul id="edge-list" class="list"></ul><form id="edge-form" class="field-grid"><label class="field full"><span>ID</span><input id="edge-id" /></label><label class="field"><span>From</span><select id="edge-from"></select></label><label class="field"><span>To</span><select id="edge-to"></select></label><label class="field"><span>Weight</span><input id="edge-weight" type="number" step="0.1" /></label><label class="field"><span>Bearing</span><input id="edge-bearing" type="number" step="1" /></label><label class="field full"><span>Kind</span><select id="edge-kind"><option>walk</option><option>door</option><option>stairs</option><option>elevator</option></select></label></form></div></article>
+          <article class="panel"><div class="panel-header"><h2>Edges</h2><div class="toolbar"><button id="add-edge" class="button secondary" type="button">Add edge</button><button id="delete-edge" class="button danger" type="button">Delete edge</button></div></div><div class="panel-body forms"><ul id="edge-list" class="list"></ul><form id="edge-form" class="field-grid"><label class="field full"><span>ID</span><input id="edge-id" /></label><label class="field"><span>From</span><select id="edge-from"></select></label><label class="field"><span>To</span><select id="edge-to"></select></label><label class="field"><span>Weight</span><input id="edge-weight" type="number" step="0.1" /></label><label class="field"><span>Bearing</span><input id="edge-bearing" type="number" step="1" /></label><label class="field full"><span>Kind</span><select id="edge-kind"><option>walk</option><option>door</option><option>stairs</option><option>elevator</option></select></label><label class="field full"><span><input id="edge-bidirectional" type="checkbox" /> Two-way connection</span></label></form></div></article>
         </aside>
       </section>
     </main>
     <script type="module">
-      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), crossLevelEdges: [] };
+      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), manualPositions: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, movedNode: false };
       const $ = (id) => document.getElementById(id);
-      const ids = Object.fromEntries(['floor-select','building-select','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-weight','edge-bearing','edge-kind','add-node','delete-node','add-edge','delete-edge','export-json'].map(id => [camel(id), $(id)]));
+      const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','export-json'].map(id => [camel(id), $(id)]));
 
       init().catch(error => { document.body.innerHTML = '<main class="editor-shell"><p>Could not load editor data.</p><pre>' + escapeHtml(error) + '</pre></main>'; });
 
@@ -110,6 +130,17 @@
         ids.exportJson.addEventListener('click', exportJson);
         ids.nodeForm.addEventListener('input', updateSelectedNode);
         ids.edgeForm.addEventListener('input', updateSelectedEdge);
+        ids.shapePalette.querySelectorAll('.shape-tool').forEach(button => {
+          button.addEventListener('click', () => setCreateKind(button.dataset.kind));
+          button.addEventListener('dragstart', event => startPaletteDrag(event, button.dataset.kind));
+          button.addEventListener('dragend', clearDropState);
+        });
+        ids.mapOverlay.addEventListener('dragover', allowDropOnMap);
+        ids.mapOverlay.addEventListener('dragleave', clearDropState);
+        ids.mapOverlay.addEventListener('drop', dropNodeOnMap);
+        ids.mapOverlay.addEventListener('pointermove', dragSelectedNode);
+        ids.mapOverlay.addEventListener('pointerup', finishDraggingNode);
+        ids.mapOverlay.addEventListener('pointercancel', finishDraggingNode);
         ids.mapOverlay.addEventListener('click', moveSelectedNodeFromMap);
         selectLevel(state.data.levels[0].level);
       }
@@ -118,7 +149,7 @@
       function crossLevelEdges(data) { const floorById = new Map(data.graph.nodes.map(node => [node.id, node.floor])); return data.graph.edges.filter(edge => floorById.get(edge.from) !== floorById.get(edge.to)); }
       function selectLevel(levelNumber) { state.level = state.data.levels.find(level => level.level === levelNumber); state.building = 'all'; state.selectedNode = visibleNodes()[0] || state.level.nodes[0] || null; state.selectedEdge = visibleEdges()[0] || state.level.edges[0] || null; renderAll(); }
       function selectBuilding(building) { state.building = building; state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
-      function renderAll() { rebuildGraph(); renderBuildingOptions(); renderMap(); renderNodeList(); renderNodeForm(); renderEdgeList(); renderEdgeForm(); }
+      function renderAll() { rebuildGraph(); renderBuildingOptions(); renderPalette(); renderMap(); renderNodeList(); renderNodeForm(); renderEdgeList(); renderEdgeForm(); }
 
       function renderBuildingOptions() {
         const buildings = [...new Set(state.level.nodes.map(buildingKey))].sort();
@@ -126,83 +157,96 @@
         ids.buildingSelect.value = buildings.includes(state.building) ? state.building : 'all';
       }
 
+      function renderPalette() {
+        ids.shapePalette.querySelectorAll('.shape-tool').forEach(button => button.classList.toggle('active', button.dataset.kind === state.createKind));
+      }
+
       function renderMap() {
         const nodes = visibleNodes();
         const edges = visibleEdges();
         ids.mapTitle.textContent = state.level.label + ' architectural graph';
-        ids.mapCount.textContent = nodes.length + ' visible nodes, ' + edges.length + ' visible edges';
+        const roomCount = nodes.filter(node => node.kind === 'room').length;
+        const pathwayCount = nodes.filter(isPathNode).length;
+        ids.mapCount.textContent = roomCount + ' rooms, ' + pathwayCount + ' pathways, ' + edges.length + ' links';
         state.displayNodes = layoutNodes(nodes);
         state.bounds = displayBounds(state.displayNodes, nodes.length ? nodes : state.level.nodes);
         ids.mapOverlay.setAttribute('viewBox', state.bounds.minX + ' ' + state.bounds.minY + ' ' + state.bounds.width + ' ' + state.bounds.height);
+        sizeMapCanvas();
         ids.mapOverlay.innerHTML = '';
         renderArchitecturalBase(nodes, edges);
-        const nodeById = new Map(nodes.map(node => [node.id, node]));
-        for (const edge of edges) {
-          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
-          if (!from || !to) continue;
-          const fromPoint = displayPoint(from), toPoint = displayPoint(to);
-          ids.mapOverlay.append(svg('line', { class: 'graph-edge', x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
-        }
         for (const node of nodes) renderEditableNode(node);
       }
 
       function renderArchitecturalBase(nodes, edges) {
-        const drawableNodes = nodes.filter(node => node.kind !== 'stairs' && node.kind !== 'elevator');
-        if (!drawableNodes.length) return;
-        renderFloorPlate(drawableNodes);
+        renderFloorPlate();
+        renderLongHallways(nodes);
+        renderBuildingConnections(nodes, edges);
+        renderPathwayConnections(nodes, edges);
         renderCorridors(nodes, edges);
-        renderRooms(nodes);
-        renderServiceCells(nodes);
       }
 
-      function renderFloorPlate(nodes) {
-        const groups = new Map();
-        for (const node of nodes) {
-          const key = buildingKey(node);
-          groups.set(key, [...(groups.get(key) || []), node]);
-        }
-        for (const group of groups.values()) {
-          if (group.length < 2) continue;
-          const points = group.map(displayPoint);
-          const xs = points.map(point => point.x), ys = points.map(point => point.y);
-          const pad = Math.max(state.bounds.width, state.bounds.height) * .08;
-          ids.mapOverlay.append(svg('rect', { class: 'floor-plate', x: Math.min(...xs) - pad, y: Math.min(...ys) - pad, width: Math.max(...xs) - Math.min(...xs) + pad * 2, height: Math.max(...ys) - Math.min(...ys) + pad * 2 }));
+      function renderFloorPlate() {
+        for (const [building, bounds] of state.displayBuildings) {
+          ids.mapOverlay.append(svg('rect', { class: 'floor-plate', x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height }));
+          const label = svg('text', { class: 'building-label', x: bounds.x + 4, y: bounds.y + 7 });
+          label.textContent = building + ' Building';
+          ids.mapOverlay.append(label);
         }
       }
 
-      function renderCorridors(nodes, edges) {
+      function renderPathwayConnections(nodes, edges) {
         const nodeById = new Map(nodes.map(node => [node.id, node]));
-        for (const edge of edges) {
+        for (const edge of uniqueConnections(edges)) {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
-          if (!from || !to) continue;
+          if (!from || !to || !isPathNode(from) || !isPathNode(to) || buildingKey(from) !== buildingKey(to)) continue;
           const fromPoint = displayPoint(from), toPoint = displayPoint(to);
           ids.mapOverlay.append(svg('line', { class: 'corridor-wall', x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
           ids.mapOverlay.append(svg('line', { class: 'corridor-floor', x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
         }
       }
 
-      function renderRooms(nodes) {
-        for (const node of nodes.filter(node => node.kind === 'room')) {
-          const group = svg('g', { class: 'room-cell' });
-          const point = displayPoint(node);
-          const width = roomWidth(node), height = 5.2;
-          group.append(svg('rect', { x: point.x - width / 2, y: point.y - height / 2, width, height }));
-          const label = svg('text', { x: point.x, y: point.y + .75 });
-          label.textContent = node.label;
-          group.append(label);
-          ids.mapOverlay.append(group);
+      function renderLongHallways(nodes) {
+        for (const [building, group] of groupNodesByBuilding(nodes)) {
+          if (!group.some(isPathNode)) continue;
+          const bounds = state.displayBuildings.get(building);
+          const pathPoints = group.filter(isPathNode).map(displayPoint);
+          if (!bounds || !pathPoints.length) continue;
+          const orientation = buildingOrientation(group);
+          const averagePathX = pathPoints.reduce((total, point) => total + point.x, 0) / pathPoints.length;
+          const averagePathY = pathPoints.reduce((total, point) => total + point.y, 0) / pathPoints.length;
+          const attrs = orientation === 'vertical'
+            ? { x1: averagePathX, y1: bounds.y + 7, x2: averagePathX, y2: bounds.y + bounds.height - 7 }
+            : { x1: bounds.x + 7, y1: averagePathY, x2: bounds.x + bounds.width - 7, y2: averagePathY };
+          ids.mapOverlay.append(svg('line', { class: 'corridor-wall', ...attrs }));
+          ids.mapOverlay.append(svg('line', { class: 'corridor-floor', ...attrs }));
         }
       }
 
-      function renderServiceCells(nodes) {
-        for (const node of nodes.filter(node => node.kind === 'stairs' || node.kind === 'elevator')) {
-          const group = svg('g', { class: 'service-cell ' + node.kind + '-cell' });
-          const point = displayPoint(node);
-          group.append(svg('rect', { x: point.x - 3.6, y: point.y - 2.4, width: 7.2, height: 4.8 }));
-          const label = svg('text', { x: point.x, y: point.y + .65 });
-          label.textContent = node.kind === 'stairs' ? 'Stairs' : 'Elev';
-          group.append(label);
-          ids.mapOverlay.append(group);
+      function renderBuildingConnections(nodes, edges) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        for (const edge of uniqueConnections(edges)) {
+          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+          if (!from || !to || buildingKey(from) === buildingKey(to)) continue;
+          const start = displayPoint(from), end = displayPoint(to);
+          const path = 'M ' + start.x + ' ' + start.y + ' L ' + end.x + ' ' + end.y;
+          ids.mapOverlay.append(svg('path', { class: 'building-connector-wall', d: path }));
+          ids.mapOverlay.append(svg('path', { class: 'building-connector-floor', d: path }));
+        }
+      }
+
+      function renderCorridors(nodes, edges) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        const orientationByBuilding = new Map([...groupNodesByBuilding(nodes)].map(([building, group]) => [building, buildingOrientation(group)]));
+        for (const edge of edges) {
+          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+          if (!from || !to) continue;
+          const fromPoint = displayPoint(from), toPoint = displayPoint(to);
+          if (!isPathNode(from) || !isPathNode(to)) {
+            const pathPoint = isPathNode(from) ? fromPoint : toPoint;
+            const roomPoint = isPathNode(from) ? toPoint : fromPoint;
+            ids.mapOverlay.append(svg('path', { class: 'room-connector', d: orthogonalPath(pathPoint, roomPoint, orientationByBuilding.get(buildingKey(from)) || 'horizontal') }));
+            continue;
+          }
         }
       }
 
@@ -211,9 +255,10 @@
         const point = displayPoint(node);
         const width = nodeRectWidth(node), height = 5.8;
         group.append(svg('rect', { x: point.x - width / 2, y: point.y - height / 2, width, height, rx: .35 }));
-        const text = svg('text', { x: point.x, y: point.y + .9 });
-        text.textContent = node.label;
+        const text = svg('text', { x: point.x, y: point.y, textLength: Math.max(2, width - 1.8), lengthAdjust: 'spacingAndGlyphs' });
+        text.textContent = fitLabel(node.label, width);
         group.append(text);
+        group.addEventListener('pointerdown', event => startDraggingNode(event, node));
         group.addEventListener('click', event => { event.stopPropagation(); selectNode(node); });
         ids.mapOverlay.append(group);
       }
@@ -229,56 +274,324 @@
 
       function renderEdgeList() {
         const edges = visibleEdges();
-        ids.edgeList.innerHTML = edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + escapeHtml(edge.from) + ' -> ' + escapeHtml(edge.to) + '</small></button></li>').join('');
+        ids.edgeList.innerHTML = edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + escapeHtml(edge.from) + (edge.bidirectional ? ' &harr; ' : ' &rarr; ') + escapeHtml(edge.to) + '</small></button></li>').join('');
         ids.edgeList.querySelectorAll('button').forEach(button => button.addEventListener('click', () => selectEdge(edges.find(edge => edge.id === button.dataset.id))));
         const options = visibleNodes().map(node => '<option value="' + escapeHtml(node.id) + '">' + escapeHtml(node.label) + '</option>').join('');
         ids.edgeFrom.innerHTML = options;
         ids.edgeTo.innerHTML = options;
       }
 
-      function renderEdgeForm() { const edge = state.selectedEdge; ids.edgeForm.querySelectorAll('input, select').forEach(field => field.disabled = !edge); if (!edge) { ids.edgeForm.reset(); return; } ids.edgeId.value = edge.id; ids.edgeFrom.value = edge.from; ids.edgeTo.value = edge.to; ids.edgeWeight.value = edge.weight; ids.edgeBearing.value = edge.bearing; ids.edgeKind.value = edge.kind; }
+      function renderEdgeForm() { const edge = state.selectedEdge; ids.edgeForm.querySelectorAll('input, select').forEach(field => field.disabled = !edge); if (!edge) { ids.edgeForm.reset(); return; } ids.edgeId.value = edge.id; ids.edgeFrom.value = edge.from; ids.edgeTo.value = edge.to; ids.edgeWeight.value = edge.weight; ids.edgeBearing.value = edge.bearing; ids.edgeKind.value = edge.kind; ids.edgeBidirectional.checked = Boolean(edge.bidirectional); }
       function selectNode(node) { state.selectedNode = node; renderAll(); }
       function selectEdge(edge) { state.selectedEdge = edge; renderEdgeList(); renderEdgeForm(); }
 
-      function updateSelectedNode() { const node = state.selectedNode; if (!node) return; const oldId = node.id; node.id = ids.nodeId.value.trim() || oldId; node.label = ids.nodeLabel.value.trim() || node.id; node.kind = ids.nodeKind.value; node.floor = Number(ids.nodeFloor.value) || state.level.level; node.x = Number(ids.nodeX.value) || 0; node.y = Number(ids.nodeY.value) || 0; const exitBearing = ids.nodeExitBearing.value.trim(); if (exitBearing === '') delete node.exitBearing; else node.exitBearing = Number(exitBearing); const aliases = ids.nodeAliases.value.split('\n').map(value => value.trim()).filter(Boolean); if (aliases.length) node.aliases = aliases; else delete node.aliases; if (oldId !== node.id) renameNodeReferences(oldId, node.id); if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node); renderAll(); }
-      function updateSelectedEdge() { const edge = state.selectedEdge; if (!edge) return; edge.id = ids.edgeId.value.trim() || edge.id; edge.from = ids.edgeFrom.value; edge.to = ids.edgeTo.value; edge.weight = Number(ids.edgeWeight.value) || 1; edge.bearing = normalizedBearing(Number(ids.edgeBearing.value) || 0); edge.kind = ids.edgeKind.value; renderAll(); }
-      function addNode() { const id = uniqueId((state.building === 'all' ? 'new' : state.building.toLowerCase()) + '-node'); const node = { id, label: id, kind: 'room', floor: state.level.level, x: round((state.bounds?.minX || 0) + (state.bounds?.width || 0) / 2), y: round((state.bounds?.minY || 0) + (state.bounds?.height || 0) / 2) }; state.level.nodes.push(node); state.selectedNode = node; if (state.building !== 'all') state.building = buildingKey(node); renderAll(); }
-      function deleteNode() { const node = state.selectedNode; if (!node || !confirm('Delete ' + node.label + '? This also removes connected same-floor edges.')) return; state.level.nodes = state.level.nodes.filter(candidate => candidate !== node); state.level.edges = state.level.edges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
-      function addEdge() { const nodes = visibleNodes(); if (nodes.length < 2) return; const from = state.selectedNode?.id || nodes[0].id; const to = nodes.find(node => node.id !== from)?.id || from; const edge = { id: uniqueId('new-edge'), from, to, weight: 4, bearing: 90, kind: 'walk' }; state.level.edges.push(edge); state.selectedEdge = edge; renderAll(); }
+      function updateSelectedNode() { const node = state.selectedNode; if (!node) return; const oldId = node.id; node.id = ids.nodeId.value.trim() || oldId; node.label = ids.nodeLabel.value.trim() || node.id; node.kind = ids.nodeKind.value; node.floor = Number(ids.nodeFloor.value) || state.level.level; node.x = Number(ids.nodeX.value) || 0; node.y = Number(ids.nodeY.value) || 0; const exitBearing = ids.nodeExitBearing.value.trim(); if (exitBearing === '') delete node.exitBearing; else node.exitBearing = Number(exitBearing); const aliases = ids.nodeAliases.value.split('\n').map(value => value.trim()).filter(Boolean); if (aliases.length) node.aliases = aliases; else delete node.aliases; if (oldId !== node.id) { renameNodeReferences(oldId, node.id); renameManualPosition(oldId, node.id); } if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node); renderAll(); }
+      function updateSelectedEdge() { const edge = state.selectedEdge; if (!edge) return; edge.id = ids.edgeId.value.trim() || edge.id; edge.from = ids.edgeFrom.value; edge.to = ids.edgeTo.value; edge.weight = Number(ids.edgeWeight.value) || 1; edge.bearing = normalizedBearing(Number(ids.edgeBearing.value) || 0); edge.kind = ids.edgeKind.value; if (ids.edgeBidirectional.checked) edge.bidirectional = true; else delete edge.bidirectional; renderAll(); }
+      function addNode() {
+        const point = { x: round((state.bounds?.minX || 0) + (state.bounds?.width || 0) / 2), y: round((state.bounds?.minY || 0) + (state.bounds?.height || 0) / 2) };
+        createNodeAt(state.createKind || 'room', point);
+      }
+      function deleteNode() { const node = state.selectedNode; if (!node || !confirm('Delete ' + node.label + '? This also removes connected same-floor edges.')) return; state.level.nodes = state.level.nodes.filter(candidate => candidate !== node); state.level.edges = state.level.edges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.manualPositions.delete(node.id); state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
+      function addEdge() { const nodes = visibleNodes(); if (nodes.length < 2) return; const from = state.selectedNode?.id || nodes[0].id; const to = nodes.find(node => node.id !== from)?.id || from; const edge = { id: uniqueId('new-edge'), from, to, weight: 4, bearing: 90, kind: 'walk', bidirectional: true }; state.level.edges.push(edge); state.selectedEdge = edge; renderAll(); }
       function deleteEdge() { const edge = state.selectedEdge; if (!edge || !confirm('Delete edge ' + edge.id + '?')) return; state.level.edges = state.level.edges.filter(candidate => candidate !== edge); state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
-      function moveSelectedNodeFromMap(event) { if (!state.selectedNode || event.target.closest?.('.graph-node')) return; const rect = ids.mapOverlay.getBoundingClientRect(); const xRatio = (event.clientX - rect.left) / rect.width; const yRatio = (event.clientY - rect.top) / rect.height; state.selectedNode.x = round(state.bounds.minX + xRatio * state.bounds.width); state.selectedNode.y = round(state.bounds.minY + yRatio * state.bounds.height); renderAll(); }
+      function moveSelectedNodeFromMap(event) {
+        if (state.movedNode) { state.movedNode = false; return; }
+        if (event.target.closest?.('.graph-node')) return;
+        if (state.createKind) createNodeAt(state.createKind, mapPointFromEvent(event));
+      }
+
+      function setCreateKind(kind) {
+        state.createKind = state.createKind === kind ? null : kind;
+        renderPalette();
+      }
+
+      function startPaletteDrag(event, kind) {
+        state.createKind = kind;
+        event.dataTransfer.effectAllowed = 'copy';
+        event.dataTransfer.setData('text/plain', kind);
+        renderPalette();
+      }
+
+      function allowDropOnMap(event) {
+        event.preventDefault();
+        ids.mapOverlay.classList.add('drop-ready');
+        if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
+      }
+
+      function clearDropState() {
+        ids.mapOverlay.classList.remove('drop-ready');
+      }
+
+      function dropNodeOnMap(event) {
+        event.preventDefault();
+        clearDropState();
+        const kind = event.dataTransfer?.getData('text/plain') || state.createKind || 'room';
+        createNodeAt(kind, mapPointFromEvent(event));
+      }
+
+      function startDraggingNode(event, node) {
+        event.preventDefault();
+        event.stopPropagation();
+        state.draggingNode = node;
+        state.selectedNode = node;
+        state.movedNode = false;
+        ids.mapOverlay.setPointerCapture?.(event.pointerId);
+      }
+
+      function dragSelectedNode(event) {
+        if (!state.draggingNode) return;
+        const point = mapPointFromEvent(event);
+        state.draggingNode.x = point.x;
+        state.draggingNode.y = point.y;
+        state.manualPositions.set(state.draggingNode.id, point);
+        state.movedNode = true;
+        renderAll();
+      }
+
+      function finishDraggingNode(event) {
+        if (!state.draggingNode) return;
+        ids.mapOverlay.releasePointerCapture?.(event.pointerId);
+        state.draggingNode = null;
+      }
+
+      function createNodeAt(kind, point) {
+        const building = activeBuildingKey(point);
+        const prefix = building.toLowerCase() + '-' + kindLabel(kind).toLowerCase();
+        const id = uniqueId(prefix);
+        const node = { id, label: defaultNodeLabel(kind, building, id), kind, floor: state.level.level, x: point.x, y: point.y };
+        state.level.nodes.push(node);
+        state.selectedNode = node;
+        state.manualPositions.set(node.id, point);
+        if (state.building !== 'all') state.building = building;
+        renderAll();
+      }
       function renameNodeReferences(oldId, newId) { for (const level of state.data.levels) for (const edge of level.edges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } for (const edge of state.crossLevelEdges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } }
+      function renameManualPosition(oldId, newId) { if (!state.manualPositions.has(oldId)) return; state.manualPositions.set(newId, state.manualPositions.get(oldId)); state.manualPositions.delete(oldId); }
       function rebuildGraph() { const nodes = state.data.levels.flatMap(level => level.nodes); const nodeIds = new Set(nodes.map(node => node.id)); const sameFloorEdges = state.data.levels.flatMap(level => level.edges); const crossEdges = state.crossLevelEdges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to)); state.data.graph = { nodes, edges: [...sameFloorEdges, ...crossEdges] }; }
       function exportJson() { rebuildGraph(); const blob = new Blob([JSON.stringify(state.data, null, 2) + '\n'], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = document.createElement('a'); link.href = url; link.download = 'levels-1-2.updated.json'; link.click(); URL.revokeObjectURL(url); }
 
       function layoutNodes(nodes) {
-        const placed = [];
         const layouts = new Map();
-        const sortedNodes = [...nodes].sort((left, right) => buildingKey(left).localeCompare(buildingKey(right)) || left.y - right.y || left.x - right.x || left.label.localeCompare(right.label));
-        for (const node of sortedNodes) {
-          const size = nodeSize(node);
-          const point = { x: node.x, y: node.y };
-          let column = 0;
-          let attempts = 0;
-          while (placed.some(item => boxesOverlap(point, size, item)) && attempts < 160) {
-            const direction = attempts % 2 === 0 ? 1 : -1;
-            const row = Math.ceil((attempts + 1) / 2);
-            point.y = node.y + direction * row * (size.height + 1.6);
-            point.x = node.x + column * (size.width + 2.2);
-            if (row > 8) column += 1;
-            attempts += 1;
-          }
-          const layout = { node, x: round(point.x), y: round(point.y), width: size.width, height: size.height };
-          layouts.set(node.id, layout);
-          placed.push(layout);
+        const groups = connectedBuildingGroups(nodes, visibleEdges());
+        const hubBuilding = state.building === 'all' ? findHubBuilding(groups, nodes, visibleEdges()) : null;
+        if (hubBuilding) {
+          layoutHubBuildings(groups, hubBuilding, layouts);
+          applyManualPositions(nodes, layouts);
+          state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
+          return layouts;
         }
+        let cursorX = 0, cursorY = 0, rowHeight = 0;
+        const maxRowWidth = Infinity;
+        for (const [building, groupNodes] of groups) {
+          const size = buildingSchematicSize(groupNodes);
+          if (cursorX > 0 && cursorX + size.width > maxRowWidth) {
+            cursorX = 0;
+            cursorY += rowHeight + 22;
+            rowHeight = 0;
+          }
+          layoutBuildingNodes(groupNodes, cursorX, cursorY, size, layouts);
+          cursorX += size.width + 22;
+          rowHeight = Math.max(rowHeight, size.height);
+        }
+        applyManualPositions(nodes, layouts);
+        state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
         return layouts;
       }
 
-      function boxesOverlap(point, size, item) {
-        const margin = .9;
-        return Math.abs(point.x - item.x) < (size.width + item.width) / 2 + margin && Math.abs(point.y - item.y) < (size.height + item.height) / 2 + margin;
+      function findHubBuilding(groups, nodes, edges) {
+        const buildings = new Set(groups.map(([building]) => building));
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        const neighbors = new Map([...buildings].map(building => [building, new Set()]));
+        for (const edge of edges) {
+          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+          if (!from || !to) continue;
+          const fromBuilding = buildingKey(from), toBuilding = buildingKey(to);
+          if (fromBuilding === toBuilding) continue;
+          neighbors.get(fromBuilding)?.add(toBuilding);
+          neighbors.get(toBuilding)?.add(fromBuilding);
+        }
+        const ranked = [...neighbors].sort((left, right) => right[1].size - left[1].size);
+        return ranked[0]?.[1].size >= 4 ? ranked[0][0] : null;
       }
+
+      function layoutHubBuildings(groups, hubBuilding, layouts) {
+        const groupByBuilding = new Map(groups);
+        const satellites = groups.filter(([building]) => building !== hubBuilding);
+        const split = Math.ceil(satellites.length / 2);
+        const top = satellites.slice(0, split), bottom = satellites.slice(split);
+        const hubNodes = groupByBuilding.get(hubBuilding);
+        const hubSize = buildingSchematicSize(hubNodes);
+        const topWidth = buildingRowWidth(top), bottomWidth = buildingRowWidth(bottom);
+        const totalWidth = Math.max(hubSize.width, topWidth, bottomWidth);
+        const topHeight = buildingRowHeight(top);
+        const hubY = topHeight + 22;
+        layoutBuildingRow(top, (totalWidth - topWidth) / 2, 0, layouts);
+        layoutBuildingNodes(hubNodes, (totalWidth - hubSize.width) / 2, hubY, hubSize, layouts);
+        layoutBuildingRow(bottom, (totalWidth - bottomWidth) / 2, hubY + hubSize.height + 22, layouts);
+      }
+
+      function layoutBuildingRow(groups, startX, originY, layouts) {
+        let cursorX = startX;
+        for (const [, nodes] of groups) {
+          const size = buildingSchematicSize(nodes);
+          layoutBuildingNodes(nodes, cursorX, originY, size, layouts);
+          cursorX += size.width + 22;
+        }
+      }
+
+      function buildingRowWidth(groups) { return groups.reduce((total, [, nodes]) => total + buildingSchematicSize(nodes).width, 0) + Math.max(0, groups.length - 1) * 22; }
+      function buildingRowHeight(groups) { return Math.max(0, ...groups.map(([, nodes]) => buildingSchematicSize(nodes).height)); }
+
+      function connectedBuildingGroups(nodes, edges) {
+        const groups = [...groupNodesByBuilding(nodes)];
+        const connected = new Map(groups.map(([building]) => [building, new Set()]));
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        for (const edge of edges) {
+          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+          if (!from || !to) continue;
+          const fromBuilding = buildingKey(from), toBuilding = buildingKey(to);
+          if (fromBuilding === toBuilding) continue;
+          connected.get(fromBuilding)?.add(toBuilding);
+          connected.get(toBuilding)?.add(fromBuilding);
+        }
+        const groupByBuilding = new Map(groups);
+        const ordered = [], visited = new Set();
+        const starts = groups.map(([building, groupNodes]) => ({ building, x: averageX(groupNodes) })).sort((left, right) => left.x - right.x);
+        for (const start of starts) {
+          if (visited.has(start.building)) continue;
+          const component = [], queue = [start.building];
+          visited.add(start.building);
+          while (queue.length) {
+            const building = queue.shift();
+            component.push(building);
+            const neighbors = [...(connected.get(building) || [])].sort((left, right) => averageX(groupByBuilding.get(left)) - averageX(groupByBuilding.get(right)));
+            for (const neighbor of neighbors) if (!visited.has(neighbor)) { visited.add(neighbor); queue.push(neighbor); }
+          }
+          component.sort((left, right) => averageX(groupByBuilding.get(left)) - averageX(groupByBuilding.get(right)));
+          ordered.push(...component.map(building => [building, groupByBuilding.get(building)]));
+        }
+        return ordered;
+      }
+
+      function averageX(nodes) { return nodes?.length ? nodes.reduce((total, node) => total + node.x, 0) / nodes.length : 0; }
+
+      function applyManualPositions(nodes, layouts) {
+        for (const node of nodes) {
+          const manualPoint = state.manualPositions.get(node.id);
+          const layout = layouts.get(node.id);
+          if (!manualPoint || !layout) continue;
+          layout.x = manualPoint.x;
+          layout.y = manualPoint.y;
+        }
+      }
+
+      function buildingBoundsFromLayouts(groups, layouts) {
+        const bounds = new Map();
+        for (const [building, nodes] of groups) {
+          const groupLayouts = nodes.map(node => layouts.get(node.id)).filter(Boolean);
+          if (!groupLayouts.length) continue;
+          const xs = groupLayouts.flatMap(item => [item.x - item.width / 2, item.x + item.width / 2]);
+          const ys = groupLayouts.flatMap(item => [item.y - item.height / 2, item.y + item.height / 2]);
+          const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
+          bounds.set(building, { x: minX - 10, y: minY - 10, width: maxX - minX + 20, height: maxY - minY + 20 });
+        }
+        return bounds;
+      }
+
+      function layoutBuildingNodes(nodes, originX, originY, size, layouts) {
+        const orientation = buildingOrientation(nodes);
+        const pathNodes = sortedPathNodes(nodes, orientation);
+        const roomNodes = sortedRoomNodes(nodes);
+        if (!pathNodes.length) {
+          layoutRoomGrid(roomNodes, originX, originY, size, layouts);
+          return;
+        }
+        const corridorX = originX + size.width / 2;
+        const corridorY = originY + size.height / 2;
+        const axisStart = orientation === 'vertical' ? originY + 15 : originX + 15;
+        const axisEnd = orientation === 'vertical' ? originY + size.height - 15 : originX + size.width - 15;
+        const pathGap = pathNodes.length > 1 ? (axisEnd - axisStart) / (pathNodes.length - 1) : 0;
+        pathNodes.forEach((node, index) => {
+          const axis = pathNodes.length > 1 ? axisStart + index * pathGap : (axisStart + axisEnd) / 2;
+          const point = orientation === 'vertical' ? { x: corridorX, y: axis } : { x: axis, y: corridorY };
+          layouts.set(node.id, { node, x: round(point.x), y: round(point.y), ...nodeSize(node) });
+        });
+        const referencePath = averageNodePosition(pathNodes);
+        const roomsBySide = splitRoomsBySide(roomNodes, referencePath, orientation);
+        layoutRoomSide(roomsBySide.negative, -1, orientation, originX, originY, size, corridorX, corridorY, layouts);
+        layoutRoomSide(roomsBySide.positive, 1, orientation, originX, originY, size, corridorX, corridorY, layouts);
+      }
+
+      function layoutRoomSide(rooms, side, orientation, originX, originY, size, corridorX, corridorY, layouts) {
+        const axisStart = orientation === 'vertical' ? originY + 12 : originX + 12;
+        const axisLength = orientation === 'vertical' ? size.height - 24 : size.width - 24;
+        rooms.forEach((room, index) => {
+          const axis = axisStart + axisLength * (index + 1) / (rooms.length + 1);
+          const point = orientation === 'vertical'
+            ? { x: corridorX + side * 17, y: axis }
+            : { x: axis, y: corridorY + side * 13 };
+          layouts.set(room.id, { node: room, x: round(point.x), y: round(point.y), ...nodeSize(room) });
+        });
+      }
+
+      function layoutRoomGrid(nodes, originX, originY, size, layouts) {
+        const columns = Math.max(1, Math.ceil(Math.sqrt(nodes.length)));
+        nodes.forEach((node, index) => {
+          const column = index % columns;
+          const row = Math.floor(index / columns);
+          const point = { x: originX + 18 + column * 24, y: originY + 18 + row * 10 };
+          layouts.set(node.id, { node, x: round(point.x), y: round(point.y), ...nodeSize(node) });
+        });
+      }
+
+      function buildingSchematicSize(nodes) {
+        const orientation = buildingOrientation(nodes);
+        const pathNodes = sortedPathNodes(nodes, orientation);
+        const roomNodes = sortedRoomNodes(nodes);
+        if (!pathNodes.length) {
+          const columns = Math.max(1, Math.ceil(Math.sqrt(roomNodes.length)));
+          const rows = Math.max(1, Math.ceil(roomNodes.length / columns));
+          return { width: Math.max(70, columns * 26 + 18), height: Math.max(42, rows * 11 + 24), topRows: 0 };
+        }
+        const referencePath = averageNodePosition(pathNodes);
+        const roomsBySide = splitRoomsBySide(roomNodes, referencePath, orientation);
+        const longestSide = Math.max(roomsBySide.negative.length, roomsBySide.positive.length, 1);
+        if (orientation === 'vertical') {
+          return { width: 76, height: Math.max(90, longestSide * 10 + 28, pathNodes.length * 20 + 28), topRows: 0, orientation };
+        }
+        return { width: Math.max(90, longestSide * 22 + 28, pathNodes.length * 30 + 28), height: 58, topRows: 1, orientation };
+      }
+
+      function buildingOrientation(nodes) {
+        const bearings = nodes.filter(node => node.kind === 'room' && Number.isFinite(node.exitBearing)).map(node => cardinalBearing(node.exitBearing));
+        const verticalScore = bearings.filter(bearing => bearing === 90 || bearing === 270).length;
+        const horizontalScore = bearings.filter(bearing => bearing === 0 || bearing === 180).length;
+        return verticalScore > horizontalScore ? 'vertical' : 'horizontal';
+      }
+
+      function splitRoomsBySide(rooms, referencePath, orientation) {
+        const result = { negative: [], positive: [] };
+        for (const room of rooms) result[roomSide(room, referencePath, orientation) < 0 ? 'negative' : 'positive'].push(room);
+        const axis = orientation === 'vertical' ? 'y' : 'x';
+        result.negative.sort((left, right) => left[axis] - right[axis]);
+        result.positive.sort((left, right) => left[axis] - right[axis]);
+        return result;
+      }
+
+      function roomSide(room, referencePath, orientation) {
+        const bearing = Number.isFinite(room.exitBearing) ? cardinalBearing(room.exitBearing) : null;
+        if (orientation === 'vertical') {
+          if (bearing === 90) return -1;
+          if (bearing === 270) return 1;
+          return room.x < referencePath.x ? -1 : 1;
+        }
+        if (bearing === 180) return -1;
+        if (bearing === 0) return 1;
+        return room.y < referencePath.y ? -1 : 1;
+      }
+
+      function averageNodePosition(nodes) { return { x: nodes.reduce((total, node) => total + node.x, 0) / nodes.length, y: nodes.reduce((total, node) => total + node.y, 0) / nodes.length }; }
+      function cardinalBearing(bearing) { return Math.round(normalizedBearing(bearing) / 90) * 90 % 360; }
 
       function nodeSize(node) {
         if (node.kind === 'stairs' || node.kind === 'elevator') return { width: 7.2, height: 4.8 };
@@ -294,21 +607,69 @@
       function displayBounds(layouts, fallbackNodes) {
         const values = [...layouts.values()];
         if (!values.length) return graphBounds(fallbackNodes);
-        const xs = values.flatMap(item => [item.x - item.width / 2, item.x + item.width / 2]);
-        const ys = values.flatMap(item => [item.y - item.height / 2, item.y + item.height / 2]);
+        const buildingValues = [...state.displayBuildings.values()];
+        const xs = values.flatMap(item => [item.x - item.width / 2, item.x + item.width / 2]).concat(buildingValues.flatMap(item => [item.x, item.x + item.width]));
+        const ys = values.flatMap(item => [item.y - item.height / 2, item.y + item.height / 2]).concat(buildingValues.flatMap(item => [item.y, item.y + item.height]));
         const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
-        const width = Math.max(1, maxX - minX), height = Math.max(1, maxY - minY), padding = Math.max(width, height) * .18;
+        const width = Math.max(1, maxX - minX), height = Math.max(1, maxY - minY), padding = Math.max(width, height) * .08;
         return { minX:minX-padding, minY:minY-padding, width:width+padding*2, height:height+padding*2 };
+      }
+
+      function sizeMapCanvas() {
+        const buildingCount = Math.max(1, state.displayBuildings.size);
+        const width = Math.max(1000, buildingCount * 180);
+        const proportionalHeight = width * state.bounds.height / state.bounds.width;
+        const height = Math.max(520, Math.min(1200, proportionalHeight));
+        ids.mapOverlay.parentElement.style.width = width + 'px';
+        ids.mapOverlay.parentElement.style.height = Math.round(height) + 'px';
       }
 
       function visibleNodes() { return state.level.nodes.filter(node => state.building === 'all' || buildingKey(node) === state.building); }
       function visibleEdges() { const nodeIds = new Set(visibleNodes().map(node => node.id)); return state.level.edges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to)); }
+      function uniqueConnections(edges) { const seen = new Set(); return edges.filter(edge => { const key = [edge.from, edge.to].sort().join('|'); if (seen.has(key)) return false; seen.add(key); return true; }); }
+      function isPathNode(node) { return ['corridor', 'intersection', 'stairs', 'elevator', 'door'].includes(node.kind); }
+      function groupNodesByBuilding(nodes) {
+        const groups = new Map();
+        for (const node of nodes) {
+          const building = buildingKey(node);
+          groups.set(building, [...(groups.get(building) || []), node]);
+        }
+        return groups;
+      }
+      function sortedPathNodes(nodes, orientation = buildingOrientation(nodes)) { const primary = orientation === 'vertical' ? 'y' : 'x', secondary = orientation === 'vertical' ? 'x' : 'y'; return nodes.filter(isPathNode).sort((left, right) => left[primary] - right[primary] || left[secondary] - right[secondary] || left.label.localeCompare(right.label)); }
+      function sortedRoomNodes(nodes) { return nodes.filter(node => !isPathNode(node)).sort((left, right) => left.x - right.x || left.y - right.y || left.label.localeCompare(right.label)); }
       function buildingKey(node) { const match = node.id.match(/[A-Za-z]/); return match ? match[0].toUpperCase() : 'Other'; }
+      function activeBuildingKey(point) { if (state.building !== 'all') return state.building; return buildingAtPoint(point) || (state.selectedNode ? buildingKey(state.selectedNode) : state.level.nodes[0] ? buildingKey(state.level.nodes[0]) : 'N'); }
+      function buildingAtPoint(point) {
+        for (const [building, bounds] of state.displayBuildings) {
+          if (point.x >= bounds.x && point.x <= bounds.x + bounds.width && point.y >= bounds.y && point.y <= bounds.y + bounds.height) return building;
+        }
+        return null;
+      }
+      function kindLabel(kind) { return { room: 'Room', corridor: 'Pathway', intersection: 'Core', stairs: 'Stairs', elevator: 'Elevator', door: 'Door' }[kind] || 'Node'; }
+      function defaultNodeLabel(kind, building, id) { const number = id.match(/-(\d+)$/)?.[1] || ''; return building + ' ' + kindLabel(kind) + (number ? ' ' + number : ''); }
+      function orthogonalPath(pathPoint, roomPoint, orientation) {
+        if (orientation === 'vertical') {
+          const elbowX = roomPoint.x > pathPoint.x ? roomPoint.x - 5 : roomPoint.x + 5;
+          return 'M ' + pathPoint.x + ' ' + pathPoint.y + ' L ' + elbowX + ' ' + pathPoint.y + ' L ' + elbowX + ' ' + roomPoint.y + ' L ' + roomPoint.x + ' ' + roomPoint.y;
+        }
+        const elbowY = roomPoint.y > pathPoint.y ? roomPoint.y - 4.2 : roomPoint.y + 4.2;
+        return 'M ' + pathPoint.x + ' ' + pathPoint.y + ' L ' + pathPoint.x + ' ' + elbowY + ' L ' + roomPoint.x + ' ' + elbowY + ' L ' + roomPoint.x + ' ' + roomPoint.y;
+      }
+      function mapPointFromEvent(event) {
+        const matrix = ids.mapOverlay.getScreenCTM();
+        if (!matrix) return { x: round(state.bounds.minX), y: round(state.bounds.minY) };
+        const point = ids.mapOverlay.createSVGPoint();
+        point.x = event.clientX;
+        point.y = event.clientY;
+        const transformed = point.matrixTransform(matrix.inverse());
+        return { x: round(transformed.x), y: round(transformed.y) };
+      }
       function graphBounds(nodes) { if (!nodes.length) return { minX:-10, minY:-10, width:20, height:20 }; const xs = nodes.map(node => node.x), ys = nodes.map(node => node.y); const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys); const width = Math.max(1, maxX - minX), height = Math.max(1, maxY - minY), padding = Math.max(width, height) * .14; return { minX:minX-padding, minY:minY-padding, width:width+padding*2, height:height+padding*2 }; }
       function uniqueId(prefix) { const existing = new Set(state.data.levels.flatMap(level => level.nodes.map(node => node.id)).concat(state.data.levels.flatMap(level => level.edges.map(edge => edge.id)))); let index = 1; while (existing.has(prefix + '-' + index)) index += 1; return prefix + '-' + index; }
       function svg(name, attrs = {}) { const el = document.createElementNS('http://www.w3.org/2000/svg', name); for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value)); return el; }
       function nodeRectWidth(node) { return Math.max(7.2, Math.min(18, node.label.length * 1.05 + 4)); }
-      function roomWidth(node) { return Math.max(7.2, Math.min(15, node.label.length * 1.05 + 3.2)); }
+      function fitLabel(value, width) { const label = String(value); const limit = Math.max(3, Math.floor(width / .9)); return label.length <= limit ? label : label.slice(0, Math.max(1, limit - 3)) + '...'; }
       function normalizedBearing(value) { return ((value % 360) + 360) % 360; }
       function round(value) { return Math.round(value * 10) / 10; }
       function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, char => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', "'":'&#39;', '"':'&quot;' }[char])); }

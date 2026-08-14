@@ -22,13 +22,27 @@ export function createGraphIndex(graph: BuildingGraph): GraphIndex {
   }
 
   for (const edge of graph.edges) {
-    const outgoing = outgoingByNode.get(edge.from);
-    if (outgoing) {
-      outgoing.push(edge);
+    addOutgoingEdge(outgoingByNode, edge);
+
+    if (edge.bidirectional) {
+      addOutgoingEdge(outgoingByNode, reverseEdge(edge));
     }
   }
 
   return { nodeById, outgoingByNode };
+}
+
+function addOutgoingEdge(outgoingByNode: Map<string, BuildingEdge[]>, edge: BuildingEdge): void {
+  outgoingByNode.get(edge.from)?.push(edge);
+}
+
+function reverseEdge(edge: BuildingEdge): BuildingEdge {
+  return {
+    ...edge,
+    from: edge.to,
+    to: edge.from,
+    bearing: reverseBearing(edge.bearing),
+  };
 }
 
 export function normalizeLocation(value: string): string {

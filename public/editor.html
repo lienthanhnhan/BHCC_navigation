@@ -71,6 +71,11 @@
       .list button { width: 100%; border: 1px solid var(--border); background: white; padding: 8px 10px; text-align: left; cursor: pointer; }
       .list button.active { border-color: var(--accent); background: #fff5f5; color: var(--accent); font-weight: 700; }
       .list small { color: var(--muted); margin-left: 6px; }
+      .node-tree-row { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 5px; margin-left: calc(var(--tree-depth) * 18px); }
+      .node-tree-row .tree-toggle { width: 28px; padding: 0; text-align: center; font-size: 1.05rem; font-weight: 900; }
+      .node-tree-row .tree-toggle-placeholder { width: 28px; }
+      .node-tree-row .node-select { min-width: 0; }
+      .list-empty { padding: 8px 2px; color: var(--muted); font-style: italic; }
       .code-preview { display: block; max-height: 190px; overflow: auto; white-space: pre; padding: 10px; background: #f7f7f7; border: 1px solid var(--border); font-size: .84rem; }
       .status { min-height: 1.2em; color: var(--muted); }
       .status[data-variant="error"] { color: var(--accent); font-weight: 700; }
@@ -118,7 +123,7 @@
     </main>
     <script type="module">
       const datasetStorageKey = 'bhcc-map-editor-dataset-v4';
-      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', labelCommitTimer: null, autoIdNodes: new WeakSet() };
+      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', labelCommitTimer: null, autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
       const $ = (id) => document.getElementById(id);
       const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-corridor-offset','edge-side','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','apply-changes','reset-changes','export-json','save-status'].map(id => [camel(id), $(id)]));
 
@@ -188,7 +193,17 @@
         sizeMapCanvas();
         ids.mapOverlay.innerHTML = '';
         renderArchitecturalBase(nodes, edges);
-        for (const node of nodes) renderEditableNode(node);
+        const layeredNodes = nodes
+          .map((node, index) => ({ node, index }))
+          .sort((left, right) => nodeRenderLayer(left.node) - nodeRenderLayer(right.node) || left.index - right.index)
+          .map(item => item.node);
+        for (const node of layeredNodes) renderEditableNode(node);
+      }
+
+      function nodeRenderLayer(node) {
+        if (node.kind === 'corridor') return 0;
+        if (node.kind === 'room') return 1;
+        return 2;
       }
 
       function renderArchitecturalBase(nodes, edges) {
@@ -282,10 +297,29 @@
 
       function renderNodeList() {
         const nodes = visibleNodes();
+        const hierarchy = buildNodeHierarchy(nodes, visibleEdges());
         ids.nodeStatus.textContent = state.nodeMessage || (state.selectedNode ? state.selectedNode.id : 'No node selected');
         ids.nodeStatus.dataset.variant = state.nodeMessage ? 'error' : 'ready';
-        ids.nodeList.innerHTML = nodes.map(node => '<li><button type="button" data-id="' + escapeHtml(node.id) + '" class="' + (node === state.selectedNode ? 'active' : '') + '">' + escapeHtml(node.label) + '<small>' + escapeHtml(node.kind) + '</small></button></li>').join('');
-        ids.nodeList.querySelectorAll('button').forEach(button => button.addEventListener('click', () => selectNode(nodes.find(node => node.id === button.dataset.id))));
+        const rows = [];
+        const renderedNodeIds = new Set();
+        const renderNodeRow = (node, depth, ancestors = new Set()) => {
+          if (ancestors.has(node.id) || renderedNodeIds.has(node.id)) return;
+          renderedNodeIds.add(node.id);
+          const children = hierarchy.children.get(node.id) || [];
+          const expanded = state.expandedNodeIds.has(node.id);
+          const toggle = children.length
+            ? '<button type="button" class="tree-toggle" data-toggle-id="' + escapeHtml(node.id) + '" aria-expanded="' + expanded + '" aria-label="' + (expanded ? 'Collapse ' : 'Expand ') + escapeHtml(node.label) + '">' + (expanded ? '-' : '+') + '</button>'
+            : '<span class="tree-toggle-placeholder" aria-hidden="true"></span>';
+          rows.push('<li class="node-tree-row" style="--tree-depth:' + depth + '">' + toggle + '<button type="button" data-node-id="' + escapeHtml(node.id) + '" class="node-select ' + (node === state.selectedNode ? 'active' : '') + '">' + escapeHtml(node.label) + '<small>' + escapeHtml(node.kind) + '</small></button></li>');
+          if (!expanded) return;
+          const nextAncestors = new Set(ancestors);
+          nextAncestors.add(node.id);
+          children.forEach(child => renderNodeRow(child, depth + 1, nextAncestors));
+        };
+        hierarchy.roots.forEach(node => renderNodeRow(node, 0));
+        ids.nodeList.innerHTML = rows.join('') || '<li class="list-empty">No nodes on this floor.</li>';
+        ids.nodeList.querySelectorAll('[data-node-id]').forEach(button => button.addEventListener('click', () => selectNode(hierarchy.nodeById.get(button.dataset.nodeId))));
+        ids.nodeList.querySelectorAll('[data-toggle-id]').forEach(button => button.addEventListener('click', () => toggleNodeChildren(button.dataset.toggleId)));
       }
 
       function renderNodeForm() {
@@ -306,8 +340,11 @@
       }
 
       function renderEdgeList() {
-        const edges = visibleEdges();
-        ids.edgeList.innerHTML = edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + endpointLabel(edge.from, edge.fromEndpoint) + (edge.bidirectional ? ' &harr; ' : ' &rarr; ') + endpointLabel(edge.to, edge.toEndpoint) + '</small></button></li>').join('');
+        const edges = relatedEdges();
+        if (!edges.includes(state.selectedEdge)) state.selectedEdge = edges[0] || null;
+        ids.edgeList.innerHTML = edges.length
+          ? edges.map(edge => '<li><button type="button" data-id="' + escapeHtml(edge.id) + '" class="' + (edge === state.selectedEdge ? 'active' : '') + '">' + escapeHtml(edge.id) + '<small>' + endpointLabel(edge.from, edge.fromEndpoint) + (edge.bidirectional ? ' &harr; ' : ' &rarr; ') + endpointLabel(edge.to, edge.toEndpoint) + '</small></button></li>').join('')
+          : '<li class="list-empty">No connections for this node.</li>';
         ids.edgeList.querySelectorAll('button').forEach(button => button.addEventListener('click', () => selectEdge(edges.find(edge => edge.id === button.dataset.id))));
         const options = visibleNodes().map(node => '<option value="' + escapeHtml(node.id) + '">' + escapeHtml(node.label) + '</option>').join('');
         ids.edgeFrom.innerHTML = options;
@@ -338,8 +375,21 @@
         ids.edgeSide.disabled = !joinsRoomToCorridor && !joinsCorridors;
         ids.edgeBearing.disabled = joinsRoomToCorridor || (joinsCorridors && Boolean(edge.side));
       }
-      function selectNode(node) { clearTimeout(state.labelCommitTimer); state.selectedNode = node; state.nodeMessage = ''; renderAll(); }
+      function selectNode(node) {
+        clearTimeout(state.labelCommitTimer);
+        state.selectedNode = node;
+        state.nodeMessage = '';
+        revealNodeInTree(node);
+        state.selectedEdge = relatedEdges(node)[0] || null;
+        renderAll();
+      }
       function selectEdge(edge) { state.selectedEdge = edge; renderEdgeList(); renderEdgeForm(); }
+
+      function toggleNodeChildren(nodeId) {
+        if (state.expandedNodeIds.has(nodeId)) state.expandedNodeIds.delete(nodeId);
+        else state.expandedNodeIds.add(nodeId);
+        renderNodeList();
+      }
 
       function updateSelectedNode(event) {
         clearTimeout(state.labelCommitTimer);
@@ -486,7 +536,7 @@
         const point = { x: round((state.bounds?.minX || 0) + (state.bounds?.width || 0) / 2), y: round((state.bounds?.minY || 0) + (state.bounds?.height || 0) / 2) };
         createNodeAt(state.createKind || 'room', point);
       }
-      function deleteNode() { const node = state.selectedNode; if (!node || !confirm('Delete ' + node.label + '? This also removes connected same-floor edges.')) return; state.level.nodes = state.level.nodes.filter(candidate => candidate !== node); state.level.edges = state.level.edges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
+      function deleteNode() { const node = state.selectedNode; if (!node || !confirm('Delete ' + node.label + '? This also removes connected same-floor edges.')) return; state.level.nodes = state.level.nodes.filter(candidate => candidate !== node); state.level.edges = state.level.edges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.from !== node.id && edge.to !== node.id); state.expandedNodeIds.delete(node.id); state.selectedNode = visibleNodes()[0] || null; state.selectedEdge = relatedEdges()[0] || null; renderAll(); }
       function addEdge() { const nodes = visibleNodes(); if (nodes.length < 2) return; const from = state.selectedNode?.id || nodes[0].id; const to = nodes.find(node => node.id !== from)?.id || from; const edge = { id: uniqueId('new-edge'), from, to, weight: 4, bearing: 90, kind: 'walk', bidirectional: true }; applyDefaultEndpoints(edge, nodes); state.level.edges.push(edge); state.selectedEdge = edge; renderAll(); }
       function deleteEdge() { const edge = state.selectedEdge; if (!edge || !confirm('Delete edge ' + edge.id + '?')) return; state.level.edges = state.level.edges.filter(candidate => candidate !== edge); state.selectedEdge = visibleEdges()[0] || null; renderAll(); }
       function moveSelectedNodeFromMap(event) {
@@ -532,6 +582,7 @@
         event.preventDefault();
         event.stopPropagation();
         state.draggingNode = node;
+        state.dragStartPoint = { x: event.clientX, y: event.clientY };
         state.selectedNode = node;
         state.movedNode = false;
         ids.mapOverlay.setPointerCapture?.(event.pointerId);
@@ -539,10 +590,14 @@
 
       function dragSelectedNode(event) {
         if (!state.draggingNode) return;
+        if (!state.movedNode) {
+          const distance = Math.hypot(event.clientX - state.dragStartPoint.x, event.clientY - state.dragStartPoint.y);
+          if (distance < 4) return;
+          state.movedNode = true;
+        }
         const point = mapPointFromEvent(event);
         if (state.draggingNode.kind === 'room') updateRoomPlacementFromPoint(state.draggingNode, point);
         else updateCorridorPlacementFromPoint(state.draggingNode, point);
-        state.movedNode = true;
         renderAll();
       }
 
@@ -766,6 +821,7 @@
         if (!state.draggingNode) return;
         ids.mapOverlay.releasePointerCapture?.(event.pointerId);
         state.draggingNode = null;
+        state.dragStartPoint = null;
       }
 
       function createNodeAt(kind, point) {
@@ -780,6 +836,7 @@
         if (kind === 'room') connectRoomToNearestCorridor(node, point);
         if (kind === 'corridor') connectCorridorToNearestCorridor(node, point);
         if (state.building !== 'all') state.building = building;
+        revealNodeInTree(node);
         renderAll();
       }
 
@@ -815,7 +872,11 @@
         }
         updateCorridorPlacementFromPoint(corridor, point);
       }
-      function renameNodeReferences(oldId, newId) { for (const level of state.data.levels) for (const edge of level.edges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } for (const edge of state.crossLevelEdges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; } }
+      function renameNodeReferences(oldId, newId) {
+        for (const level of state.data.levels) for (const edge of level.edges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; }
+        for (const edge of state.crossLevelEdges) { if (edge.from === oldId) edge.from = newId; if (edge.to === oldId) edge.to = newId; }
+        if (state.expandedNodeIds.delete(oldId)) state.expandedNodeIds.add(newId);
+      }
       function moveNodeToLevel(node) {
         const targetLevel = state.data.levels.find(level => level.level === node.floor);
         if (!targetLevel) return;
@@ -903,24 +964,23 @@
         const groups = connectedBuildingGroups(nodes, visibleEdges());
         if (state.building === 'all') {
           layoutCampusBuildings(groups, state.level.level, layouts);
-          applyRoomPlacements(nodes, visibleEdges(), layouts);
-          state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
-          return layouts;
-        }
-        let cursorX = 0, cursorY = 0, rowHeight = 0;
-        const maxRowWidth = Infinity;
-        for (const [building, groupNodes] of groups) {
-          const size = buildingSchematicSize(groupNodes);
-          if (cursorX > 0 && cursorX + size.width > maxRowWidth) {
-            cursorX = 0;
-            cursorY += rowHeight + 22;
-            rowHeight = 0;
+        } else {
+          let cursorX = 0, cursorY = 0, rowHeight = 0;
+          const maxRowWidth = Infinity;
+          for (const [, groupNodes] of groups) {
+            const size = buildingSchematicSize(groupNodes);
+            if (cursorX > 0 && cursorX + size.width > maxRowWidth) {
+              cursorX = 0;
+              cursorY += rowHeight + 22;
+              rowHeight = 0;
+            }
+            layoutBuildingNodes(groupNodes, cursorX, cursorY, size, layouts);
+            cursorX += size.width + 22;
+            rowHeight = Math.max(rowHeight, size.height);
           }
-          layoutBuildingNodes(groupNodes, cursorX, cursorY, size, layouts);
-          cursorX += size.width + 22;
-          rowHeight = Math.max(rowHeight, size.height);
+          applyCorridorPlacements(nodes, visibleEdges(), layouts);
         }
-        applyCorridorPlacements(nodes, visibleEdges(), layouts);
+        applyEquipmentPlacements(nodes, layouts);
         applyRoomPlacements(nodes, visibleEdges(), layouts);
         state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
         return layouts;
@@ -1123,6 +1183,72 @@
         }
       }
 
+      function applyEquipmentPlacements(nodes, layouts) {
+        for (const [, buildingNodes] of groupNodesByBuilding(nodes)) {
+          const orientation = buildingOrientation(buildingNodes);
+          const axisValue = node => orientation === 'vertical' ? node.y : node.x;
+          const corridors = buildingNodes
+            .filter(node => node.kind === 'corridor')
+            .sort((left, right) => axisValue(left) - axisValue(right));
+          const equipmentGroups = new Map();
+
+          for (const node of buildingNodes.filter(candidate => ['stairs', 'elevator'].includes(candidate.kind))) {
+            const nodeAxis = axisValue(node);
+            const before = corridors.filter(corridor => axisValue(corridor) <= nodeAxis).at(-1);
+            const after = corridors.find(corridor => axisValue(corridor) > nodeAxis);
+            if (!before || !after) continue;
+            const key = before.id + '|' + after.id;
+            equipmentGroups.set(key, [...(equipmentGroups.get(key) || []), node]);
+          }
+
+          for (const [key, equipment] of equipmentGroups) {
+            const [firstId, secondId] = key.split('|');
+            const firstLayout = layouts.get(firstId), secondLayout = layouts.get(secondId);
+            if (firstLayout && secondLayout) reserveEquipmentGap(firstLayout, secondLayout, equipment, layouts, orientation);
+          }
+        }
+      }
+
+      function reserveEquipmentGap(firstLayout, secondLayout, equipment, layouts, orientation) {
+        const vertical = orientation === 'vertical';
+        const axisKey = vertical ? 'y' : 'x';
+        const crossAxisKey = vertical ? 'x' : 'y';
+        const spanKey = vertical ? 'height' : 'width';
+        const beforeLayout = firstLayout[axisKey] <= secondLayout[axisKey] ? firstLayout : secondLayout;
+        const afterLayout = beforeLayout === firstLayout ? secondLayout : firstLayout;
+        const itemGap = 2;
+        const minimumCorridorSpan = 8;
+        const equipmentLayouts = [...equipment]
+          .sort((left, right) => (vertical ? left.y - right.y : left.x - right.x))
+          .map(node => layouts.get(node.id))
+          .filter(Boolean);
+        if (!equipmentLayouts.length) return;
+
+        const equipmentSpan = equipmentLayouts.reduce((total, layout) => total + layout[spanKey], 0) + itemGap * (equipmentLayouts.length - 1);
+        const reservedSpan = equipmentSpan + itemGap * 2;
+        const minimumDistance = reservedSpan + minimumCorridorSpan;
+        const currentDistance = afterLayout[axisKey] - beforeLayout[axisKey];
+        if (currentDistance < minimumDistance) {
+          const adjustment = (minimumDistance - currentDistance) / 2;
+          beforeLayout[axisKey] -= adjustment;
+          afterLayout[axisKey] += adjustment;
+        }
+
+        const midpoint = (beforeLayout[axisKey] + afterLayout[axisKey]) / 2;
+        const crossAxis = (beforeLayout[crossAxisKey] + afterLayout[crossAxisKey]) / 2;
+        let cursor = midpoint - equipmentSpan / 2;
+        for (const layout of equipmentLayouts) {
+          layout[axisKey] = round(cursor + layout[spanKey] / 2);
+          layout[crossAxisKey] = round(crossAxis);
+          cursor += layout[spanKey] + itemGap;
+        }
+
+        const beforeSpace = midpoint - reservedSpan / 2 - beforeLayout[axisKey];
+        const afterSpace = afterLayout[axisKey] - midpoint - reservedSpan / 2;
+        beforeLayout[spanKey] = Math.min(beforeLayout[spanKey], Math.max(minimumCorridorSpan, beforeSpace * 2));
+        afterLayout[spanKey] = Math.min(afterLayout[spanKey], Math.max(minimumCorridorSpan, afterSpace * 2));
+      }
+
       function buildingBoundsFromLayouts(groups, layouts) {
         const bounds = new Map();
         for (const [building, nodes] of groups) {
@@ -1271,6 +1397,71 @@
 
       function visibleNodes() { return state.level.nodes.filter(node => state.building === 'all' || buildingKey(node) === state.building); }
       function visibleEdges() { const nodeIds = new Set(visibleNodes().map(node => node.id)); return state.level.edges.filter(edge => nodeIds.has(edge.from) && nodeIds.has(edge.to)); }
+      function relatedEdges(node = state.selectedNode) {
+        if (!node) return [];
+        return visibleEdges().filter(edge => edge.from === node.id || edge.to === node.id);
+      }
+      function buildNodeHierarchy(nodes, edges) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        const parentByChild = new Map();
+        const setParent = (parent, child) => {
+          if (!parent || !child || parent === child || parentByChild.has(child.id)) return;
+          parentByChild.set(child.id, parent.id);
+        };
+
+        for (const edge of edges) {
+          const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
+          if (!from || !to) continue;
+          const roomPlacement = roomCorridorDetails(edge, nodeById);
+          if (roomPlacement) {
+            setParent(roomPlacement.corridor, roomPlacement.room);
+            continue;
+          }
+          if (from.kind === 'corridor' && to.kind === 'corridor') {
+            if (edge.side && edge.toEndpoint) setParent(from, to);
+            continue;
+          }
+          if (from.kind === 'corridor') setParent(from, to);
+          else if (to.kind === 'corridor') setParent(to, from);
+        }
+
+        const children = new Map(nodes.map(node => [node.id, []]));
+        for (const [childId, parentId] of parentByChild) {
+          const child = nodeById.get(childId);
+          if (child) children.get(parentId)?.push(child);
+        }
+        const order = new Map(nodes.map((node, index) => [node.id, index]));
+        const sortNodes = (left, right) => {
+          const leftRank = left.kind === 'corridor' ? 0 : left.kind === 'room' ? 2 : 1;
+          const rightRank = right.kind === 'corridor' ? 0 : right.kind === 'room' ? 2 : 1;
+          return leftRank - rightRank || order.get(left.id) - order.get(right.id);
+        };
+        for (const childNodes of children.values()) childNodes.sort(sortNodes);
+        const roots = nodes.filter(node => !parentByChild.has(node.id)).sort(sortNodes);
+        return { roots, children, parentByChild, nodeById };
+      }
+      function revealNodeInTree(node) {
+        if (!node) return;
+        const nodes = visibleNodes();
+        const edges = visibleEdges();
+        const hierarchy = buildNodeHierarchy(nodes, edges);
+        const revealIds = new Set([node.id]);
+        const selectedBuilding = buildingKey(node);
+        for (const candidate of nodes) {
+          if (buildingKey(candidate) === selectedBuilding && ['stairs', 'elevator'].includes(candidate.kind)) revealIds.add(candidate.id);
+        }
+
+        for (const revealId of revealIds) {
+          if (hierarchy.children.get(revealId)?.length) state.expandedNodeIds.add(revealId);
+          let parentId = hierarchy.parentByChild.get(revealId);
+          const visited = new Set();
+          while (parentId && !visited.has(parentId)) {
+            visited.add(parentId);
+            state.expandedNodeIds.add(parentId);
+            parentId = hierarchy.parentByChild.get(parentId);
+          }
+        }
+      }
       function uniqueConnections(edges) { const seen = new Set(); return edges.filter(edge => { const key = [edge.from, edge.to].sort().join('|'); if (seen.has(key)) return false; seen.add(key); return true; }); }
       function isPathNode(node) { return ['corridor', 'stairs', 'elevator', 'door'].includes(node.kind); }
       function isRoomCorridorEdge(edge, nodeById) { return Boolean(roomCorridorDetails(edge, nodeById)); }

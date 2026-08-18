@@ -270,7 +270,7 @@
       }
 
       function renderEditableNode(node) {
-        const group = svg('g', { class: 'graph-node graph-node-' + node.kind + (node === state.selectedNode ? ' selected' : '') });
+        const group = svg('g', { class: 'graph-node graph-node-' + node.kind + (node === state.selectedNode ? ' selected' : ''), 'data-node-id': node.id });
         const layout = state.displayNodes.get(node.id);
         const point = displayPoint(node);
         const width = layout?.width || nodeRectWidth(node), height = layout?.height || 5.8;
@@ -288,7 +288,7 @@
         group.append(text);
         group.addEventListener('pointerdown', event => startDraggingNode(event, node));
         group.addEventListener('click', event => {
-          if (state.createKind) return;
+          if (state.createKind || isDraggableNode(node)) return;
           event.stopPropagation();
           selectNode(node);
         });
@@ -578,7 +578,7 @@
       }
 
       function startDraggingNode(event, node) {
-        if (state.createKind || (node.kind !== 'room' && node.kind !== 'corridor')) return;
+        if (state.createKind || !isDraggableNode(node)) return;
         event.preventDefault();
         event.stopPropagation();
         state.draggingNode = node;
@@ -819,9 +819,12 @@
 
       function finishDraggingNode(event) {
         if (!state.draggingNode) return;
+        const node = state.draggingNode;
+        const moved = state.movedNode;
         ids.mapOverlay.releasePointerCapture?.(event.pointerId);
         state.draggingNode = null;
         state.dragStartPoint = null;
+        if (!moved) selectNode(node);
       }
 
       function createNodeAt(kind, point) {
@@ -1463,6 +1466,7 @@
         }
       }
       function uniqueConnections(edges) { const seen = new Set(); return edges.filter(edge => { const key = [edge.from, edge.to].sort().join('|'); if (seen.has(key)) return false; seen.add(key); return true; }); }
+      function isDraggableNode(node) { return node.kind === 'room' || node.kind === 'corridor'; }
       function isPathNode(node) { return ['corridor', 'stairs', 'elevator', 'door'].includes(node.kind); }
       function isRoomCorridorEdge(edge, nodeById) { return Boolean(roomCorridorDetails(edge, nodeById)); }
       function roomCorridorDetails(edge, nodeById) {

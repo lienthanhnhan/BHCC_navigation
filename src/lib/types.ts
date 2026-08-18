@@ -6,6 +6,7 @@ export type NodeKind =
   | "door";
 
 export type CorridorEndpoint = "start" | "end";
+export type CorridorAttachment = "left" | "right" | "start" | "end";
 
 export interface BuildingNode {
   id: string;
@@ -29,6 +30,10 @@ export interface BuildingEdge {
   bidirectional?: boolean;
   fromEndpoint?: CorridorEndpoint;
   toEndpoint?: CorridorEndpoint;
+  /** Position along the parent corridor, from 0 at start to 100 at end. */
+  corridorOffset?: number;
+  /** Wall or cap used by a room door, or by the child corridor in a corridor-to-corridor edge. */
+  side?: CorridorAttachment;
   label?: string;
 }
 

@@ -1,4 +1,4 @@
-import type { BuildingNode, CorridorEndpoint } from "../lib/types";
+import type { BuildingEdge, BuildingNode, CorridorEndpoint } from "../lib/types";
 
 export interface Point {
   x: number;
@@ -27,7 +27,7 @@ type BuildingEntry = {
   bounds?: Rect;
 };
 
-export function layoutCampusMap(nodes: BuildingNode[], floor: number): CampusLayout {
+export function layoutCampusMap(nodes: BuildingNode[], edges: BuildingEdge[], floor: number): CampusLayout {
   const groups = [...groupNodesByBuilding(nodes)];
   const layouts = new Map<string, NodeLayout>();
   const entries: BuildingEntry[] = groups.map(([building, buildingNodes]) => {
@@ -35,6 +35,8 @@ export function layoutCampusMap(nodes: BuildingNode[], floor: number): CampusLay
     layoutBuildingNodes(buildingNodes, 0, 0, size, layouts);
     return { building, nodes: buildingNodes };
   });
+
+  applyCorridorPlacements(nodes, edges, layouts);
 
   const measuredBounds = buildingBounds(groups, layouts);
   for (const entry of entries) entry.bounds = measuredBounds.get(entry.building);
@@ -45,9 +47,93 @@ export function layoutCampusMap(nodes: BuildingNode[], floor: number): CampusLay
     if (!entry.bounds || !target) continue;
     translateBuilding(entry.nodes, layouts, target.x - entry.bounds.x, target.y - entry.bounds.y);
   }
+  applyRoomPlacements(nodes, edges, layouts);
 
   const buildings = buildingBounds(groups, layouts);
   return { nodes: layouts, buildings, bounds: contentBounds(layouts, buildings) };
+}
+
+function applyRoomPlacements(nodes: BuildingNode[], edges: BuildingEdge[], layouts: Map<string, NodeLayout>): void {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  for (const edge of edges) {
+    const placement = roomCorridorDetails(edge, nodeById);
+    if (!placement || typeof edge.corridorOffset !== "number" || !edge.side) continue;
+    const corridorLayout = layouts.get(placement.corridor.id);
+    const roomLayout = layouts.get(placement.room.id);
+    if (!corridorLayout || !roomLayout) continue;
+
+    const offset = clamp(edge.corridorOffset, 0, 100) / 100;
+    const orientation = corridorOrientation(placement.corridor);
+    if (edge.side === "start" || edge.side === "end") {
+      const direction = edge.side === "start" ? -1 : 1;
+      if (orientation === "vertical") {
+        roomLayout.x = corridorLayout.x;
+        roomLayout.y = corridorLayout.y + direction * (corridorLayout.height / 2 + roomLayout.height / 2 + 4);
+      } else {
+        roomLayout.x = corridorLayout.x + direction * (corridorLayout.width / 2 + roomLayout.width / 2 + 4);
+        roomLayout.y = corridorLayout.y;
+      }
+    } else if (orientation === "vertical") {
+      roomLayout.x = corridorLayout.x + (edge.side === "left" ? 17 : -17);
+      roomLayout.y = corridorLayout.y - corridorLayout.height / 2 + corridorLayout.height * offset;
+    } else {
+      roomLayout.x = corridorLayout.x - corridorLayout.width / 2 + corridorLayout.width * offset;
+      roomLayout.y = corridorLayout.y + (edge.side === "left" ? -13 : 13);
+    }
+  }
+}
+
+function applyCorridorPlacements(nodes: BuildingNode[], edges: BuildingEdge[], layouts: Map<string, NodeLayout>): void {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const placements = edges.filter((edge) => {
+    const from = nodeById.get(edge.from);
+    const to = nodeById.get(edge.to);
+    return from?.kind === "corridor"
+      && to?.kind === "corridor"
+      && buildingKey(from) === buildingKey(to)
+      && typeof edge.corridorOffset === "number"
+      && Boolean(edge.side)
+      && Boolean(edge.toEndpoint);
+  });
+  const childIds = new Set(placements.map((edge) => edge.to));
+  const positioned = new Set(
+    nodes.filter((node) => node.kind === "corridor" && !childIds.has(node.id)).map((node) => node.id),
+  );
+  const pending = [...placements];
+
+  for (let pass = 0; pass < placements.length && pending.length; pass += 1) {
+    for (let index = pending.length - 1; index >= 0; index -= 1) {
+      const edge = pending[index];
+      if (!positioned.has(edge.from)) continue;
+      const parent = nodeById.get(edge.from);
+      const child = nodeById.get(edge.to);
+      const parentLayout = layouts.get(edge.from);
+      const childLayout = layouts.get(edge.to);
+      if (!parent || !child || !parentLayout || !childLayout || !edge.toEndpoint) continue;
+
+      const attachment = corridorAttachmentPoint(parent, edge, parentLayout);
+      const childDirection = edge.toEndpoint === "start" ? 1 : -1;
+      if (corridorOrientation(child) === "vertical") {
+        childLayout.x = attachment.x;
+        childLayout.y = attachment.y + childDirection * childLayout.height / 2;
+      } else {
+        childLayout.x = attachment.x + childDirection * childLayout.width / 2;
+        childLayout.y = attachment.y;
+      }
+      childLayout.x = round(childLayout.x);
+      childLayout.y = round(childLayout.y);
+      positioned.add(child.id);
+      pending.splice(index, 1);
+    }
+  }
+}
+
+function roomCorridorDetails(edge: BuildingEdge, nodeById: Map<string, BuildingNode>): { corridor: BuildingNode; room: BuildingNode } | undefined {
+  const from = nodeById.get(edge.from);
+  const to = nodeById.get(edge.to);
+  const corridor = from?.kind === "corridor" ? from : to?.kind === "corridor" ? to : undefined;
+  const room = from?.kind === "room" ? from : to?.kind === "room" ? to : undefined;
+  return corridor && room ? { corridor, room } : undefined;
 }
 
 export function buildingKey(node: BuildingNode): string {
@@ -80,13 +166,33 @@ export function corridorSidePoint(corridor: BuildingNode, target: Point, layout:
   if (corridorOrientation(corridor) === "vertical") {
     return {
       x: nodeLayout.x + (target.x < nodeLayout.x ? -nodeLayout.width / 2 : nodeLayout.width / 2),
-      y: clamp(target.y, nodeLayout.y - nodeLayout.height / 2 + 2, nodeLayout.y + nodeLayout.height / 2 - 2),
+      y: clamp(target.y, nodeLayout.y - nodeLayout.height / 2, nodeLayout.y + nodeLayout.height / 2),
     };
   }
 
   return {
-    x: clamp(target.x, nodeLayout.x - nodeLayout.width / 2 + 2, nodeLayout.x + nodeLayout.width / 2 - 2),
+    x: clamp(target.x, nodeLayout.x - nodeLayout.width / 2, nodeLayout.x + nodeLayout.width / 2),
     y: nodeLayout.y + (target.y < nodeLayout.y ? -nodeLayout.height / 2 : nodeLayout.height / 2),
+  };
+}
+
+export function corridorAttachmentPoint(corridor: BuildingNode, edge: BuildingEdge, nodeLayout: NodeLayout): Point {
+  const offset = clamp(edge.corridorOffset ?? 50, 0, 100) / 100;
+  if (edge.side === "start" || edge.side === "end") {
+    const direction = edge.side === "start" ? -1 : 1;
+    return corridorOrientation(corridor) === "vertical"
+      ? { x: nodeLayout.x, y: nodeLayout.y + direction * nodeLayout.height / 2 }
+      : { x: nodeLayout.x + direction * nodeLayout.width / 2, y: nodeLayout.y };
+  }
+  if (corridorOrientation(corridor) === "vertical") {
+    return {
+      x: nodeLayout.x + (edge.side === "left" ? nodeLayout.width / 2 : -nodeLayout.width / 2),
+      y: nodeLayout.y - nodeLayout.height / 2 + nodeLayout.height * offset,
+    };
+  }
+  return {
+    x: nodeLayout.x - nodeLayout.width / 2 + nodeLayout.width * offset,
+    y: nodeLayout.y + (edge.side === "left" ? -nodeLayout.height / 2 : nodeLayout.height / 2),
   };
 }
 
@@ -213,7 +319,8 @@ function layoutBuildingNodes(nodes: BuildingNode[], originX: number, originY: nu
     const axis = pathNodes.length > 1 ? axisStart + index * pathGap : (axisStart + axisEnd) / 2;
     const point = orientation === "vertical" ? { x: corridorX, y: axis } : { x: axis, y: corridorY };
     const corridorLength = pathNodes.length > 1 ? Math.max(14, pathGap - 2) : Math.max(24, axisEnd - axisStart);
-    const nodeDimensions = node.kind === "corridor" ? corridorSize(orientation, corridorLength) : nodeSize(node);
+    const nodeOrientation = node.kind === "corridor" ? corridorOrientation(node) : orientation;
+    const nodeDimensions = node.kind === "corridor" ? corridorSize(nodeOrientation, corridorLength) : nodeSize(node);
     layouts.set(node.id, { node, x: round(point.x), y: round(point.y), ...nodeDimensions });
   });
 
@@ -277,11 +384,8 @@ function buildingSchematicSize(nodes: BuildingNode[]): Rect {
 }
 
 function buildingOrientation(nodes: BuildingNode[]): Orientation {
-  const explicit = nodes.filter((node) => node.kind === "corridor" && node.orientation).map((node) => node.orientation);
-  if (explicit.length) {
-    const verticalCount = explicit.filter((value) => value === "vertical").length;
-    return verticalCount > explicit.length / 2 ? "vertical" : "horizontal";
-  }
+  const backbone = nodes.find((node) => node.kind === "corridor" && node.orientation);
+  if (backbone?.orientation) return backbone.orientation;
 
   const bearings = nodes
     .filter((node) => node.kind === "room" && Number.isFinite(node.exitBearing))

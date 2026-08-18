@@ -2,6 +2,7 @@ import type { BuildingEdge, BuildingNode, PathResult } from "../lib/types";
 import {
   buildingKey,
   connectionPoint,
+  corridorAttachmentPoint,
   corridorOrientation,
   corridorSidePoint,
   isPathNode,
@@ -30,7 +31,7 @@ export function renderSignMap({ map, route, startId, goalId }: SignMapOptions): 
     return `<div class="empty-map">No map data is available for ${escapeHtml(map.label)}.</div>`;
   }
 
-  const layout = layoutCampusMap(map.nodes, map.level);
+  const layout = layoutCampusMap(map.nodes, map.edges, map.level);
   const nodeById = new Map(map.nodes.map((node) => [node.id, node]));
   const routeNodeIds = new Set(route?.nodes.filter((node) => node.floor === map.level).map((node) => node.id) ?? []);
   const routeEdgeIds = new Set(route?.edges.filter((edge) => isEdgeOnFloor(edge, nodeById)).map((edge) => edge.id) ?? []);
@@ -187,7 +188,11 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
   }
 
   if (isPathNode(from) && isPathNode(to)) {
-    return linePath(connectionPoint(from, edge.fromEndpoint, layout), connectionPoint(to, edge.toEndpoint, layout));
+    const fromLayout = layout.nodes.get(from.id);
+    const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && fromLayout
+      ? corridorAttachmentPoint(from, edge, fromLayout)
+      : connectionPoint(from, edge.fromEndpoint, layout);
+    return linePath(fromPoint, connectionPoint(to, edge.toEndpoint, layout));
   }
 
   const pathNode = isPathNode(from) ? from : to;
@@ -198,8 +203,11 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
 
   const roomPoint = { x: roomLayout.x, y: roomLayout.y };
   const pathPoint = pathNode.kind === "corridor"
-    ? corridorSidePoint(pathNode, roomPoint, layout)
+    ? edge.side === "start" || edge.side === "end"
+      ? connectionPoint(pathNode, edge.side, layout)
+      : corridorSidePoint(pathNode, roomPoint, layout)
     : { x: pathLayout.x, y: pathLayout.y };
+  if (edge.side === "start" || edge.side === "end") return linePath(pathPoint, roomPoint);
   const orientation = pathNode.kind === "corridor" ? corridorOrientation(pathNode) : "horizontal";
   return orthogonalPath(pathPoint, roomPoint, orientation);
 }

@@ -1,5 +1,7 @@
 import type { BuildingGraph } from "./types";
 
+const editorDatasetStorageKey = "bhcc-map-editor-dataset-v4";
+
 export interface FloorMapData {
   level: number;
   originalFile: string;
@@ -32,14 +34,42 @@ export async function loadBuildingDataset(): Promise<BuildingDataset> {
     throw new Error(`Could not load building data: ${response.status}`);
   }
 
-  const dataset = await response.json() as BuildingDatasetFile;
-  return { ...dataset, graph: buildGraph(dataset) };
+  const baseDataset = await response.json() as BuildingDatasetFile;
+  const savedDataset = readSavedDataset(baseDataset.schemaVersion);
+
+  if (savedDataset) {
+    try {
+      return { ...savedDataset, graph: buildGraph(savedDataset) };
+    } catch {
+      window.localStorage.removeItem(editorDatasetStorageKey);
+    }
+  }
+
+  return { ...baseDataset, graph: buildGraph(baseDataset) };
+}
+
+function readSavedDataset(schemaVersion: number): BuildingDatasetFile | undefined {
+  try {
+    const savedJson = window.localStorage.getItem(editorDatasetStorageKey);
+    if (!savedJson) return undefined;
+
+    const dataset = JSON.parse(savedJson) as BuildingDatasetFile;
+    if (dataset.schemaVersion !== schemaVersion || !Array.isArray(dataset.levels)) {
+      window.localStorage.removeItem(editorDatasetStorageKey);
+      return undefined;
+    }
+    return dataset;
+  } catch {
+    window.localStorage.removeItem(editorDatasetStorageKey);
+    return undefined;
+  }
 }
 
 function buildGraph(dataset: BuildingDatasetFile): BuildingGraph {
   const nodes = dataset.levels.flatMap((level) => level.nodes);
   const edges = [...dataset.levels.flatMap((level) => level.edges), ...dataset.crossLevelEdges];
   const nodeIds = new Set<string>();
+  const nodeLabels = new Set<string>();
 
   for (const level of dataset.levels) {
     for (const node of level.nodes) {
@@ -49,7 +79,15 @@ function buildGraph(dataset: BuildingDatasetFile): BuildingGraph {
       if (nodeIds.has(node.id)) {
         throw new Error(`Duplicate node ID: ${node.id}`);
       }
+      const normalizedLabel = node.label.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
+      if (!normalizedLabel) {
+        throw new Error(`${node.id} is missing a label.`);
+      }
+      if (nodeLabels.has(normalizedLabel)) {
+        throw new Error(`Duplicate node label: ${node.label}`);
+      }
       nodeIds.add(node.id);
+      nodeLabels.add(normalizedLabel);
     }
   }
 

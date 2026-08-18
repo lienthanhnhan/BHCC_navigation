@@ -123,7 +123,7 @@
     </main>
     <script type="module">
       const datasetStorageKey = 'bhcc-map-editor-dataset-v4';
-      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', labelCommitTimer: null, autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
+      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
       const $ = (id) => document.getElementById(id);
       const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-corridor-offset','edge-side','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','apply-changes','reset-changes','export-json','save-status'].map(id => [camel(id), $(id)]));
 
@@ -147,8 +147,10 @@
         ids.exportJson.addEventListener('click', exportJson);
         ids.nodeForm.addEventListener('change', updateSelectedNode);
         ids.nodeForm.addEventListener('submit', event => { event.preventDefault(); updateSelectedNode(); });
-        ids.nodeLabel.addEventListener('input', scheduleNodeLabelUpdate);
+        ids.nodeLabel.addEventListener('input', previewAutomaticNodeId);
+        ids.nodeLabel.addEventListener('blur', commitNodeLabelOnBlur);
         ids.nodeId.addEventListener('input', disableAutomaticNodeId);
+        document.addEventListener('keydown', handleEditorKeydown);
         ids.edgeForm.addEventListener('input', updateSelectedEdge);
         ids.shapePalette.querySelectorAll('.shape-tool').forEach(button => {
           button.addEventListener('click', () => setCreateKind(button.dataset.kind));
@@ -376,7 +378,6 @@
         ids.edgeBearing.disabled = joinsRoomToCorridor || (joinsCorridors && Boolean(edge.side));
       }
       function selectNode(node) {
-        clearTimeout(state.labelCommitTimer);
         state.selectedNode = node;
         state.nodeMessage = '';
         revealNodeInTree(node);
@@ -391,14 +392,29 @@
         renderNodeList();
       }
 
+      function handleEditorKeydown(event) {
+        if (event.key !== 'Escape' || (!state.selectedNode && !state.createKind)) return;
+        event.preventDefault();
+        state.selectedNode = null;
+        state.selectedEdge = null;
+        state.createKind = null;
+        state.draggingNode = null;
+        state.dragStartPoint = null;
+        state.movedNode = false;
+        state.nodeMessage = '';
+        renderAll();
+      }
+
       function updateSelectedNode(event) {
-        clearTimeout(state.labelCommitTimer);
         const node = state.selectedNode;
         if (!node) return;
         const oldId = node.id;
         const oldFloor = node.floor;
-        const requestedId = ids.nodeId.value.trim();
         const requestedLabel = ids.nodeLabel.value.trim();
+        const requestedId = state.autoIdNodes.has(node) && event?.target === ids.nodeLabel
+          ? generatedNodeId(node, requestedLabel)
+          : ids.nodeId.value.trim();
+        ids.nodeId.value = requestedId;
         if (!requestedId) return rejectNodeChange('ID is required.');
         if (!requestedLabel) return rejectNodeChange('Label is required.');
         const duplicateId = findNodeIdentityConflict(requestedId, node, ['id']);
@@ -427,24 +443,17 @@
         if (state.building !== 'all' && buildingKey(node) !== state.building) state.building = buildingKey(node);
         renderAll();
       }
-      function scheduleNodeLabelUpdate() {
-        clearTimeout(state.labelCommitTimer);
+      function previewAutomaticNodeId() {
         const node = state.selectedNode;
-        state.labelCommitTimer = setTimeout(() => commitNodeLabel(node), 250);
+        if (node && state.autoIdNodes.has(node)) ids.nodeId.value = generatedNodeId(node, ids.nodeLabel.value);
+      }
+      function commitNodeLabelOnBlur(event) {
+        const node = state.selectedNode;
+        if (!node || (ids.nodeLabel.value.trim() === node.label && ids.nodeId.value.trim() === node.id)) return;
+        updateSelectedNode(event);
       }
       function disableAutomaticNodeId() {
         if (state.selectedNode) state.autoIdNodes.delete(state.selectedNode);
-      }
-      function commitNodeLabel(node) {
-        if (!node || state.selectedNode !== node) return;
-        const requestedLabel = ids.nodeLabel.value.trim();
-        if (!requestedLabel) return rejectNodeChange('Label is required.');
-        const duplicateLabel = findNodeIdentityConflict(requestedLabel, node, ['id', 'label', 'aliases']);
-        if (duplicateLabel) return rejectNodeChange('Label is already used by ' + duplicateLabel.label + '.');
-        if (state.autoIdNodes.has(node)) updateGeneratedNodeId(node, requestedLabel);
-        node.label = requestedLabel;
-        state.nodeMessage = '';
-        renderAll();
       }
       function rejectNodeChange(message) { state.nodeMessage = message; renderNodeForm(); renderNodeList(); }
       function findNodeIdentityConflict(value, currentNode, properties) {
@@ -457,14 +466,12 @@
         });
       }
 
-      function updateGeneratedNodeId(node, label) {
-        const oldId = node.id;
+      function generatedNodeId(node, label) {
         const building = buildingKey(node).toLowerCase();
         const labelId = idFromLabel(label);
         const hasBuildingPrefix = new RegExp('^' + building + '(?:-|\\d)').test(labelId);
         const baseId = hasBuildingPrefix ? labelId : building + '-' + labelId;
-        node.id = uniqueNodeId(baseId, node);
-        if (oldId !== node.id) renameNodeReferences(oldId, node.id);
+        return uniqueNodeId(baseId, node);
       }
 
       function idFromLabel(label) {
@@ -841,6 +848,15 @@
         if (state.building !== 'all') state.building = building;
         revealNodeInTree(node);
         renderAll();
+        focusNodeLabel(node);
+      }
+
+      function focusNodeLabel(node) {
+        requestAnimationFrame(() => {
+          if (state.selectedNode !== node) return;
+          ids.nodeLabel.focus();
+          ids.nodeLabel.select();
+        });
       }
 
       function connectRoomToNearestCorridor(room, point) {

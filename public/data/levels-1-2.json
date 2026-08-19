@@ -29,14 +29,6 @@
           "orientation": "horizontal"
         },
         {
-          "id": "n1-stairs",
-          "label": "N1 Stairs",
-          "kind": "stairs",
-          "floor": 1,
-          "x": -10,
-          "y": -4
-        },
-        {
           "id": "n1-elevator",
           "label": "N1 Elevator",
           "kind": "elevator",
@@ -49,18 +41,9 @@
           "label": "N1 West Corridor",
           "kind": "corridor",
           "floor": 1,
-          "x": -20,
-          "y": 0,
-          "orientation": "horizontal"
-        },
-        {
-          "id": "n1-east",
-          "label": "N1 East Corridor",
-          "kind": "corridor",
-          "floor": 1,
-          "x": 20,
-          "y": 0,
-          "orientation": "horizontal"
+          "x": -7.4,
+          "y": 14,
+          "orientation": "vertical"
         },
         {
           "id": "b1-core",
@@ -72,21 +55,12 @@
           "orientation": "vertical"
         },
         {
-          "id": "c1-core",
-          "label": "C1 Corridor",
-          "kind": "corridor",
-          "floor": 1,
-          "x": -16,
-          "y": -2,
-          "orientation": "vertical"
-        },
-        {
           "id": "d1-core",
           "label": "D1 Corridor",
           "kind": "corridor",
           "floor": 1,
-          "x": -2,
-          "y": -2,
+          "x": 2,
+          "y": 18,
           "orientation": "horizontal"
         },
         {
@@ -112,17 +86,17 @@
           "label": "N-102",
           "kind": "room",
           "floor": 1,
-          "x": -20,
-          "y": -4,
-          "exitBearing": 180,
+          "x": -3.4,
+          "y": 14,
+          "exitBearing": 270,
           "aliases": [
             "N102",
             "N-Building Security Desk"
           ]
         },
         {
-          "id": "N-111",
-          "label": "N-111",
+          "id": "N-115",
+          "label": "N-115",
           "kind": "room",
           "floor": 1,
           "x": -5,
@@ -136,7 +110,7 @@
         },
         {
           "id": "N-113",
-          "label": "N-113",
+          "label": "N-116",
           "kind": "room",
           "floor": 1,
           "x": 0,
@@ -148,8 +122,8 @@
           ]
         },
         {
-          "id": "N-114",
-          "label": "N-114",
+          "id": "N-117",
+          "label": "N-117",
           "kind": "room",
           "floor": 1,
           "x": 5,
@@ -162,37 +136,11 @@
           ]
         },
         {
-          "id": "N-116",
-          "label": "N-116",
+          "id": "G-141",
+          "label": "G-141",
           "kind": "room",
           "floor": 1,
-          "x": 16.7,
-          "y": -4,
-          "exitBearing": 180,
-          "aliases": [
-            "N116",
-            "Veterans Center"
-          ]
-        },
-        {
-          "id": "N-119",
-          "label": "N-119",
-          "kind": "room",
-          "floor": 1,
-          "x": 23.3,
-          "y": -4,
-          "exitBearing": 180,
-          "aliases": [
-            "N119",
-            "N-Building Lounge, 1st Floor"
-          ]
-        },
-        {
-          "id": "G-102",
-          "label": "G-102",
-          "kind": "room",
-          "floor": 1,
-          "x": 27.3,
+          "x": 31.7,
           "y": -1,
           "exitBearing": 180,
           "aliases": [
@@ -201,11 +149,11 @@
           ]
         },
         {
-          "id": "G-110",
-          "label": "G-110",
+          "id": "G-140",
+          "label": "G-140",
           "kind": "room",
           "floor": 1,
-          "x": 30.7,
+          "x": 33.8,
           "y": -1,
           "exitBearing": 180,
           "aliases": [
@@ -214,11 +162,11 @@
           ]
         },
         {
-          "id": "G-117",
-          "label": "G-117",
+          "id": "G-139",
+          "label": "G-139",
           "kind": "room",
           "floor": 1,
-          "x": 34,
+          "x": 36,
           "y": -1,
           "exitBearing": 180,
           "aliases": [
@@ -228,10 +176,10 @@
         },
         {
           "id": "G-130",
-          "label": "G-130",
+          "label": "G-138",
           "kind": "room",
           "floor": 1,
-          "x": 37.3,
+          "x": 38.2,
           "y": -1,
           "exitBearing": 180,
           "aliases": [
@@ -241,7 +189,7 @@
         },
         {
           "id": "G-229",
-          "label": "G-229",
+          "label": "G-112B",
           "kind": "room",
           "floor": 1,
           "x": 40.7,
@@ -254,11 +202,11 @@
         },
         {
           "id": "B-101",
-          "label": "B-101",
+          "label": "C-101",
           "kind": "room",
           "floor": 1,
           "x": -38,
-          "y": -5,
+          "y": -12.4,
           "exitBearing": 90,
           "aliases": [
             "B101",
@@ -266,12 +214,12 @@
           ]
         },
         {
-          "id": "B-118",
-          "label": "B-118",
+          "id": "b-sga",
+          "label": "SGA",
           "kind": "room",
           "floor": 1,
           "x": -38,
-          "y": -1,
+          "y": -10.8,
           "exitBearing": 90,
           "aliases": [
             "B118",
@@ -279,12 +227,12 @@
           ]
         },
         {
-          "id": "B-138",
-          "label": "B-138",
+          "id": "B-restroom",
+          "label": "Restroom",
           "kind": "room",
           "floor": 1,
           "x": -38,
-          "y": -9,
+          "y": -9.3,
           "exitBearing": 90,
           "aliases": [
             "B138",
@@ -298,7 +246,7 @@
           "kind": "room",
           "floor": 1,
           "x": -38,
-          "y": 3,
+          "y": -8.1,
           "exitBearing": 90,
           "aliases": [
             "B150"
@@ -309,7 +257,7 @@
           "label": "E-144",
           "kind": "room",
           "floor": 1,
-          "x": 14.7,
+          "x": 10.2,
           "y": 2,
           "exitBearing": 180,
           "aliases": [
@@ -322,7 +270,7 @@
           "label": "E-173B",
           "kind": "room",
           "floor": 1,
-          "x": 21.3,
+          "x": 21.1,
           "y": 2,
           "exitBearing": 180,
           "aliases": [
@@ -332,76 +280,1167 @@
           ]
         },
         {
-          "id": "C-102",
-          "label": "C-102",
+          "id": "b-corridor-1",
+          "label": "Corridor B-13X",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -20,
+          "y": 6.6,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-room-1",
+          "label": "B-133",
+          "kind": "room",
+          "floor": 1,
+          "x": -16.6,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-2",
+          "label": "B-136C",
+          "kind": "room",
+          "floor": 1,
+          "x": -15.4,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-3",
+          "label": "B-136D",
+          "kind": "room",
+          "floor": 1,
+          "x": -14.1,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-4",
+          "label": "B-136E",
+          "kind": "room",
+          "floor": 1,
+          "x": -12.9,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-5",
+          "label": "B-134",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.7,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-6",
+          "label": "B-135A",
+          "kind": "room",
+          "floor": 1,
+          "x": -10.5,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-7",
+          "label": "B-139",
+          "kind": "room",
+          "floor": 1,
+          "x": -10,
+          "y": 6.6,
+          "exitBearing": 270
+        },
+        {
+          "id": "b-room-8",
+          "label": "B-137H",
+          "kind": "room",
+          "floor": 1,
+          "x": -10.5,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-9",
+          "label": "B-137F",
+          "kind": "room",
+          "floor": 1,
+          "x": -13.3,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-10",
+          "label": "B-137D",
+          "kind": "room",
+          "floor": 1,
+          "x": -16.1,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-11",
+          "label": "B-137B",
+          "kind": "room",
+          "floor": 1,
+          "x": -18.8,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-14",
+          "label": "B-136B",
+          "kind": "room",
+          "floor": 1,
+          "x": -19.1,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-15",
+          "label": "B-136A",
+          "kind": "room",
+          "floor": 1,
+          "x": -20.4,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-16",
+          "label": "B-130",
+          "kind": "room",
+          "floor": 1,
+          "x": -22.6,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-17",
+          "label": "B-131",
+          "kind": "room",
+          "floor": 1,
+          "x": -21.5,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-18",
+          "label": "B-132",
+          "kind": "room",
+          "floor": 1,
+          "x": -17.8,
+          "y": 2.6,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-22",
+          "label": "B-137A",
+          "kind": "room",
+          "floor": 1,
+          "x": -20.1,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-23",
+          "label": "B-137C",
+          "kind": "room",
+          "floor": 1,
+          "x": -17.4,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-24",
+          "label": "B-137E",
+          "kind": "room",
+          "floor": 1,
+          "x": -14.7,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-25",
+          "label": "B-137G",
+          "kind": "room",
+          "floor": 1,
+          "x": -12,
+          "y": 10.6,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-corridor-2",
+          "label": "Corridor B-12X",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -20,
+          "y": -1.7,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-room-12",
+          "label": "B-124",
+          "kind": "room",
+          "floor": 1,
+          "x": -28,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-13",
+          "label": "B-125",
+          "kind": "room",
+          "floor": 1,
+          "x": -26.1,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-19",
+          "label": "B-123A",
+          "kind": "room",
+          "floor": 1,
+          "x": -24.3,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-20",
+          "label": "B-123B",
+          "kind": "room",
+          "floor": 1,
+          "x": -22.8,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-21",
+          "label": "B-126",
+          "kind": "room",
+          "floor": 1,
+          "x": -21.4,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-26",
+          "label": "B-127",
+          "kind": "room",
+          "floor": 1,
+          "x": -20.3,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-27",
+          "label": "B-128",
+          "kind": "room",
+          "floor": 1,
+          "x": -15.2,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-28",
+          "label": "B Room 28",
+          "kind": "room",
+          "floor": 1,
+          "x": -30,
+          "y": -7.6,
+          "exitBearing": 270
+        },
+        {
+          "id": "b-room-29",
+          "label": "B-122H",
+          "kind": "room",
+          "floor": 1,
+          "x": -17.4,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-30",
+          "label": "B-122I",
+          "kind": "room",
+          "floor": 1,
+          "x": -16.1,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-31",
+          "label": "B-122J",
+          "kind": "room",
+          "floor": 1,
+          "x": -14.5,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-32",
+          "label": "B-122K",
+          "kind": "room",
+          "floor": 1,
+          "x": -12.9,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-33",
+          "label": "B-122L",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.3,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-34",
+          "label": "B-123C",
+          "kind": "room",
+          "floor": 1,
+          "x": -18.8,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-35",
+          "label": "B-123D",
+          "kind": "room",
+          "floor": 1,
+          "x": -17.7,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-36",
+          "label": "B-123E",
+          "kind": "room",
+          "floor": 1,
+          "x": -16.4,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-37",
+          "label": "B-129A",
+          "kind": "room",
+          "floor": 1,
+          "x": -14.1,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-123f",
+          "label": "B-123F",
+          "kind": "room",
+          "floor": 1,
+          "x": -13.1,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-38",
+          "label": "B-123G",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.9,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-39",
+          "label": "B-123H",
+          "kind": "room",
+          "floor": 1,
+          "x": -10.9,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-40",
+          "label": "B-129",
+          "kind": "room",
+          "floor": 1,
+          "x": -10.3,
+          "y": 2.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-41",
+          "label": "B-122G",
+          "kind": "room",
+          "floor": 1,
+          "x": -18.7,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-42",
+          "label": "B-122F",
           "kind": "room",
           "floor": 1,
           "x": -20,
-          "y": -2,
-          "exitBearing": 90,
-          "aliases": [
-            "C102",
-            "C-Lounge"
-          ]
+          "y": -5.7,
+          "exitBearing": 180
         },
         {
-          "id": "D-113",
-          "label": "D-113",
+          "id": "b-room-43",
+          "label": "B-122E",
           "kind": "room",
           "floor": 1,
-          "x": -2,
-          "y": -6,
-          "exitBearing": 180,
-          "aliases": [
-            "D113",
-            "Academic Computing Center"
-          ]
+          "x": -21.5,
+          "y": -5.7,
+          "exitBearing": 180
         },
         {
-          "id": "D-201",
-          "label": "D-201",
+          "id": "b-room-44",
+          "label": "B-122D",
+          "kind": "room",
+          "floor": 1,
+          "x": -23.3,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-46",
+          "label": "B-122A",
+          "kind": "room",
+          "floor": 1,
+          "x": -27.5,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-47",
+          "label": "B-122B",
+          "kind": "room",
+          "floor": 1,
+          "x": -26.3,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-48",
+          "label": "B-122C",
+          "kind": "room",
+          "floor": 1,
+          "x": -25,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-corridor-3",
+          "label": "B Corridor 3",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -48,
+          "y": -5.3,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-room-45",
+          "label": "B-106",
+          "kind": "room",
+          "floor": 1,
+          "x": -41.3,
+          "y": -9.3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-49",
+          "label": "B-110",
+          "kind": "room",
+          "floor": 1,
+          "x": -40.5,
+          "y": -1.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-50",
+          "label": "B-109",
+          "kind": "room",
+          "floor": 1,
+          "x": -42.9,
+          "y": -1.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-51",
+          "label": "B-108",
+          "kind": "room",
+          "floor": 1,
+          "x": -38,
+          "y": -5.3,
+          "exitBearing": 270
+        },
+        {
+          "id": "b-room-52",
+          "label": "B-105",
+          "kind": "room",
+          "floor": 1,
+          "x": -43.4,
+          "y": -9.3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-53",
+          "label": "B-104",
+          "kind": "room",
+          "floor": 1,
+          "x": -45.6,
+          "y": -9.3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-room-55",
+          "label": "B Room 55",
+          "kind": "room",
+          "floor": 1,
+          "x": -54.9,
+          "y": -1.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-56",
+          "label": "B-102B CID",
+          "kind": "room",
+          "floor": 1,
+          "x": -50.2,
+          "y": -1.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-57",
+          "label": "B-108B",
+          "kind": "room",
+          "floor": 1,
+          "x": -44.7,
+          "y": -1.3,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-58",
+          "label": "B-111",
+          "kind": "room",
+          "floor": 1,
+          "x": -38,
+          "y": -1.7,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-room-60",
+          "label": "B Room 60",
+          "kind": "room",
+          "floor": 1,
+          "x": -38,
+          "y": 5.7,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-corridor-4",
+          "label": "B Corridor 4",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -48,
+          "y": 1.1,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-room-54",
+          "label": "B-114",
+          "kind": "room",
+          "floor": 1,
+          "x": -39.8,
+          "y": 5.1,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-59",
+          "label": "B-113",
+          "kind": "room",
+          "floor": 1,
+          "x": -43.9,
+          "y": 5.1,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-61",
+          "label": "B-112",
+          "kind": "room",
+          "floor": 1,
+          "x": -46.9,
+          "y": 5.1,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-62",
+          "label": "B-102A Interview",
+          "kind": "room",
+          "floor": 1,
+          "x": -51.5,
+          "y": 5.1,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-121b",
+          "label": "D-121B",
+          "kind": "room",
+          "floor": 1,
+          "x": 11.3,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122h",
+          "label": "D-122H",
+          "kind": "room",
+          "floor": 1,
+          "x": 9.9,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122g",
+          "label": "D-122G",
+          "kind": "room",
+          "floor": 1,
+          "x": 8.5,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122f",
+          "label": "D-122F",
+          "kind": "room",
+          "floor": 1,
+          "x": 7.1,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-121a",
+          "label": "D-121A",
+          "kind": "room",
+          "floor": 1,
+          "x": 5.9,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-120",
+          "label": "D-120",
+          "kind": "room",
+          "floor": 1,
+          "x": 4.4,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122e",
+          "label": "D-122E",
+          "kind": "room",
+          "floor": 1,
+          "x": 3.1,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122d",
+          "label": "D-122D",
+          "kind": "room",
+          "floor": 1,
+          "x": 1.6,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122c",
+          "label": "D-122C",
+          "kind": "room",
+          "floor": 1,
+          "x": 0.4,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-119",
+          "label": "D-119",
+          "kind": "room",
+          "floor": 1,
+          "x": -0.7,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-118",
+          "label": "D-118",
+          "kind": "room",
+          "floor": 1,
+          "x": -1.6,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122b",
+          "label": "D-122B",
+          "kind": "room",
+          "floor": 1,
+          "x": -2.6,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-122a",
+          "label": "D-122A",
+          "kind": "room",
+          "floor": 1,
+          "x": -3.5,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-117",
+          "label": "D-117",
+          "kind": "room",
+          "floor": 1,
+          "x": -4.9,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-116",
+          "label": "D-116",
+          "kind": "room",
+          "floor": 1,
+          "x": -5.8,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-105",
+          "label": "D-105",
+          "kind": "room",
+          "floor": 1,
+          "x": -6.7,
+          "y": 14,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-123l",
+          "label": "D-123L",
+          "kind": "room",
+          "floor": 1,
+          "x": 11.2,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123j",
+          "label": "D-123J",
+          "kind": "room",
+          "floor": 1,
+          "x": 10.1,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d123i",
+          "label": "D123I",
+          "kind": "room",
+          "floor": 1,
+          "x": 9.3,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123g",
+          "label": "D-123G",
+          "kind": "room",
+          "floor": 1,
+          "x": 7.3,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d123f",
+          "label": "D123F",
+          "kind": "room",
+          "floor": 1,
+          "x": 6.2,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123e",
+          "label": "D-123E",
+          "kind": "room",
+          "floor": 1,
+          "x": 5.1,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123d",
+          "label": "D-123D",
           "kind": "room",
           "floor": 1,
           "x": 4,
-          "y": 2,
-          "exitBearing": 0,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123c",
+          "label": "D-123C",
+          "kind": "room",
+          "floor": 1,
+          "x": 2.8,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123b",
+          "label": "D-123B",
+          "kind": "room",
+          "floor": 1,
+          "x": 1.6,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123a",
+          "label": "D-123A",
+          "kind": "room",
+          "floor": 1,
+          "x": 0.1,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-123-1",
+          "label": "D-123-1",
+          "kind": "room",
+          "floor": 1,
+          "x": -1.3,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-corridor-1",
+          "label": "D Corridor 1",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -12,
+          "y": 12,
+          "orientation": "vertical"
+        },
+        {
+          "id": "d-corridor-2",
+          "label": "D Corridor 2",
+          "kind": "corridor",
+          "floor": 1,
+          "x": 2,
+          "y": 9.8,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "d-room-3",
+          "label": "D-105C",
+          "kind": "room",
+          "floor": 1,
+          "x": -16,
+          "y": 18.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-123h",
+          "label": "D-123H",
+          "kind": "room",
+          "floor": 1,
+          "x": 8.2,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-110",
+          "label": "D-110",
+          "kind": "room",
+          "floor": 1,
+          "x": -6.5,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-111",
+          "label": "D-111",
+          "kind": "room",
+          "floor": 1,
+          "x": -5.7,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-112",
+          "label": "D-112",
+          "kind": "room",
+          "floor": 1,
+          "x": -4.8,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-113",
+          "label": "D-113",
+          "kind": "room",
+          "floor": 1,
+          "x": -3.9,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-114",
+          "label": "D-114",
+          "kind": "room",
+          "floor": 1,
+          "x": -3.1,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-115",
+          "label": "D-115",
+          "kind": "room",
+          "floor": 1,
+          "x": -2.3,
+          "y": 13.8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-106",
+          "label": "D-106",
+          "kind": "room",
+          "floor": 1,
+          "x": -1.8,
+          "y": 5.8,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-106e",
+          "label": "D-106E",
+          "kind": "room",
+          "floor": 1,
+          "x": 0.9,
+          "y": 5.8,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-105a",
+          "label": "D-105A",
+          "kind": "room",
+          "floor": 1,
+          "x": -16,
+          "y": 9,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-102c",
+          "label": "D-102C",
+          "kind": "room",
+          "floor": 1,
+          "x": -16,
+          "y": 10.2,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-102b",
+          "label": "D-102B",
+          "kind": "room",
+          "floor": 1,
+          "x": -16,
+          "y": 11.7,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-102a",
+          "label": "D-102A",
+          "kind": "room",
+          "floor": 1,
+          "x": -16,
+          "y": 12.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-114a",
+          "label": "N-114A",
+          "kind": "room",
+          "floor": 1,
+          "x": -10,
+          "y": 0,
+          "exitBearing": 90,
           "aliases": [
-            "D201",
-            "D-Lounge"
+            "Center for Self-Directed Learning"
           ]
+        },
+        {
+          "id": "n-113a",
+          "label": "N-113A",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.4,
+          "y": 7.9,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-112b",
+          "label": "N-112B",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.4,
+          "y": 14.4,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-112a",
+          "label": "N-112A",
+          "kind": "room",
+          "floor": 1,
+          "x": -11.4,
+          "y": 18.5,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-corridor-1",
+          "label": "N Corridor 1",
+          "kind": "corridor",
+          "floor": 1,
+          "x": -21.4,
+          "y": 23.5,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "n-111a",
+          "label": "N-111A",
+          "kind": "room",
+          "floor": 1,
+          "x": -31.4,
+          "y": 23.5,
+          "exitBearing": 90,
+          "aliases": [
+            "Workforce internship and career development"
+          ]
+        },
+        {
+          "id": "g-144",
+          "label": "G-144",
+          "kind": "room",
+          "floor": 1,
+          "x": 24.1,
+          "y": -1,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-143",
+          "label": "G-143",
+          "kind": "room",
+          "floor": 1,
+          "x": 24,
+          "y": 3,
+          "exitBearing": 90
+        },
+        {
+          "id": "e-175b",
+          "label": "E-175B",
+          "kind": "room",
+          "floor": 1,
+          "x": 13.9,
+          "y": 2,
+          "exitBearing": 180
+        },
+        {
+          "id": "e-120b",
+          "label": "E-120B",
+          "kind": "room",
+          "floor": 1,
+          "x": 16.6,
+          "y": 2,
+          "exitBearing": 180
+        },
+        {
+          "id": "e-room-1",
+          "label": "E Room 1",
+          "kind": "room",
+          "floor": 1,
+          "x": 23.1,
+          "y": 2,
+          "exitBearing": 180
+        },
+        {
+          "id": "e-173a",
+          "label": "E-173A",
+          "kind": "room",
+          "floor": 1,
+          "x": 25.9,
+          "y": 2,
+          "exitBearing": 180
+        },
+        {
+          "id": "e-112",
+          "label": "E-112",
+          "kind": "room",
+          "floor": 1,
+          "x": 9.8,
+          "y": 10,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-stairs-2",
+          "label": "B Stairs 2",
+          "kind": "stairs",
+          "floor": 1,
+          "x": -28.8,
+          "y": -5.7,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-stairs-1",
+          "label": "D Stairs 1",
+          "kind": "stairs",
+          "floor": 1,
+          "x": -4.6,
+          "y": 22,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-stairs-2",
+          "label": "D Stairs 2",
+          "kind": "stairs",
+          "floor": 1,
+          "x": -5,
+          "y": 5.8,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-stairs-3",
+          "label": "D Stairs 3",
+          "kind": "stairs",
+          "floor": 1,
+          "x": 4.8,
+          "y": 5.8,
+          "exitBearing": 180
         }
       ],
       "edges": [
         {
           "id": "n1-hall",
-          "from": "n1-west",
-          "to": "n1-core",
-          "weight": 8,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
-        },
-        {
-          "id": "n1-hall-east",
           "from": "n1-core",
-          "to": "n1-east",
-          "weight": 8,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
-        },
-        {
-          "id": "n1-vertical-stairs",
-          "from": "n1-core",
-          "to": "n1-stairs",
-          "weight": 5,
+          "to": "n1-west",
+          "weight": 15.8,
           "bearing": 180,
-          "kind": "stairs",
-          "bidirectional": true
+          "kind": "walk",
+          "bidirectional": true,
+          "toEndpoint": "start",
+          "side": "right",
+          "corridorOffset": 12.9
         },
         {
           "id": "n1-vertical-elevator",
@@ -424,17 +1463,6 @@
           "toEndpoint": "start"
         },
         {
-          "id": "n1-c1",
-          "from": "n1-west",
-          "to": "c1-core",
-          "weight": 8,
-          "bearing": 180,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "start",
-          "toEndpoint": "start"
-        },
-        {
           "id": "n1-d1",
           "from": "n1-core",
           "to": "d1-core",
@@ -446,33 +1474,11 @@
           "toEndpoint": "start"
         },
         {
-          "id": "n1-e1",
-          "from": "n1-east",
-          "to": "e1-core",
-          "weight": 8,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
-        },
-        {
-          "id": "n1-g1",
-          "from": "n1-east",
-          "to": "g1-core",
-          "weight": 8,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
-        },
-        {
           "id": "n1-102",
           "from": "n1-west",
           "to": "N-102",
           "weight": 5,
-          "bearing": 0,
+          "bearing": 90,
           "kind": "door",
           "bidirectional": true,
           "corridorOffset": 50,
@@ -481,7 +1487,7 @@
         {
           "id": "n1-111",
           "from": "n1-core",
-          "to": "N-111",
+          "to": "N-115",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
@@ -503,7 +1509,7 @@
         {
           "id": "n1-114",
           "from": "n1-core",
-          "to": "N-114",
+          "to": "N-117",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
@@ -512,58 +1518,36 @@
           "side": "left"
         },
         {
-          "id": "n1-116",
-          "from": "n1-east",
-          "to": "N-116",
-          "weight": 4,
-          "bearing": 0,
-          "kind": "door",
-          "bidirectional": true,
-          "corridorOffset": 33.3,
-          "side": "left"
-        },
-        {
-          "id": "n1-119",
-          "from": "n1-east",
-          "to": "N-119",
-          "weight": 4,
-          "bearing": 0,
-          "kind": "door",
-          "bidirectional": true,
-          "corridorOffset": 66.7,
-          "side": "left"
-        },
-        {
           "id": "g1-102",
           "from": "g1-core",
-          "to": "G-102",
+          "to": "G-141",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 16.7,
+          "corridorOffset": 38.5,
           "side": "left"
         },
         {
           "id": "g1-110",
           "from": "g1-core",
-          "to": "G-110",
+          "to": "G-140",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 33.3,
+          "corridorOffset": 49,
           "side": "left"
         },
         {
           "id": "g1-117",
           "from": "g1-core",
-          "to": "G-117",
+          "to": "G-139",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 50,
+          "corridorOffset": 60,
           "side": "left"
         },
         {
@@ -574,7 +1558,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 66.7,
+          "corridorOffset": 71,
           "side": "left"
         },
         {
@@ -596,29 +1580,29 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 40,
+          "corridorOffset": 2.9,
           "side": "right"
         },
         {
           "id": "b1-118",
           "from": "b1-core",
-          "to": "B-118",
+          "to": "b-sga",
           "weight": 4,
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 60,
+          "corridorOffset": 10.8,
           "side": "right"
         },
         {
           "id": "b1-138",
           "from": "b1-core",
-          "to": "B-138",
+          "to": "B-restroom",
           "weight": 4,
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 20,
+          "corridorOffset": 18.3,
           "side": "right"
         },
         {
@@ -629,7 +1613,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 80,
+          "corridorOffset": 24.6,
           "side": "right"
         },
         {
@@ -640,7 +1624,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 33.3,
+          "corridorOffset": 11.2,
           "side": "left"
         },
         {
@@ -651,24 +1635,499 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 66.7,
+          "corridorOffset": 65.6,
           "side": "left"
         },
         {
-          "id": "c1-102",
-          "from": "c1-core",
-          "to": "C-102",
+          "id": "b-room-1-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-1",
           "weight": 4,
-          "bearing": 270,
+          "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 50,
+          "corridorOffset": 66.9,
+          "side": "left"
+        },
+        {
+          "id": "b-room-2-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-2",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 72.8,
+          "side": "left"
+        },
+        {
+          "id": "b-room-3-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-3",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 79.4,
+          "side": "left"
+        },
+        {
+          "id": "b-room-4-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-4",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 85.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-5-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-5",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 91.5,
+          "side": "left"
+        },
+        {
+          "id": "b-room-6-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-6",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 97.4,
+          "side": "left"
+        },
+        {
+          "id": "b-room-7-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-7",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "end"
+        },
+        {
+          "id": "b-room-8-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-8",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 97.4,
           "side": "right"
         },
         {
-          "id": "d1-113",
-          "from": "d1-core",
-          "to": "D-113",
+          "id": "b-room-9-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-9",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 83.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-10-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-10",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 69.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-11-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-11",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 56,
+          "side": "right"
+        },
+        {
+          "id": "b-room-14-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-14",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 54.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-15-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-15",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 48.2,
+          "side": "left"
+        },
+        {
+          "id": "b-room-16-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-16",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 36.8,
+          "side": "left"
+        },
+        {
+          "id": "b-room-17-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-17",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 42.4,
+          "side": "left"
+        },
+        {
+          "id": "b-room-18-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-18",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 60.9,
+          "side": "left"
+        },
+        {
+          "id": "b-room-22-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-22",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 49.5,
+          "side": "right"
+        },
+        {
+          "id": "b-room-23-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-23",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 62.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-24-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-24",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 76.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-25-door-1",
+          "from": "b-corridor-1",
+          "to": "b-room-25",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 89.9,
+          "side": "right"
+        },
+        {
+          "id": "b1-B13X",
+          "from": "b1-core",
+          "to": "b-corridor-1",
+          "weight": 17,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "toEndpoint": "start",
+          "side": "left",
+          "corridorOffset": 98.2
+        },
+        {
+          "id": "b-corridor-2-corridor-1",
+          "from": "b1-core",
+          "to": "b-corridor-2",
+          "weight": 14.1,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 56.7,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "b-room-12-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-12",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 9.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-13-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-13",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 19.5,
+          "side": "right"
+        },
+        {
+          "id": "b-room-19-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-19",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 28.4,
+          "side": "right"
+        },
+        {
+          "id": "b-room-20-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-20",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 36,
+          "side": "right"
+        },
+        {
+          "id": "b-room-21-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-21",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 43,
+          "side": "right"
+        },
+        {
+          "id": "b-room-26-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-26",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 48.7,
+          "side": "right"
+        },
+        {
+          "id": "b-room-27-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-27",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 73.8,
+          "side": "right"
+        },
+        {
+          "id": "b-room-28-door-1",
+          "from": "b1-core",
+          "to": "b-room-28",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 27.1,
+          "side": "left"
+        },
+        {
+          "id": "b-room-29-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-29",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 63.2,
+          "side": "left"
+        },
+        {
+          "id": "b-room-30-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-30",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 69.7,
+          "side": "left"
+        },
+        {
+          "id": "b-room-31-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-31",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 77.7,
+          "side": "left"
+        },
+        {
+          "id": "b-room-32-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-32",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 85.3,
+          "side": "left"
+        },
+        {
+          "id": "b-room-33-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-33",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 93.4,
+          "side": "left"
+        },
+        {
+          "id": "b-room-34-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-34",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-35-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-35",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 61.7,
+          "side": "right"
+        },
+        {
+          "id": "b-room-36-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-36",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 67.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-37-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-37",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 79.4,
+          "side": "right"
+        },
+        {
+          "id": "b-room-38-door-1",
+          "from": "b-corridor-2",
+          "to": "b-123f",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 84.6,
+          "side": "right"
+        },
+        {
+          "id": "b-room-38-door-2",
+          "from": "b-corridor-2",
+          "to": "b-room-38",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 90.4,
+          "side": "right"
+        },
+        {
+          "id": "b-room-39-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-39",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 95.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-40-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-40",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 98.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-41-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-41",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 56.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-42-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-42",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
@@ -677,15 +2136,922 @@
           "side": "left"
         },
         {
-          "id": "d1-201",
-          "from": "d1-core",
-          "to": "D-201",
+          "id": "b-room-43-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-43",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 42.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-44-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-44",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 33.3,
+          "side": "left"
+        },
+        {
+          "id": "b-room-46-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-46",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 12.3,
+          "side": "left"
+        },
+        {
+          "id": "b-room-47-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-47",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 18.4,
+          "side": "left"
+        },
+        {
+          "id": "b-room-48-door-1",
+          "from": "b-corridor-2",
+          "to": "b-room-48",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 25,
+          "side": "left"
+        },
+        {
+          "id": "b-room-45-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-45",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 83.5,
+          "side": "left"
+        },
+        {
+          "id": "b-room-49-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-49",
           "weight": 4,
           "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 80,
+          "corridorOffset": 87.3,
           "side": "right"
+        },
+        {
+          "id": "b-room-50-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-50",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 75.6,
+          "side": "right"
+        },
+        {
+          "id": "b-room-51-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-51",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "end"
+        },
+        {
+          "id": "b-room-52-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-52",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 73.2,
+          "side": "left"
+        },
+        {
+          "id": "b-room-53-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-53",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 62.1,
+          "side": "left"
+        },
+        {
+          "id": "b-room-55-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-55",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 15.5,
+          "side": "right"
+        },
+        {
+          "id": "b-room-56-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-56",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 39.2,
+          "side": "right"
+        },
+        {
+          "id": "b-room-57-door-1",
+          "from": "b-corridor-3",
+          "to": "b-room-57",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 66.7,
+          "side": "right"
+        },
+        {
+          "id": "b-corridor-3-corridor-1",
+          "from": "b1-core",
+          "to": "b-corridor-3",
+          "weight": 14.2,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 38.5,
+          "toEndpoint": "end"
+        },
+        {
+          "id": "b-room-58-door-1",
+          "from": "b1-core",
+          "to": "b-room-58",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 56.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-60-door-1",
+          "from": "b1-core",
+          "to": "b-room-60",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 93.5,
+          "side": "right"
+        },
+        {
+          "id": "b-corridor-4-corridor-1",
+          "from": "b1-core",
+          "to": "b-corridor-4",
+          "weight": 14.6,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 70.6,
+          "toEndpoint": "end"
+        },
+        {
+          "id": "b-room-54-door-1",
+          "from": "b-corridor-4",
+          "to": "b-room-54",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 90.8,
+          "side": "right"
+        },
+        {
+          "id": "b-room-59-door-1",
+          "from": "b-corridor-4",
+          "to": "b-room-59",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 70.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-61-door-1",
+          "from": "b-corridor-4",
+          "to": "b-room-61",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55.4,
+          "side": "right"
+        },
+        {
+          "id": "b-room-62-door-1",
+          "from": "b-corridor-4",
+          "to": "b-room-62",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 32.4,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-1",
+          "from": "d1-core",
+          "to": "d-121b",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 96.6,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-2",
+          "from": "d1-core",
+          "to": "d-122h",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 89.6,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-3",
+          "from": "d1-core",
+          "to": "d-122g",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 82.4,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-4",
+          "from": "d1-core",
+          "to": "d-122f",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 75.7,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-5",
+          "from": "d1-core",
+          "to": "d-121a",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 69.3,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-6",
+          "from": "d1-core",
+          "to": "d-120",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 62,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-7",
+          "from": "d1-core",
+          "to": "d-122e",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55.5,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-8",
+          "from": "d1-core",
+          "to": "d-122d",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 47.8,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-9",
+          "from": "d1-core",
+          "to": "d-122c",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 42.1,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-10",
+          "from": "d1-core",
+          "to": "d-119",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 36.5,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-11",
+          "from": "d1-core",
+          "to": "d-118",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 31.8,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-12",
+          "from": "d1-core",
+          "to": "d-122b",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 26.8,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-13",
+          "from": "d1-core",
+          "to": "d-122a",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 22.4,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-14",
+          "from": "d1-core",
+          "to": "d-117",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 15.7,
+          "side": "left"
+        },
+        {
+          "id": "d-room-2-door-1",
+          "from": "d1-core",
+          "to": "d-116",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 11.2,
+          "side": "left"
+        },
+        {
+          "id": "d-room-3-door-1",
+          "from": "d1-core",
+          "to": "d-105",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 6.7,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-15",
+          "from": "d1-core",
+          "to": "d-123l",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 96,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-16",
+          "from": "d1-core",
+          "to": "d-123j",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 90.7,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-17",
+          "from": "d1-core",
+          "to": "d123i",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 86.3,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-18",
+          "from": "d1-core",
+          "to": "d-123g",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 76.7,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-19",
+          "from": "d1-core",
+          "to": "d123f",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 71.1,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-20",
+          "from": "d1-core",
+          "to": "d-123e",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 65.3,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-21",
+          "from": "d1-core",
+          "to": "d-123d",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 60,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-22",
+          "from": "d1-core",
+          "to": "d-123c",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 54,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-23",
+          "from": "d1-core",
+          "to": "d-123b",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 47.9,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-24",
+          "from": "d1-core",
+          "to": "d-123a",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 40.5,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-25",
+          "from": "d1-core",
+          "to": "d-123-1",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 33.6,
+          "side": "right"
+        },
+        {
+          "id": "d-corridor-1-corridor-1",
+          "from": "d-corridor-1",
+          "to": "d1-core",
+          "weight": 15.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 79.8,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "d-corridor-2-corridor-1",
+          "from": "d-corridor-1",
+          "to": "d-corridor-2",
+          "weight": 14.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 39.2,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "d-room-3-door-2",
+          "from": "d-corridor-1",
+          "to": "d-room-3",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 84.2,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-1",
+          "from": "d1-core",
+          "to": "d-123h",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 80.8,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-2",
+          "from": "d-corridor-2",
+          "to": "d-110",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 7.7,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-3",
+          "from": "d-corridor-2",
+          "to": "d-111",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 11.5,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-4",
+          "from": "d-corridor-2",
+          "to": "d-112",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 16.1,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-5",
+          "from": "d-corridor-2",
+          "to": "d-113",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 20.6,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-6",
+          "from": "d-corridor-2",
+          "to": "d-114",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 24.6,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-7",
+          "from": "d-corridor-2",
+          "to": "d-115",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 28.4,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-8",
+          "from": "d-corridor-2",
+          "to": "d-106",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 31,
+          "side": "left"
+        },
+        {
+          "id": "d-room-5-door-9",
+          "from": "d-corridor-2",
+          "to": "d-106e",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 44.7,
+          "side": "left"
+        },
+        {
+          "id": "d-room-5-door-10",
+          "from": "d-corridor-1",
+          "to": "d-105a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 35,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-11",
+          "from": "d-corridor-1",
+          "to": "d-102c",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 40.8,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-12",
+          "from": "d-corridor-1",
+          "to": "d-102b",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 48.3,
+          "side": "right"
+        },
+        {
+          "id": "d-room-5-door-13",
+          "from": "d-corridor-1",
+          "to": "d-102a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 53.9,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-1",
+          "from": "n1-core",
+          "to": "n-114a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "start"
+        },
+        {
+          "id": "n-room-1-door-2",
+          "from": "n1-west",
+          "to": "n-113a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 19.3,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-3",
+          "from": "n1-west",
+          "to": "n-112b",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 51.9,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-4",
+          "from": "n1-west",
+          "to": "n-112a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 72.4,
+          "side": "right"
+        },
+        {
+          "id": "n-corridor-1-corridor-1",
+          "from": "n1-west",
+          "to": "n-corridor-1",
+          "weight": 16.9,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 97.4,
+          "toEndpoint": "end"
+        },
+        {
+          "id": "n-room-1-door-5",
+          "from": "n-corridor-1",
+          "to": "n-111a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "start"
+        },
+        {
+          "id": "g-room-1-door-1",
+          "from": "g1-core",
+          "to": "g-144",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0.6,
+          "side": "left"
+        },
+        {
+          "id": "g-room-1-door-2",
+          "from": "g1-core",
+          "to": "g-143",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "start"
+        },
+        {
+          "id": "e-room-1-door-1",
+          "from": "e1-core",
+          "to": "e-175b",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 29.5,
+          "side": "left"
+        },
+        {
+          "id": "e-room-1-door-2",
+          "from": "e1-core",
+          "to": "e-120b",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 43,
+          "side": "left"
+        },
+        {
+          "id": "e-room-1-door-3",
+          "from": "e1-core",
+          "to": "e-room-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 75.6,
+          "side": "left"
+        },
+        {
+          "id": "e-room-2-door-1",
+          "from": "e1-core",
+          "to": "e-173a",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 89.4,
+          "side": "left"
+        },
+        {
+          "id": "e-room-2-door-2",
+          "from": "e1-core",
+          "to": "e-112",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 9,
+          "side": "right"
+        },
+        {
+          "id": "e1-core-g1-core-1",
+          "from": "e1-core",
+          "to": "g1-core",
+          "weight": 16.3,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
+        },
+        {
+          "id": "b-stairs-2-stairs-1",
+          "from": "b-corridor-2",
+          "to": "b-stairs-2",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 6,
+          "side": "left"
+        },
+        {
+          "id": "d-stairs-1-stairs-1",
+          "from": "d1-core",
+          "to": "d-stairs-1",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 16.8,
+          "side": "right"
+        },
+        {
+          "id": "d-stairs-2-stairs-1",
+          "from": "d-corridor-2",
+          "to": "d-stairs-2",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 14.9,
+          "side": "left"
+        },
+        {
+          "id": "d-stairs-3-stairs-1",
+          "from": "d-corridor-2",
+          "to": "d-stairs-3",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 63.8,
+          "side": "left"
         }
       ]
     },
@@ -718,7 +3084,7 @@
           "floor": 2,
           "x": -2,
           "y": -2,
-          "orientation": "horizontal"
+          "orientation": "vertical"
         },
         {
           "id": "e2-core",
@@ -727,7 +3093,7 @@
           "floor": 2,
           "x": 18,
           "y": 6,
-          "orientation": "horizontal"
+          "orientation": "vertical"
         },
         {
           "id": "g2-core",
@@ -748,37 +3114,12 @@
           "orientation": "horizontal"
         },
         {
-          "id": "n2-stairs",
-          "label": "N2 Stairs",
-          "kind": "stairs",
-          "floor": 2,
-          "x": 46,
-          "y": 2
-        },
-        {
-          "id": "n2-elevator",
-          "label": "N2 Elevator",
-          "kind": "elevator",
-          "floor": 2,
-          "x": 48,
-          "y": -4
-        },
-        {
-          "id": "n2-east",
-          "label": "N2 East Corridor",
-          "kind": "corridor",
-          "floor": 2,
-          "x": 60,
-          "y": 0,
-          "orientation": "horizontal"
-        },
-        {
           "id": "B-204",
           "label": "B-204",
           "kind": "room",
           "floor": 2,
           "x": -38,
-          "y": -6.3,
+          "y": 3.8,
           "exitBearing": 90,
           "aliases": [
             "B204",
@@ -802,8 +3143,8 @@
           "label": "D-206",
           "kind": "room",
           "floor": 2,
-          "x": -2,
-          "y": -6,
+          "x": 12.3,
+          "y": -16,
           "exitBearing": 180,
           "aliases": [
             "D206",
@@ -998,8 +3339,8 @@
           ]
         },
         {
-          "id": "N-210",
-          "label": "N-210",
+          "id": "N-218",
+          "label": "N-218",
           "kind": "room",
           "floor": 2,
           "x": 45.3,
@@ -1014,7 +3355,7 @@
           ]
         },
         {
-          "id": "N-216",
+          "id": "N-219",
           "label": "N-216",
           "kind": "room",
           "floor": 2,
@@ -1032,7 +3373,7 @@
           "label": "N-217",
           "kind": "room",
           "floor": 2,
-          "x": 52,
+          "x": 44.1,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
@@ -1045,25 +3386,12 @@
           "label": "N-221",
           "kind": "room",
           "floor": 2,
-          "x": 55.3,
+          "x": 52,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
             "N221",
             "International Center"
-          ]
-        },
-        {
-          "id": "N-222",
-          "label": "N-222",
-          "kind": "room",
-          "floor": 2,
-          "x": 58.7,
-          "y": -4,
-          "exitBearing": 180,
-          "aliases": [
-            "N222",
-            "N-Building Lounge, 2nd Floor"
           ]
         },
         {
@@ -1086,7 +3414,7 @@
           "kind": "room",
           "floor": 2,
           "x": -38,
-          "y": 0.3,
+          "y": 6.1,
           "exitBearing": 90,
           "aliases": [
             "B200",
@@ -1096,27 +3424,540 @@
             "Financial Aid",
             "Student Payment"
           ]
+        },
+        {
+          "id": "b-corridor-5",
+          "label": "B Corridor 5",
+          "kind": "corridor",
+          "floor": 2,
+          "x": -20,
+          "y": 7,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-227",
+          "label": "B-227",
+          "kind": "room",
+          "floor": 2,
+          "x": -19.8,
+          "y": 11,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-stairs-1",
+          "label": "B Stairs 1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": -27.3,
+          "y": 11,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-219",
+          "label": "B-219",
+          "kind": "room",
+          "floor": 2,
+          "x": -24.7,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-220",
+          "label": "B-220",
+          "kind": "room",
+          "floor": 2,
+          "x": -20.5,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-221",
+          "label": "B-221",
+          "kind": "room",
+          "floor": 2,
+          "x": -17.8,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-222",
+          "label": "B-222",
+          "kind": "room",
+          "floor": 2,
+          "x": -17.7,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-223",
+          "label": "B-223",
+          "kind": "room",
+          "floor": 2,
+          "x": -13.7,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-224",
+          "label": "B-224",
+          "kind": "room",
+          "floor": 2,
+          "x": -10,
+          "y": 3,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-corridor-6",
+          "label": "B Corridor 6",
+          "kind": "corridor",
+          "floor": 2,
+          "x": -20,
+          "y": -13,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "b-room-63",
+          "label": "B Room 63",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": -9.7,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-room-64",
+          "label": "B Room 64",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": -11.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-room-65",
+          "label": "B Room 65",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": -12.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-room-66",
+          "label": "B Room 66",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": -12.6,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-213",
+          "label": "B-213",
+          "kind": "room",
+          "floor": 2,
+          "x": -27.1,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-room-67",
+          "label": "B Room 67",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": 1.3,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-room-68",
+          "label": "B Room 68",
+          "kind": "room",
+          "floor": 2,
+          "x": -38,
+          "y": -0.6,
+          "exitBearing": 90
+        },
+        {
+          "id": "b-228",
+          "label": "B-228",
+          "kind": "room",
+          "floor": 2,
+          "x": -20.6,
+          "y": -17,
+          "exitBearing": 180
+        },
+        {
+          "id": "b-214",
+          "label": "B-214",
+          "kind": "room",
+          "floor": 2,
+          "x": -25.8,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-215",
+          "label": "B-215",
+          "kind": "room",
+          "floor": 2,
+          "x": -22.6,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-216",
+          "label": "B-216",
+          "kind": "room",
+          "floor": 2,
+          "x": -19,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-217",
+          "label": "B-217",
+          "kind": "room",
+          "floor": 2,
+          "x": -15.3,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-218",
+          "label": "B-218",
+          "kind": "room",
+          "floor": 2,
+          "x": -10,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "b-stairs-3",
+          "label": "B Stairs 3",
+          "kind": "stairs",
+          "floor": 2,
+          "x": -27.3,
+          "y": -9,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-corridor-3",
+          "label": "D Corridor 3",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 12,
+          "y": 8,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "d-222",
+          "label": "D-222",
+          "kind": "room",
+          "floor": 2,
+          "x": 9.2,
+          "y": 12,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-214",
+          "label": "D-214",
+          "kind": "room",
+          "floor": 2,
+          "x": 5.4,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-215",
+          "label": "D-215",
+          "kind": "room",
+          "floor": 2,
+          "x": 7.3,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-216",
+          "label": "D-216",
+          "kind": "room",
+          "floor": 2,
+          "x": 10.6,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-217",
+          "label": "D-217",
+          "kind": "room",
+          "floor": 2,
+          "x": 15.3,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-218",
+          "label": "D-218",
+          "kind": "room",
+          "floor": 2,
+          "x": 18,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-219",
+          "label": "D-219",
+          "kind": "room",
+          "floor": 2,
+          "x": 21.8,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d-corridor-4",
+          "label": "D Corridor 4",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 12,
+          "y": -12,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "d-208",
+          "label": "D-208",
+          "kind": "room",
+          "floor": 2,
+          "x": 7.7,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-209",
+          "label": "D-209",
+          "kind": "room",
+          "floor": 2,
+          "x": 10.7,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-210",
+          "label": "D-210",
+          "kind": "room",
+          "floor": 2,
+          "x": 13.1,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-211",
+          "label": "D-211",
+          "kind": "room",
+          "floor": 2,
+          "x": 14.2,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-212",
+          "label": "D-212",
+          "kind": "room",
+          "floor": 2,
+          "x": 17.9,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-213",
+          "label": "D-213",
+          "kind": "room",
+          "floor": 2,
+          "x": 20.5,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d2-stairs-1",
+          "label": "D2 Stairs 1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 4.8,
+          "y": 4,
+          "exitBearing": 180
+        },
+        {
+          "id": "d2-stairs-2",
+          "label": "D2 Stairs 2",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 2.8,
+          "y": -8,
+          "exitBearing": 0
+        },
+        {
+          "id": "d-201d",
+          "label": "D-201D",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -3.5,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-201c",
+          "label": "D-201C",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": 0.2,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-201b",
+          "label": "D-201B",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": 5.1,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-201a",
+          "label": "D-201A",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": 8,
+          "exitBearing": 90
+        },
+        {
+          "id": "d-205c",
+          "label": "D-205C",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": 8,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-corridor-2",
+          "label": "N Corridor 2",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 49.3,
+          "y": 14,
+          "orientation": "vertical"
+        },
+        {
+          "id": "n-210b",
+          "label": "N-210B",
+          "kind": "room",
+          "floor": 2,
+          "x": 42.5,
+          "y": 4,
+          "exitBearing": 0
+        },
+        {
+          "id": "n-209",
+          "label": "N-209",
+          "kind": "room",
+          "floor": 2,
+          "x": 44.9,
+          "y": 4,
+          "exitBearing": 0
+        },
+        {
+          "id": "n-206",
+          "label": "N-206",
+          "kind": "room",
+          "floor": 2,
+          "x": 47.6,
+          "y": 4,
+          "exitBearing": 0
+        },
+        {
+          "id": "n-215",
+          "label": "N-215",
+          "kind": "room",
+          "floor": 2,
+          "x": 45.3,
+          "y": 7,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-214",
+          "label": "N-214",
+          "kind": "room",
+          "floor": 2,
+          "x": 45.3,
+          "y": 9.3,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-213",
+          "label": "N-213",
+          "kind": "room",
+          "floor": 2,
+          "x": 45.3,
+          "y": 10.9,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-212",
+          "label": "N-212",
+          "kind": "room",
+          "floor": 2,
+          "x": 45.3,
+          "y": 12.3,
+          "exitBearing": 90
+        },
+        {
+          "id": "n-corridor-3",
+          "label": "N Corridor 3",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 35.3,
+          "y": 23.5,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "n-room-1",
+          "label": "N Room 1",
+          "kind": "room",
+          "floor": 2,
+          "x": 42.4,
+          "y": 19.5,
+          "exitBearing": 180
+        },
+        {
+          "id": "n-stairs-1",
+          "label": "N Stairs 1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 28.1,
+          "y": 19.5,
+          "exitBearing": 180
+        },
+        {
+          "id": "e2-stairs-1",
+          "label": "E2 Stairs 1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 14,
+          "y": 0.4,
+          "exitBearing": 90
+        },
+        {
+          "id": "e2-stairs-2",
+          "label": "E2 Stairs 2",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 14,
+          "y": 5.1,
+          "exitBearing": 90
         }
       ],
       "edges": [
-        {
-          "id": "n2-stairs-link",
-          "from": "n2-core",
-          "to": "n2-stairs",
-          "weight": 4,
-          "bearing": 180,
-          "kind": "stairs",
-          "bidirectional": true
-        },
-        {
-          "id": "n2-elevator-link",
-          "from": "n2-core",
-          "to": "n2-elevator",
-          "weight": 4,
-          "bearing": 0,
-          "kind": "elevator",
-          "bidirectional": true
-        },
         {
           "id": "floor2-bc",
           "from": "b2-core",
@@ -1143,7 +3984,7 @@
           "id": "floor2-de",
           "from": "d2-core",
           "to": "e2-core",
-          "weight": 20,
+          "weight": 21.5,
           "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
@@ -1180,7 +4021,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 33.3,
+          "corridorOffset": 83.8,
           "side": "right"
         },
         {
@@ -1191,7 +4032,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 66.7,
+          "corridorOffset": 95.7,
           "side": "right"
         },
         {
@@ -1207,13 +4048,13 @@
         },
         {
           "id": "d2-206",
-          "from": "d2-core",
+          "from": "d-corridor-4",
           "to": "D-206",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 50,
+          "corridorOffset": 51.4,
           "side": "left"
         },
         {
@@ -1373,7 +4214,7 @@
         {
           "id": "n2-210",
           "from": "n2-core",
-          "to": "N-210",
+          "to": "N-218",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
@@ -1384,7 +4225,7 @@
         {
           "id": "n2-216",
           "from": "n2-core",
-          "to": "N-216",
+          "to": "N-219",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
@@ -1400,7 +4241,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 50,
+          "corridorOffset": 10.6,
           "side": "left"
         },
         {
@@ -1411,18 +4252,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 66.7,
-          "side": "left"
-        },
-        {
-          "id": "n2-222",
-          "from": "n2-core",
-          "to": "N-222",
-          "weight": 4,
-          "bearing": 0,
-          "kind": "door",
-          "bidirectional": true,
-          "corridorOffset": 83.3,
+          "corridorOffset": 50.2,
           "side": "left"
         },
         {
@@ -1435,6 +4265,683 @@
           "bidirectional": true,
           "corridorOffset": 33.3,
           "side": "right"
+        },
+        {
+          "id": "b-corridor-5-corridor-1",
+          "from": "b2-core",
+          "to": "b-corridor-5",
+          "weight": 17.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 100,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "b-room-63-door-1",
+          "from": "b-corridor-5",
+          "to": "b-227",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 51,
+          "side": "right"
+        },
+        {
+          "id": "b-stairs-1-stairs-1",
+          "from": "b-corridor-5",
+          "to": "b-stairs-1",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 13.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-63-door-2",
+          "from": "b-corridor-5",
+          "to": "b-219",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 26.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-63-door-3",
+          "from": "b-corridor-5",
+          "to": "b-220",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 47.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-63-door-4",
+          "from": "b-corridor-5",
+          "to": "b-221",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 60.8,
+          "side": "left"
+        },
+        {
+          "id": "b-room-63-door-5",
+          "from": "b-corridor-5",
+          "to": "b-222",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 61.3,
+          "side": "left"
+        },
+        {
+          "id": "b-room-63-door-6",
+          "from": "b-corridor-5",
+          "to": "b-223",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 81.6,
+          "side": "left"
+        },
+        {
+          "id": "b-room-63-door-7",
+          "from": "b-corridor-5",
+          "to": "b-224",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "left"
+        },
+        {
+          "id": "b-corridor-6-corridor-1",
+          "from": "b2-core",
+          "to": "b-corridor-6",
+          "weight": 17.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 0,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "b-room-63-door-8",
+          "from": "b2-core",
+          "to": "b-room-63",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 16.3,
+          "side": "right"
+        },
+        {
+          "id": "b-room-64-door-1",
+          "from": "b2-core",
+          "to": "b-room-64",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 5.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-65-door-1",
+          "from": "b2-core",
+          "to": "b-room-65",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0.9,
+          "side": "right"
+        },
+        {
+          "id": "b-room-66-door-1",
+          "from": "b2-core",
+          "to": "b-room-66",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 2.2,
+          "side": "right"
+        },
+        {
+          "id": "b-room-67-door-1",
+          "from": "b-corridor-6",
+          "to": "b-213",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 14.6,
+          "side": "right"
+        },
+        {
+          "id": "b-room-67-door-2",
+          "from": "b2-core",
+          "to": "b-room-67",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 71.7,
+          "side": "right"
+        },
+        {
+          "id": "b-room-68-door-1",
+          "from": "b2-core",
+          "to": "b-room-68",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 62.2,
+          "side": "right"
+        },
+        {
+          "id": "b-room-69-door-1",
+          "from": "b-corridor-6",
+          "to": "b-228",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 47.1,
+          "side": "left"
+        },
+        {
+          "id": "b-room-70-door-1",
+          "from": "b-corridor-6",
+          "to": "b-214",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 20.8,
+          "side": "right"
+        },
+        {
+          "id": "b-room-69-door-2",
+          "from": "b-corridor-6",
+          "to": "b-215",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 36.8,
+          "side": "right"
+        },
+        {
+          "id": "b-room-69-door-3",
+          "from": "b-corridor-6",
+          "to": "b-216",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55,
+          "side": "right"
+        },
+        {
+          "id": "b-room-69-door-4",
+          "from": "b-corridor-6",
+          "to": "b-217",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 73.6,
+          "side": "right"
+        },
+        {
+          "id": "b-room-69-door-5",
+          "from": "b-corridor-6",
+          "to": "b-218",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "right"
+        },
+        {
+          "id": "b-stairs-3-stairs-1",
+          "from": "b-corridor-6",
+          "to": "b-stairs-3",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 13.3,
+          "side": "right"
+        },
+        {
+          "id": "d-corridor-3-corridor-1",
+          "from": "d2-core",
+          "to": "d-corridor-3",
+          "weight": 17.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 100,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "d-room-1-door-26",
+          "from": "d-corridor-3",
+          "to": "d-222",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 36.2,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-27",
+          "from": "d-corridor-3",
+          "to": "d-214",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 17.1,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-28",
+          "from": "d-corridor-3",
+          "to": "d-215",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 26.7,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-29",
+          "from": "d-corridor-3",
+          "to": "d-216",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 43.1,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-30",
+          "from": "d-corridor-3",
+          "to": "d-217",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 66.6,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-31",
+          "from": "d-corridor-3",
+          "to": "d-218",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 80.2,
+          "side": "left"
+        },
+        {
+          "id": "d-room-1-door-32",
+          "from": "d-corridor-3",
+          "to": "d-219",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 98.9,
+          "side": "left"
+        },
+        {
+          "id": "d-corridor-4-corridor-1",
+          "from": "d2-core",
+          "to": "d-corridor-4",
+          "weight": 17.2,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 0,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "d-room-1-door-33",
+          "from": "d-corridor-4",
+          "to": "d-208",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 28.5,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-34",
+          "from": "d-corridor-4",
+          "to": "d-209",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 43.3,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-35",
+          "from": "d-corridor-4",
+          "to": "d-210",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55.5,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-36",
+          "from": "d-corridor-4",
+          "to": "d-211",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 60.8,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-37",
+          "from": "d-corridor-4",
+          "to": "d-212",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 79.6,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-38",
+          "from": "d-corridor-4",
+          "to": "d-213",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 92.6,
+          "side": "right"
+        },
+        {
+          "id": "d-stairs-4-stairs-1",
+          "from": "d-corridor-3",
+          "to": "d2-stairs-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 13.9,
+          "side": "left"
+        },
+        {
+          "id": "d-stairs-4-stairs-2",
+          "from": "d-corridor-4",
+          "to": "d2-stairs-2",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 3.8,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-39",
+          "from": "d2-core",
+          "to": "d-201d",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 42.6,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-40",
+          "from": "d2-core",
+          "to": "d-201c",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 61.1,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-41",
+          "from": "d2-core",
+          "to": "d-201b",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 85.7,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-42",
+          "from": "d2-core",
+          "to": "d-201a",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "right"
+        },
+        {
+          "id": "d-room-1-door-43",
+          "from": "d2-core",
+          "to": "d-205c",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "right"
+        },
+        {
+          "id": "n-corridor-2-corridor-1",
+          "from": "n2-core",
+          "to": "n-corridor-2",
+          "weight": 14.3,
+          "bearing": 180,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 36.7,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "n-room-1-door-6",
+          "from": "n2-core",
+          "to": "n-210b",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 2.3,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-7",
+          "from": "n2-core",
+          "to": "n-209",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 14.4,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-8",
+          "from": "n2-core",
+          "to": "n-206",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 28,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-9",
+          "from": "n-corridor-2",
+          "to": "n-215",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 15,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-10",
+          "from": "n-corridor-2",
+          "to": "n-214",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 26.4,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-11",
+          "from": "n-corridor-2",
+          "to": "n-213",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 34.7,
+          "side": "right"
+        },
+        {
+          "id": "n-room-1-door-12",
+          "from": "n-corridor-2",
+          "to": "n-212",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 41.6,
+          "side": "right"
+        },
+        {
+          "id": "n-corridor-3-corridor-1",
+          "from": "n-corridor-2",
+          "to": "n-corridor-3",
+          "weight": 16.9,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 97.3,
+          "toEndpoint": "end"
+        },
+        {
+          "id": "n-room-1-door-13",
+          "from": "n-corridor-3",
+          "to": "n-room-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 85.5,
+          "side": "left"
+        },
+        {
+          "id": "n-stairs-1-stairs-1",
+          "from": "n-corridor-3",
+          "to": "n-stairs-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 13.8,
+          "side": "left"
+        },
+        {
+          "id": "e-stairs-1-stairs-1",
+          "from": "e2-core",
+          "to": "e2-stairs-1",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 22,
+          "side": "right"
+        },
+        {
+          "id": "e-stairs-2-stairs-1",
+          "from": "e2-core",
+          "to": "e2-stairs-2",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 45.5,
+          "side": "right"
+        },
+        {
+          "id": "d-corridor-3-e2-core-1",
+          "from": "d-corridor-3",
+          "to": "e2-core",
+          "weight": 6.3,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "fromEndpoint": "end",
+          "toEndpoint": "start"
+        },
+        {
+          "id": "d-corridor-4-e2-core-1",
+          "from": "d-corridor-4",
+          "to": "e2-core",
+          "weight": 19,
+          "bearing": 180,
+          "kind": "walk",
+          "bidirectional": true,
+          "fromEndpoint": "start",
+          "toEndpoint": "start"
         }
       ]
     }
@@ -1444,17 +4951,6 @@
       "id": "b-vert-1",
       "from": "b1-core",
       "to": "b2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "start",
-      "toEndpoint": "end"
-    },
-    {
-      "id": "c-vert-1",
-      "from": "c1-core",
-      "to": "c2-core",
       "weight": 6,
       "bearing": 0,
       "kind": "stairs",
@@ -1496,21 +4992,41 @@
       "toEndpoint": "start"
     },
     {
-      "id": "n-stairs-vert-1",
-      "from": "n1-stairs",
-      "to": "n2-stairs",
+      "id": "n-vert-1",
+      "from": "n1-core",
+      "to": "n2-core",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
+      "bidirectional": true,
+      "fromEndpoint": "end",
+      "toEndpoint": "start"
+    },
+    {
+      "id": "b-stairs-2-b-stairs-3-1",
+      "from": "b-stairs-2",
+      "to": "b-stairs-3",
       "weight": 6,
       "bearing": 0,
       "kind": "stairs",
       "bidirectional": true
     },
     {
-      "id": "n-elevator-vert-1",
-      "from": "n1-elevator",
-      "to": "n2-elevator",
+      "id": "d-stairs-1-d2-stairs-1-1",
+      "from": "d-stairs-1",
+      "to": "d2-stairs-1",
       "weight": 6,
       "bearing": 0,
-      "kind": "elevator",
+      "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "d-stairs-2-d2-stairs-2-1",
+      "from": "d-stairs-2",
+      "to": "d2-stairs-2",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
       "bidirectional": true
     }
   ]

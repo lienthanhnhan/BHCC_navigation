@@ -287,14 +287,17 @@
         const layout = state.displayNodes.get(node.id);
         const point = displayPoint(node);
         const width = layout?.width || nodeRectWidth(node), height = layout?.height || 5.8;
-        const labelClipId = 'node-label-' + node.id.replace(/[^a-zA-Z0-9_-]/g, '-');
-        const clipPath = svg('clipPath', { id: labelClipId, clipPathUnits: 'userSpaceOnUse' });
-        clipPath.append(svg('rect', { x: point.x - width / 2 + .5, y: point.y - height / 2 + .35, width: Math.max(1, width - 1), height: Math.max(1, height - .7) }));
-        group.append(clipPath);
+        const labelClipId = isEquipmentNode(node) ? 'node-label-' + node.id.replace(/[^a-zA-Z0-9_-]/g, '-') : '';
+        if (labelClipId) {
+          const clipPath = svg('clipPath', { id: labelClipId, clipPathUnits: 'userSpaceOnUse' });
+          clipPath.append(svg('rect', { x: point.x - width / 2 + .5, y: point.y - height / 2 + .35, width: Math.max(1, width - 1), height: Math.max(1, height - .7) }));
+          group.append(clipPath);
+        }
         group.append(svg('rect', { x: point.x - width / 2, y: point.y - height / 2, width, height, rx: .35 }));
         const orientation = node.kind === 'corridor' ? corridorOrientation(node) : 'horizontal';
         const labelLength = orientation === 'vertical' ? height : width;
-        const textAttrs = { x: point.x, y: point.y, 'clip-path': 'url(#' + labelClipId + ')' };
+        const textAttrs = { x: point.x, y: point.y };
+        if (labelClipId) textAttrs['clip-path'] = 'url(#' + labelClipId + ')';
         if (node.kind !== 'corridor') {
           textAttrs.textLength = Math.max(2, labelLength - 2.4);
           textAttrs.lengthAdjust = 'spacingAndGlyphs';

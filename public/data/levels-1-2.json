@@ -1496,15 +1496,22 @@
       "toEndpoint": "start"
     },
     {
-      "id": "n-vert-1",
-      "from": "n1-core",
-      "to": "n2-core",
+      "id": "n-stairs-vert-1",
+      "from": "n1-stairs",
+      "to": "n2-stairs",
       "weight": 6,
       "bearing": 0,
       "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "end",
-      "toEndpoint": "start"
+      "bidirectional": true
+    },
+    {
+      "id": "n-elevator-vert-1",
+      "from": "n1-elevator",
+      "to": "n2-elevator",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "elevator",
+      "bidirectional": true
     }
   ]
 }

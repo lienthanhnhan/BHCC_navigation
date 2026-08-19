@@ -77,6 +77,13 @@
       .node-tree-row .node-select { min-width: 0; }
       .list-empty { padding: 8px 2px; color: var(--muted); font-style: italic; }
       .code-preview { display: block; max-height: 190px; overflow: auto; white-space: pre; padding: 10px; background: #f7f7f7; border: 1px solid var(--border); font-size: .84rem; }
+      .vertical-connections { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+      .vertical-connections[hidden] { display: none; }
+      .vertical-connections h3 { margin: 0 0 8px; font-size: 1rem; }
+      .vertical-list { display: grid; gap: 6px; margin-bottom: 9px; }
+      .vertical-link { display: flex; justify-content: space-between; gap: 10px; align-items: center; padding: 8px 10px; background: var(--soft); border-left: 4px solid var(--navy); }
+      .vertical-link button { border: 0; background: transparent; color: var(--accent); cursor: pointer; font-weight: 700; }
+      .vertical-connect-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
       .status { min-height: 1.2em; color: var(--muted); }
       .status[data-variant="error"] { color: var(--accent); font-weight: 700; }
       .save-status { min-width: 120px; font-size: .88rem; font-weight: 700; }
@@ -112,11 +119,11 @@
             <button class="shape-tool" type="button" draggable="true" data-kind="stairs"><i class="shape-swatch stairs"></i>Stairs</button>
             <button class="shape-tool" type="button" draggable="true" data-kind="elevator"><i class="shape-swatch elevator"></i>Elevator</button>
             <button class="shape-tool" type="button" draggable="true" data-kind="door"><i class="shape-swatch door"></i>Door</button>
-          </div><div class="map-frame"><div class="map-canvas"><svg id="map-overlay" class="map-overlay" preserveAspectRatio="xMinYMin meet" aria-label="Editable node map"></svg></div></div><p class="hint">Drag rooms, stairs, and elevators beside a corridor or onto its start/end cap. Drag a corridor onto another corridor to create a branch; with All buildings selected, this also connects buildings. Apply changes saves edits in this browser; Export JSON publishes them through GitHub.</p></div>
+          </div><div class="map-frame"><div class="map-canvas"><svg id="map-overlay" class="map-overlay" preserveAspectRatio="xMinYMin meet" aria-label="Editable node map"></svg></div></div><p class="hint">Drag rooms, stairs, and elevators beside a corridor or onto its start/end cap. Select stairs or an elevator to view and set its floor destination. Drag a corridor onto another corridor to create a branch; with All buildings selected, this also connects buildings. Apply changes saves edits in this browser; Export JSON publishes them through GitHub.</p></div>
         </article>
         <aside class="forms">
           <article class="panel"><div class="panel-header"><h2>Nodes</h2><span id="node-status" class="status"></span></div><div class="panel-body"><ul id="node-list" class="list"></ul></div></article>
-          <article class="panel"><div class="panel-header"><h2>Selected node</h2></div><div class="panel-body"><form id="node-form" class="field-grid"><label class="field"><span>ID</span><input id="node-id" /></label><label class="field"><span>Label</span><input id="node-label" /></label><label class="field"><span>Kind</span><select id="node-kind"><option>room</option><option>corridor</option><option>stairs</option><option>elevator</option><option>door</option></select></label><label class="field"><span>Orientation</span><select id="node-orientation"><option value="horizontal">Horizontal</option><option value="vertical">Vertical</option></select></label><label class="field"><span>Floor</span><input id="node-floor" type="number" /></label><label class="field"><span>Route X</span><input id="node-x" type="number" step="0.1" /></label><label class="field"><span>Route Y</span><input id="node-y" type="number" step="0.1" /></label><label class="field"><span>Exit bearing</span><input id="node-exit-bearing" type="number" step="1" placeholder="optional" /></label><label class="field full"><span>Aliases, one per line</span><textarea id="node-aliases"></textarea></label></form><code id="node-json" class="code-preview"></code></div></article>
+          <article class="panel"><div class="panel-header"><h2>Selected node</h2></div><div class="panel-body"><form id="node-form" class="field-grid"><label class="field"><span>ID</span><input id="node-id" /></label><label class="field"><span>Label</span><input id="node-label" /></label><label class="field"><span>Kind</span><select id="node-kind"><option>room</option><option>corridor</option><option>stairs</option><option>elevator</option><option>door</option></select></label><label class="field"><span>Orientation</span><select id="node-orientation"><option value="horizontal">Horizontal</option><option value="vertical">Vertical</option></select></label><label class="field"><span>Floor</span><input id="node-floor" type="number" /></label><label class="field"><span>Route X</span><input id="node-x" type="number" step="0.1" /></label><label class="field"><span>Route Y</span><input id="node-y" type="number" step="0.1" /></label><label class="field"><span>Exit bearing</span><input id="node-exit-bearing" type="number" step="1" placeholder="optional" /></label><label class="field full"><span>Aliases, one per line</span><textarea id="node-aliases"></textarea></label></form><code id="node-json" class="code-preview"></code><section id="vertical-connections" class="vertical-connections" hidden><h3>Floor destinations</h3><div id="vertical-list" class="vertical-list"></div><div class="vertical-connect-form"><select id="vertical-target" aria-label="Floor destination"></select><button id="add-vertical-edge" class="button secondary" type="button">Connect floor</button></div></section></div></article>
           <article class="panel"><div class="panel-header"><h2>Connections</h2><div class="toolbar"><button id="add-edge" class="button secondary" type="button">Add connection</button><button id="delete-edge" class="button danger" type="button">Delete connection</button></div></div><div class="panel-body forms"><ul id="edge-list" class="list"></ul><form id="edge-form" class="field-grid"><label class="field full"><span>ID</span><input id="edge-id" /></label><label class="field"><span>From / parent</span><select id="edge-from"></select></label><label class="field"><span>From corridor point</span><select id="edge-from-endpoint"><option value="">Side / center</option><option value="start">Start (left / top)</option><option value="end">End (right / bottom)</option></select></label><label class="field"><span>To / child</span><select id="edge-to"></select></label><label class="field"><span>Child corridor endpoint</span><select id="edge-to-endpoint"><option value="">Side / center</option><option value="start">Start (left / top)</option><option value="end">End (right / bottom)</option></select></label><label class="field"><span>Corridor offset (%)</span><input id="edge-corridor-offset" type="number" min="0" max="100" step="0.1" placeholder="attachment position" /></label><label class="field"><span>Parent attachment</span><select id="edge-side"><option value="">No positioned attachment</option><option value="left">Left wall</option><option value="right">Right wall</option><option value="start">Start cap (center)</option><option value="end">End cap (center)</option></select></label><label class="field"><span>Weight</span><input id="edge-weight" type="number" step="0.1" /></label><label class="field"><span>Bearing</span><input id="edge-bearing" type="number" step="1" /></label><label class="field full"><span>Kind</span><select id="edge-kind"><option>walk</option><option>door</option><option>stairs</option><option>elevator</option></select></label><label class="field full"><span><input id="edge-bidirectional" type="checkbox" /> Two-way connection</span></label></form></div></article>
         </aside>
       </section>
@@ -125,7 +132,7 @@
       const datasetStorageKey = 'bhcc-map-editor-dataset-v4';
       const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
       const $ = (id) => document.getElementById(id);
-      const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-corridor-offset','edge-side','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','apply-changes','reset-changes','export-json','save-status'].map(id => [camel(id), $(id)]));
+      const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','vertical-connections','vertical-list','vertical-target','add-vertical-edge','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-corridor-offset','edge-side','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','apply-changes','reset-changes','export-json','save-status'].map(id => [camel(id), $(id)]));
 
       init().catch(error => { document.body.innerHTML = '<main class="editor-shell"><p>Could not load editor data.</p><pre>' + escapeHtml(error) + '</pre></main>'; });
 
@@ -142,6 +149,7 @@
         ids.deleteNode.addEventListener('click', deleteNode);
         ids.addEdge.addEventListener('click', addEdge);
         ids.deleteEdge.addEventListener('click', deleteEdge);
+        ids.addVerticalEdge.addEventListener('click', addVerticalConnection);
         ids.applyChanges.addEventListener('click', applyChanges);
         ids.resetChanges.addEventListener('click', resetSavedChanges);
         ids.exportJson.addEventListener('click', exportJson);
@@ -295,14 +303,18 @@
         }
         group.append(svg('rect', { x: point.x - width / 2, y: point.y - height / 2, width, height, rx: .35 }));
         const orientation = node.kind === 'corridor' ? corridorOrientation(node) : 'horizontal';
+        const labelPlacement = node.kind === 'corridor' ? corridorLabelPlacement(node, layout) : { ...point, availableSpan: width };
         const labelLength = orientation === 'vertical' ? height : width;
-        const textAttrs = { x: point.x, y: point.y };
+        const textAttrs = { x: labelPlacement.x, y: labelPlacement.y };
         if (labelClipId) textAttrs['clip-path'] = 'url(#' + labelClipId + ')';
         if (node.kind !== 'corridor') {
           textAttrs.textLength = Math.max(2, labelLength - 2.4);
           textAttrs.lengthAdjust = 'spacingAndGlyphs';
+        } else if (estimatedCorridorLabelSpan(node.label) > labelPlacement.availableSpan) {
+          textAttrs.textLength = Math.max(2, labelPlacement.availableSpan - 1);
+          textAttrs.lengthAdjust = 'spacingAndGlyphs';
         }
-        if (orientation === 'vertical') textAttrs.transform = 'rotate(90 ' + point.x + ' ' + point.y + ')';
+        if (orientation === 'vertical') textAttrs.transform = 'rotate(90 ' + labelPlacement.x + ' ' + labelPlacement.y + ')';
         const text = svg('text', textAttrs);
         text.textContent = node.kind === 'corridor' ? node.label : fitLabel(node.label, labelLength);
         group.append(text);
@@ -345,7 +357,7 @@
       function renderNodeForm() {
         const node = state.selectedNode;
         ids.nodeForm.querySelectorAll('input, select, textarea').forEach(field => field.disabled = !node);
-        if (!node) { ids.nodeForm.reset(); ids.nodeJson.textContent = ''; return; }
+        if (!node) { ids.nodeForm.reset(); ids.nodeJson.textContent = ''; renderVerticalConnections(null); return; }
         ids.nodeId.value = node.id;
         ids.nodeLabel.value = node.label;
         ids.nodeKind.value = node.kind;
@@ -357,6 +369,64 @@
         ids.nodeExitBearing.value = node.exitBearing ?? '';
         ids.nodeAliases.value = (node.aliases || []).join('\n');
         ids.nodeJson.textContent = JSON.stringify(node, null, 2);
+        renderVerticalConnections(node);
+      }
+
+      function renderVerticalConnections(node) {
+        const showConnections = isEquipmentNode(node);
+        ids.verticalConnections.hidden = !showConnections;
+        if (!showConnections) return;
+
+        const nodeRecords = allNodeRecords();
+        const nodeById = new Map(nodeRecords.map(record => [record.node.id, record]));
+        const connections = state.crossLevelEdges.filter(edge => edge.from === node.id || edge.to === node.id);
+        ids.verticalList.innerHTML = connections.length
+          ? connections.map(edge => {
+            const targetId = edge.from === node.id ? edge.to : edge.from;
+            const target = nodeById.get(targetId);
+            if (!target) return '';
+            const direction = target.level > node.floor ? '&uarr;' : '&darr;';
+            return '<div class="vertical-link"><span><strong>' + direction + ' Level ' + target.level + '</strong> &middot; ' + escapeHtml(target.node.label) + '</span><button type="button" data-remove-vertical="' + escapeHtml(edge.id) + '" aria-label="Remove floor connection to ' + escapeHtml(target.node.label) + '">Remove</button></div>';
+          }).join('')
+          : '<p class="status">Not connected to another floor.</p>';
+        ids.verticalList.querySelectorAll('[data-remove-vertical]').forEach(button => button.addEventListener('click', () => removeVerticalConnection(button.dataset.removeVertical)));
+
+        const connectedIds = new Set(connections.flatMap(edge => [edge.from, edge.to]));
+        const targets = nodeRecords
+          .filter(record => record.level !== node.floor && record.node.kind === node.kind && !connectedIds.has(record.node.id))
+          .sort((left, right) => left.level - right.level || left.node.label.localeCompare(right.node.label));
+        ids.verticalTarget.innerHTML = targets.length
+          ? targets.map(record => '<option value="' + escapeHtml(record.node.id) + '">Level ' + record.level + ' &middot; ' + escapeHtml(record.node.label) + '</option>').join('')
+          : '<option value="">No available ' + escapeHtml(node.kind) + ' destination</option>';
+        ids.verticalTarget.disabled = !targets.length;
+        ids.addVerticalEdge.disabled = !targets.length;
+      }
+
+      function addVerticalConnection() {
+        const node = state.selectedNode;
+        const targetRecord = allNodeRecords().find(record => record.node.id === ids.verticalTarget.value);
+        if (!isEquipmentNode(node) || !targetRecord || targetRecord.level === node.floor || targetRecord.node.kind !== node.kind) return;
+        const [from, to] = node.floor < targetRecord.level ? [node, targetRecord.node] : [targetRecord.node, node];
+        if (state.crossLevelEdges.some(edge => [edge.from, edge.to].includes(from.id) && [edge.from, edge.to].includes(to.id))) return;
+        state.crossLevelEdges.push({
+          id: uniqueId(from.id.toLowerCase() + '-' + to.id.toLowerCase()),
+          from: from.id,
+          to: to.id,
+          weight: Math.max(6, Math.abs(to.floor - from.floor) * 6),
+          bearing: 0,
+          kind: node.kind,
+          bidirectional: true
+        });
+        renderAll();
+      }
+
+      function removeVerticalConnection(edgeId) {
+        state.crossLevelEdges = state.crossLevelEdges.filter(edge => edge.id !== edgeId);
+        renderAll();
+      }
+
+      function allNodeRecords() {
+        return state.data.levels.flatMap(level => level.nodes.map(node => ({ node, level: level.level })));
       }
 
       function renderEdgeList() {
@@ -641,17 +711,9 @@
         const layout = state.displayNodes.get(corridor.id);
         if (!layout) return;
 
-        if (corridorOrientation(corridor) === 'vertical') {
-          const offset = (point.y - (layout.y - layout.height / 2)) / layout.height * 100;
-          const isCentered = Math.abs(point.x - layout.x) <= layout.width / 2 + 2;
-          edge.side = isCentered && offset <= 3 ? 'start' : isCentered && offset >= 97 ? 'end' : point.x >= layout.x ? 'left' : 'right';
-          edge.corridorOffset = edge.side === 'start' ? 0 : edge.side === 'end' ? 100 : round(clamp(offset, 0, 100));
-        } else {
-          const offset = (point.x - (layout.x - layout.width / 2)) / layout.width * 100;
-          const isCentered = Math.abs(point.y - layout.y) <= layout.height / 2 + 2;
-          edge.side = isCentered && offset <= 3 ? 'start' : isCentered && offset >= 97 ? 'end' : point.y <= layout.y ? 'left' : 'right';
-          edge.corridorOffset = edge.side === 'start' ? 0 : edge.side === 'end' ? 100 : round(clamp(offset, 0, 100));
-        }
+        const attachment = corridorAttachmentFromPoint(corridor, layout, point);
+        edge.side = attachment.side;
+        edge.corridorOffset = attachment.offset;
         syncAttachedNodeRouteCoordinates(node, corridor, edge);
         state.selectedEdge = edge;
       }
@@ -772,14 +834,32 @@
       function corridorAttachmentFromPoint(corridor, layout, point) {
         if (corridorOrientation(corridor) === 'vertical') {
           const offset = (point.y - (layout.y - layout.height / 2)) / layout.height * 100;
-          const isCentered = Math.abs(point.x - layout.x) <= layout.width / 2 + 2;
-          const side = isCentered && offset <= 3 ? 'start' : isCentered && offset >= 97 ? 'end' : point.x >= layout.x ? 'left' : 'right';
+          const isCentered = Math.abs(point.x - layout.x) <= endCapCenterTolerance(layout.width);
+          const endCapDepth = endCapDepthPercent(layout.height);
+          const side = isCentered && offset <= endCapDepth
+            ? 'start'
+            : isCentered && offset >= 100 - endCapDepth
+              ? 'end'
+              : point.x >= layout.x ? 'left' : 'right';
           return { side, offset: side === 'start' ? 0 : side === 'end' ? 100 : round(clamp(offset, 0, 100)) };
         }
         const offset = (point.x - (layout.x - layout.width / 2)) / layout.width * 100;
-        const isCentered = Math.abs(point.y - layout.y) <= layout.height / 2 + 2;
-        const side = isCentered && offset <= 3 ? 'start' : isCentered && offset >= 97 ? 'end' : point.y <= layout.y ? 'left' : 'right';
+        const isCentered = Math.abs(point.y - layout.y) <= endCapCenterTolerance(layout.height);
+        const endCapDepth = endCapDepthPercent(layout.width);
+        const side = isCentered && offset <= endCapDepth
+          ? 'start'
+          : isCentered && offset >= 100 - endCapDepth
+            ? 'end'
+            : point.y <= layout.y ? 'left' : 'right';
         return { side, offset: side === 'start' ? 0 : side === 'end' ? 100 : round(clamp(offset, 0, 100)) };
+      }
+
+      function endCapCenterTolerance(corridorThickness) {
+        return Math.max(1, Math.min(2, corridorThickness * .22));
+      }
+
+      function endCapDepthPercent(corridorLength) {
+        return clamp(160 / Math.max(1, corridorLength), 3, 18);
       }
 
       function corridorDistance(point, layout, orientation) {
@@ -1199,21 +1279,24 @@
           if (!corridorLayout || !nodeLayout) continue;
           const offset = clamp(edge.corridorOffset, 0, 100) / 100;
           const orientation = corridorOrientation(placement.corridor);
+          const connectorGap = 1.5;
           if (isEndAttachment(edge.side)) {
             const direction = edge.side === 'start' ? -1 : 1;
             if (orientation === 'vertical') {
               nodeLayout.x = corridorLayout.x;
-              nodeLayout.y = corridorLayout.y + direction * (corridorLayout.height / 2 + nodeLayout.height / 2 + 4);
+              nodeLayout.y = corridorLayout.y + direction * (corridorLayout.height / 2 + nodeLayout.height / 2 + connectorGap);
             } else {
-              nodeLayout.x = corridorLayout.x + direction * (corridorLayout.width / 2 + nodeLayout.width / 2 + 4);
+              nodeLayout.x = corridorLayout.x + direction * (corridorLayout.width / 2 + nodeLayout.width / 2 + connectorGap);
               nodeLayout.y = corridorLayout.y;
             }
           } else if (orientation === 'vertical') {
-            nodeLayout.x = corridorLayout.x + (edge.side === 'left' ? 17 : -17);
+            const sideDistance = corridorLayout.width / 2 + nodeLayout.width / 2 + connectorGap;
+            nodeLayout.x = corridorLayout.x + (edge.side === 'left' ? sideDistance : -sideDistance);
             nodeLayout.y = corridorLayout.y - corridorLayout.height / 2 + corridorLayout.height * offset;
           } else {
+            const sideDistance = corridorLayout.height / 2 + nodeLayout.height / 2 + connectorGap;
             nodeLayout.x = corridorLayout.x - corridorLayout.width / 2 + corridorLayout.width * offset;
-            nodeLayout.y = corridorLayout.y + (edge.side === 'left' ? -13 : 13);
+            nodeLayout.y = corridorLayout.y + (edge.side === 'left' ? -sideDistance : sideDistance);
           }
         }
         separateAttachedNodeRows(edges, nodeById, layouts);
@@ -1239,7 +1322,7 @@
           const gap = 2;
           const ordered = [...items].sort((left, right) => left.edge.corridorOffset - right.edge.corridorOffset);
           const requiredSpan = ordered.reduce((total, item) => total + item.nodeLayout[spanKey], 0) + gap * (ordered.length - 1) + 4;
-          corridorLayout[spanKey] = Math.max(corridorLayout[spanKey], requiredSpan);
+          expandCorridorAwayFromParent(items[0].placement.corridor, corridorLayout, axisKey, spanKey, requiredSpan, edges, nodeById);
           const start = corridorLayout[axisKey] - corridorLayout[spanKey] / 2;
           const end = corridorLayout[axisKey] + corridorLayout[spanKey] / 2;
           let previousEnd = start;
@@ -1258,6 +1341,23 @@
           const underflow = start - (first.nodeLayout[axisKey] - first.nodeLayout[spanKey] / 2);
           if (underflow > 0) for (const item of ordered) item.nodeLayout[axisKey] += underflow;
         }
+      }
+
+      function expandCorridorAwayFromParent(corridor, layout, axisKey, spanKey, requiredSpan, edges, nodeById) {
+        const previousSpan = layout[spanKey];
+        const nextSpan = Math.max(previousSpan, requiredSpan);
+        if (nextSpan === previousSpan) return;
+
+        const parentEdge = edges.find(edge =>
+          edge.to === corridor.id
+          && edge.side
+          && edge.toEndpoint
+          && nodeById.get(edge.from)?.kind === 'corridor');
+        if (parentEdge) {
+          const growthDirection = parentEdge.toEndpoint === 'start' ? 1 : -1;
+          layout[axisKey] = round(layout[axisKey] + growthDirection * (nextSpan - previousSpan) / 2);
+        }
+        layout[spanKey] = nextSpan;
       }
 
       function applyCorridorPlacements(nodes, edges, layouts) {
@@ -1489,6 +1589,56 @@
         return { width: Math.max(8, node.label.length * .95 + 3.8), height: 5.8 };
       }
 
+      function corridorLabelPlacement(node, layout) {
+        const vertical = corridorOrientation(node) === 'vertical';
+        const axisKey = vertical ? 'y' : 'x';
+        const crossAxisKey = vertical ? 'x' : 'y';
+        const spanKey = vertical ? 'height' : 'width';
+        const crossSpanKey = vertical ? 'width' : 'height';
+        const center = layout[axisKey];
+        const start = center - layout[spanKey] / 2 + 2;
+        const end = center + layout[spanKey] / 2 - 2;
+        const crossStart = layout[crossAxisKey] - layout[crossSpanKey] / 2;
+        const crossEnd = layout[crossAxisKey] + layout[crossSpanKey] / 2;
+        const blockers = [];
+
+        for (const [otherId, other] of state.displayNodes) {
+          if (otherId === node.id) continue;
+          const otherCrossStart = other[crossAxisKey] - other[crossSpanKey] / 2;
+          const otherCrossEnd = other[crossAxisKey] + other[crossSpanKey] / 2;
+          if (!rangesOverlap(crossStart, crossEnd, otherCrossStart, otherCrossEnd)) continue;
+          const blockerStart = Math.max(start, other[axisKey] - other[spanKey] / 2 - 1.5);
+          const blockerEnd = Math.min(end, other[axisKey] + other[spanKey] / 2 + 1.5);
+          if (blockerStart < blockerEnd) blockers.push({ start: blockerStart, end: blockerEnd });
+        }
+
+        blockers.sort((left, right) => left.start - right.start);
+        const clearSegments = [];
+        let cursor = start;
+        for (const blocker of blockers) {
+          if (blocker.start > cursor) clearSegments.push({ start: cursor, end: blocker.start });
+          cursor = Math.max(cursor, blocker.end);
+        }
+        if (cursor < end) clearSegments.push({ start: cursor, end });
+        if (!clearSegments.length) clearSegments.push({ start, end });
+
+        const desiredSpan = estimatedCorridorLabelSpan(node.label);
+        const fittingSegments = clearSegments.filter(segment => segment.end - segment.start >= desiredSpan);
+        const candidates = fittingSegments.length ? fittingSegments : clearSegments;
+        candidates.sort((left, right) => {
+          if (!fittingSegments.length) return (right.end - right.start) - (left.end - left.start);
+          return Math.abs((left.start + left.end) / 2 - center) - Math.abs((right.start + right.end) / 2 - center);
+        });
+        const segment = candidates[0];
+        const labelAxis = (segment.start + segment.end) / 2;
+        return vertical
+          ? { x: layout.x, y: labelAxis, availableSpan: segment.end - segment.start }
+          : { x: labelAxis, y: layout.y, availableSpan: segment.end - segment.start };
+      }
+
+      function estimatedCorridorLabelSpan(label) { return Math.max(6, String(label).length * 1.45); }
+      function rangesOverlap(firstStart, firstEnd, secondStart, secondEnd) { return firstStart < secondEnd && secondStart < firstEnd; }
+
       function corridorNodeSize(orientation, length) { return orientation === 'vertical' ? { width: 7, height: length } : { width: length, height: 7 }; }
 
       function displayPoint(node) {
@@ -1709,7 +1859,7 @@
         return { x: round(transformed.x), y: round(transformed.y) };
       }
       function graphBounds(nodes) { if (!nodes.length) return { minX:-10, minY:-10, width:20, height:20 }; const xs = nodes.map(node => node.x), ys = nodes.map(node => node.y); const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys); const width = Math.max(1, maxX - minX), height = Math.max(1, maxY - minY), padding = Math.max(width, height) * .14; return { minX:minX-padding, minY:minY-padding, width:width+padding*2, height:height+padding*2 }; }
-      function uniqueId(prefix) { const existing = new Set(state.data.levels.flatMap(level => level.nodes.map(node => node.id)).concat(state.data.levels.flatMap(level => level.edges.map(edge => edge.id)))); let index = 1; while (existing.has(prefix + '-' + index)) index += 1; return prefix + '-' + index; }
+      function uniqueId(prefix) { const existing = new Set(state.data.levels.flatMap(level => level.nodes.map(node => node.id)).concat(state.data.levels.flatMap(level => level.edges.map(edge => edge.id)), state.crossLevelEdges.map(edge => edge.id))); let index = 1; while (existing.has(prefix + '-' + index)) index += 1; return prefix + '-' + index; }
       function svg(name, attrs = {}) { const el = document.createElementNS('http://www.w3.org/2000/svg', name); for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value)); return el; }
       function nodeRectWidth(node) { return Math.max(7.2, Math.min(18, node.label.length * 1.05 + 4)); }
       function equipmentRectWidth(node) { return Math.max(9, Math.min(16, node.label.length * .9 + 4)); }

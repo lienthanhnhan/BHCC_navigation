@@ -1135,19 +1135,23 @@
         }
         applyEquipmentPlacements(nodes, visibleEdges(), layouts);
         applyAttachedNodePlacements(nodes, visibleEdges(), layouts);
+        if (state.building === 'all') reflowCampusBuildings(groups, state.level.level, layouts);
         state.displayBuildings = buildingBoundsFromLayouts(groups, layouts);
         return layouts;
       }
 
       function layoutCampusBuildings(groups, floor, layouts) {
-        const entries = groups.map(([building, nodes]) => {
+        groups.forEach(([, nodes]) => {
           const size = buildingSchematicSize(nodes);
           layoutBuildingNodes(nodes, 0, 0, size, layouts);
-          return { building, nodes, size };
         });
         applyCorridorPlacements(groups.flatMap(([, nodes]) => nodes), visibleEdges(), layouts);
+        reflowCampusBuildings(groups, floor, layouts);
+      }
+
+      function reflowCampusBuildings(groups, floor, layouts) {
         const measuredBounds = buildingBoundsFromLayouts(groups, layouts);
-        for (const entry of entries) entry.bounds = measuredBounds.get(entry.building);
+        const entries = groups.map(([building, nodes]) => ({ building, nodes, bounds: measuredBounds.get(building) }));
 
         const targets = floor === 1
           ? floorOneBuildingTargets(entries)

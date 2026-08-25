@@ -122,10 +122,16 @@ function renderRooms(
       if (!nodeLayout) return "";
       const stateClass = node.id === startId ? " room-start" : node.id === goalId ? " room-goal" : routeNodeIds.has(node.id) ? " room-route" : "";
       const label = fitLabel(node.label, nodeLayout.width);
+      const left = nodeLayout.x - nodeLayout.width / 2;
+      const top = nodeLayout.y - nodeLayout.height / 2;
+      const clipId = labelClipId("room", node.id);
       return `
         <g class="room-cell ${node.kind}-cell${stateClass}">
-          <rect x="${nodeLayout.x - nodeLayout.width / 2}" y="${nodeLayout.y - nodeLayout.height / 2}" width="${nodeLayout.width}" height="${nodeLayout.height}" rx=".35" />
-          <text x="${nodeLayout.x}" y="${nodeLayout.y}" textLength="${Math.max(2, nodeLayout.width - 2.4)}" lengthAdjust="spacingAndGlyphs">${escapeHtml(label)}</text>
+          <clipPath id="${clipId}" clipPathUnits="userSpaceOnUse">
+            <rect x="${left + 0.5}" y="${top + 0.5}" width="${Math.max(1, nodeLayout.width - 1)}" height="${Math.max(1, nodeLayout.height - 1)}" rx=".25" />
+          </clipPath>
+          <rect x="${left}" y="${top}" width="${nodeLayout.width}" height="${nodeLayout.height}" rx=".35" />
+          <text x="${nodeLayout.x}" y="${nodeLayout.y}" textLength="${Math.max(2, nodeLayout.width - 2.4)}" lengthAdjust="spacingAndGlyphs" clip-path="url(#${clipId})">${escapeHtml(label)}</text>
         </g>
       `;
     })
@@ -147,10 +153,22 @@ function renderNavigationNodes(
       const orientation = node.kind === "corridor" ? corridorOrientation(node) : "horizontal";
       const stateClass = node.id === startId ? " start-node" : node.id === goalId ? " goal-node" : routeNodeIds.has(node.id) ? " route-node" : "";
       const transform = orientation === "vertical" ? ` transform="rotate(90 ${nodeLayout.x} ${nodeLayout.y})"` : "";
+      const labelLength = orientation === "vertical" ? nodeLayout.height : nodeLayout.width;
+      const label = fitLabel(node.label, labelLength);
+      const availableLabelLength = Math.max(2, labelLength - 2.4);
+      const textLength = label.length * 1.25 > availableLabelLength
+        ? ` textLength="${availableLabelLength}" lengthAdjust="spacingAndGlyphs"`
+        : "";
+      const left = nodeLayout.x - nodeLayout.width / 2;
+      const top = nodeLayout.y - nodeLayout.height / 2;
+      const clipId = labelClipId("navigation", node.id);
       return `
         <g class="navigation-node ${node.kind}-node${stateClass}">
-          <rect x="${nodeLayout.x - nodeLayout.width / 2}" y="${nodeLayout.y - nodeLayout.height / 2}" width="${nodeLayout.width}" height="${nodeLayout.height}" rx=".35" />
-          <text x="${nodeLayout.x}" y="${nodeLayout.y}"${transform}>${escapeHtml(node.label)}</text>
+          <clipPath id="${clipId}" clipPathUnits="userSpaceOnUse">
+            <rect x="${left + 0.5}" y="${top + 0.5}" width="${Math.max(1, nodeLayout.width - 1)}" height="${Math.max(1, nodeLayout.height - 1)}" rx=".25" />
+          </clipPath>
+          <rect x="${left}" y="${top}" width="${nodeLayout.width}" height="${nodeLayout.height}" rx=".35" />
+          <text x="${nodeLayout.x}" y="${nodeLayout.y}"${textLength} clip-path="url(#${clipId})"${transform}>${escapeHtml(label)}</text>
         </g>
       `;
     })
@@ -264,6 +282,10 @@ function displayName(node: BuildingNode): string {
 function fitLabel(value: string, width: number): string {
   const limit = Math.max(3, Math.floor(width / 0.9));
   return value.length <= limit ? value : `${value.slice(0, Math.max(1, limit - 3))}...`;
+}
+
+function labelClipId(kind: string, nodeId: string): string {
+  return `${kind}-label-${nodeId}`.replace(/[^a-zA-Z0-9_-]/g, "_");
 }
 
 function cardinalBearing(bearing: number): number {

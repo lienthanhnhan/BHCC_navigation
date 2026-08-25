@@ -38,7 +38,10 @@ export function layoutCampusMap(nodes: BuildingNode[], edges: BuildingEdge[], fl
   });
 
   applyCorridorPlacements(nodes, edges, layouts);
+  ensureCorridorRoomCapacity(nodes, edges, layouts);
+  applyCorridorPlacements(nodes, edges, layouts);
   applyRoomPlacements(nodes, edges, layouts);
+  spreadRoomsAlongCorridors(nodes, edges, layouts);
 
   const measuredBounds = buildingBounds(groups, layouts);
   for (const entry of entries) entry.bounds = measuredBounds.get(entry.building);
@@ -53,6 +56,133 @@ export function layoutCampusMap(nodes: BuildingNode[], edges: BuildingEdge[], fl
 
   const buildings = buildingBounds(groups, layouts);
   return { nodes: layouts, buildings, bounds: contentBounds(layouts, buildings) };
+}
+
+type CorridorRoomPlacement = {
+  edge: BuildingEdge;
+  room: BuildingNode;
+  roomLayout: NodeLayout;
+};
+
+function corridorRoomGroups(
+  nodes: BuildingNode[],
+  edges: BuildingEdge[],
+  layouts: Map<string, NodeLayout>,
+): Map<string, Map<"left" | "right", CorridorRoomPlacement[]>> {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const groups = new Map<string, Map<"left" | "right", CorridorRoomPlacement[]>>();
+  const seen = new Set<string>();
+
+  for (const edge of edges) {
+    if (edge.side !== "left" && edge.side !== "right") continue;
+    if (typeof edge.corridorOffset !== "number") continue;
+    const placement = roomCorridorDetails(edge, nodeById);
+    if (!placement) continue;
+    const roomLayout = layouts.get(placement.room.id);
+    if (!roomLayout) continue;
+    const key = `${placement.corridor.id}|${placement.room.id}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    const corridorGroups = groups.get(placement.corridor.id) ?? new Map();
+    const sideGroup = corridorGroups.get(edge.side) ?? [];
+    sideGroup.push({ edge, room: placement.room, roomLayout });
+    corridorGroups.set(edge.side, sideGroup);
+    groups.set(placement.corridor.id, corridorGroups);
+  }
+
+  return groups;
+}
+
+function ensureCorridorRoomCapacity(
+  nodes: BuildingNode[],
+  edges: BuildingEdge[],
+  layouts: Map<string, NodeLayout>,
+): void {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const groups = corridorRoomGroups(nodes, edges, layouts);
+  const gap = 1.2;
+  const margin = 2;
+
+  for (const [corridorId, sideGroups] of groups) {
+    const corridor = nodeById.get(corridorId);
+    const corridorLayout = layouts.get(corridorId);
+    if (!corridor || !corridorLayout) continue;
+    const vertical = corridorOrientation(corridor) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    const requiredSpan = Math.max(
+      corridorLayout[spanKey],
+      ...[...sideGroups.values()].map((placements) => (
+        placements.reduce((total, placement) => total + placement.roomLayout[spanKey], 0)
+        + gap * Math.max(0, placements.length - 1)
+        + margin * 2
+      )),
+    );
+    const growth = requiredSpan - corridorLayout[spanKey];
+    if (growth <= 0) continue;
+
+    const parentEdge = edges.find((edge) => (
+      edge.to === corridorId
+      && nodeById.get(edge.from)?.kind === "corridor"
+      && edge.toEndpoint
+    ));
+    if (parentEdge?.toEndpoint) {
+      const growthDirection = parentEdge.toEndpoint === "start" ? 1 : -1;
+      corridorLayout[axisKey] = round(corridorLayout[axisKey] + growthDirection * growth / 2);
+    }
+    corridorLayout[spanKey] = round(requiredSpan);
+  }
+}
+
+function spreadRoomsAlongCorridors(
+  nodes: BuildingNode[],
+  edges: BuildingEdge[],
+  layouts: Map<string, NodeLayout>,
+): void {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const groups = corridorRoomGroups(nodes, edges, layouts);
+  const gap = 1.2;
+  const margin = 2;
+
+  for (const [corridorId, sideGroups] of groups) {
+    const corridor = nodeById.get(corridorId);
+    const corridorLayout = layouts.get(corridorId);
+    if (!corridor || !corridorLayout) continue;
+    const vertical = corridorOrientation(corridor) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    const start = corridorLayout[axisKey] - corridorLayout[spanKey] / 2 + margin;
+    const end = corridorLayout[axisKey] + corridorLayout[spanKey] / 2 - margin;
+
+    for (const placements of sideGroups.values()) {
+      const ordered = [...placements].sort((left, right) => (
+        (left.edge.corridorOffset ?? 50) - (right.edge.corridorOffset ?? 50)
+      ));
+      let previousEnd = start;
+
+      for (const [index, placement] of ordered.entries()) {
+        const halfSpan = placement.roomLayout[spanKey] / 2;
+        const desired = start + (end - start) * clamp(placement.edge.corridorOffset ?? 50, 0, 100) / 100;
+        const center = Math.max(desired, previousEnd + halfSpan + (index ? gap : 0));
+        placement.roomLayout[axisKey] = center;
+        previousEnd = center + halfSpan;
+      }
+
+      const last = ordered.at(-1);
+      if (!last) continue;
+      const overflow = last.roomLayout[axisKey] + last.roomLayout[spanKey] / 2 - end;
+      if (overflow > 0) {
+        for (const placement of ordered) placement.roomLayout[axisKey] -= overflow;
+      }
+      const first = ordered[0];
+      const underflow = start - (first.roomLayout[axisKey] - first.roomLayout[spanKey] / 2);
+      if (underflow > 0) {
+        for (const placement of ordered) placement.roomLayout[axisKey] += underflow;
+      }
+      for (const placement of ordered) placement.roomLayout[axisKey] = round(placement.roomLayout[axisKey]);
+    }
+  }
 }
 
 function applyRoomPlacements(nodes: BuildingNode[], edges: BuildingEdge[], layouts: Map<string, NodeLayout>): void {

@@ -155,8 +155,8 @@ function createAppMarkup(graph: BuildingGraph): string {
 
       <section class="card form-card">
         <form id="route-form" class="route-form">
-          ${createLocationFieldMarkup("Current location", "start", "N-111")}
-          ${createLocationFieldMarkup("Destination", "goal", "E-229")}
+          ${createLocationFieldMarkup("Current location", "start", "Entrance")}
+          ${createLocationFieldMarkup("Destination", "goal", "D-113")}
           <button id="route-submit" class="primary" type="submit">Find route</button>
         </form>
         <p id="status" class="status">Ready to route through the BHCC directory graph.</p>
@@ -320,7 +320,7 @@ function runRouteWithLoading(): void {
 
   window.requestAnimationFrame(() => {
     window.setTimeout(() => {
-      runRoute();
+      runRoute(true);
       setRouteLoading(false);
     }, 350);
   });
@@ -340,7 +340,7 @@ function setRouteLoading(isLoading: boolean): void {
   }
 }
 
-function runRoute(): void {
+function runRoute(focusFirstInstruction = false): void {
   const state = getRouteFormState();
 
   saveState(state);
@@ -370,7 +370,7 @@ function runRoute(): void {
   currentRoute = route;
   showRouteFloor(route);
   renderFloorMap();
-  renderRoute(route);
+  renderRoute(route, focusFirstInstruction);
 }
 
 function showRouteFloor(route: PathResult): void {
@@ -389,7 +389,7 @@ function getRouteFormState(): RouteFormState {
   };
 }
 
-function renderRoute(route: PathResult): void {
+function renderRoute(route: PathResult, focusFirstInstruction: boolean): void {
   const directions = describeRoute(buildingGraph, route);
   const estimatedMinutes = Math.max(1, Math.round(route.distance / metersPerWalkingMinute));
 
@@ -412,6 +412,11 @@ function renderRoute(route: PathResult): void {
     button.addEventListener("click", () => focusDirectionNode(step.focusNodeId, button));
     item.append(button);
     elements.directionsList.append(item);
+  }
+
+  if (focusFirstInstruction) {
+    const firstInstruction = elements.directionsList.querySelector<HTMLButtonElement>(".direction-focus");
+    if (firstInstruction) window.requestAnimationFrame(() => firstInstruction.click());
   }
 
   elements.trace?.replaceChildren();

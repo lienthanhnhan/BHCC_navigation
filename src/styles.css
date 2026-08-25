@@ -19,10 +19,12 @@
 
 html {
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  min-width: 0;
   min-height: 100vh;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--text);
@@ -33,6 +35,7 @@ button,
 input,
 select {
   font: inherit;
+  min-height: 44px;
 }
 
 #app {
@@ -278,11 +281,16 @@ h1 {
 }
 
 .map-frame {
+  width: 100%;
   overflow: auto;
   max-height: 58vh;
   border: 1px solid var(--accent);
   border-radius: 0;
   background: #f7f7f2;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x pan-y;
 }
 
 .sign-map-frame {
@@ -292,6 +300,7 @@ h1 {
 .sign-map {
   display: block;
   min-width: 100%;
+  max-width: none;
   background: #f7f7f2;
 }
 
@@ -599,11 +608,12 @@ h1 {
 
 @media (max-width: 920px) {
   .shell {
-    width: min(100% - 32px, 1120px);
+    width: min(100% - 24px, 1120px);
   }
 
   .grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
   .route-form {
@@ -613,12 +623,48 @@ h1 {
   .primary {
     width: 100%;
   }
+
+  .map-frame {
+    max-height: 60svh;
+  }
+
+  .sign-map {
+    width: 900px !important;
+    height: auto !important;
+  }
 }
 
 @media (max-width: 640px) {
   .shell {
-    width: min(100% - 16px, 1120px);
-    padding-top: 12px;
+    width: 100%;
+    padding: 10px max(8px, env(safe-area-inset-right)) 28px max(8px, env(safe-area-inset-left));
+  }
+
+  .content-intro {
+    margin: 0 6px 14px;
+  }
+
+  .content-intro h2 {
+    font-size: clamp(1.45rem, 7vw, 1.8rem);
+    line-height: 1.12;
+    margin-bottom: 7px;
+  }
+
+  .content-intro p {
+    line-height: 1.4;
+  }
+
+  .form-card {
+    margin-bottom: 10px;
+    padding: 12px;
+  }
+
+  .grid {
+    gap: 10px;
+  }
+
+  .grid>.card {
+    padding: 12px;
   }
 
   .route-form {
@@ -632,14 +678,49 @@ h1 {
 
   .map-tabs {
     width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
   }
 
   .map-tab {
     flex: 1;
+    min-width: max-content;
   }
 
-  .map-frame img {
-    min-width: 620px;
+  .map-frame {
+    max-height: 58svh;
+  }
+
+  .sign-map-frame {
+    padding: 6px;
+  }
+
+  .sign-map {
+    width: 960px !important;
+    min-width: 960px;
+    height: auto !important;
+  }
+
+  .card-header {
+    margin-bottom: 10px;
+  }
+
+  .directions {
+    padding-left: 18px;
+    gap: 8px;
+  }
+
+  .directions li {
+    padding: 10px 8px 10px 2px;
+  }
+
+  .route-loading {
+    padding: 12px;
+  }
+
+  .meta-list li {
+    flex-wrap: wrap;
+    padding: 12px;
   }
 }
 

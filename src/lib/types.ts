@@ -34,6 +34,7 @@ export interface BuildingEdge {
   kind: "walk" | "stairs" | "elevator" | "door";
   bidirectional?: boolean;
   fromEndpoint?: CorridorEndpoint;
+  /** Omit for a perpendicular corridor whose center side joins the parent corridor cap. */
   toEndpoint?: CorridorEndpoint;
   /** Position along the parent corridor, from 0 at start to 100 at end. */
   corridorOffset?: number;

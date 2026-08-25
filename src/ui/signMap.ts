@@ -8,6 +8,7 @@ import {
   corridorSidePoint,
   isPathNode,
   layoutCampusMap,
+  usesChildCorridorSide,
   type CampusLayout,
   type Point,
 } from "./campusLayout";
@@ -193,7 +194,10 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
     const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && fromLayout
       ? corridorAttachmentPoint(from, edge, fromLayout)
       : connectionPoint(from, edge.fromEndpoint, layout);
-    return linePath(fromPoint, connectionPoint(to, edge.toEndpoint, layout));
+    const toPoint = usesChildCorridorSide(edge, from, to)
+      ? corridorSidePoint(to, fromPoint, layout)
+      : connectionPoint(to, edge.toEndpoint, layout);
+    return linePath(fromPoint, toPoint);
   }
 
   const pathNode = isPathNode(from) ? from : to;

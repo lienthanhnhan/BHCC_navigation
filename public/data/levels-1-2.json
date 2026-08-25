@@ -1515,7 +1515,7 @@
           "kind": "corridor",
           "floor": 1,
           "x": 24,
-          "y": 13,
+          "y": 3,
           "orientation": "vertical"
         }
       ],
@@ -3246,14 +3246,13 @@
           "id": "g-corridor-1-corridor-1",
           "from": "g1-core",
           "to": "g-corridor-1",
-          "weight": 14.1,
+          "weight": 10,
           "bearing": 270,
           "kind": "walk",
           "bidirectional": true,
           "side": "start",
           "corridorOffset": 0,
-          "fromEndpoint": "start",
-          "toEndpoint": "start"
+          "fromEndpoint": "start"
         }
       ]
     },

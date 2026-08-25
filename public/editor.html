@@ -248,7 +248,9 @@
           const fromPoint = from.kind === 'corridor' && to.kind === 'corridor' && edge.side
             ? corridorAttachmentPoint(from, edge)
             : connectionPoint(from, edge.fromEndpoint);
-          const toPoint = connectionPoint(to, edge.toEndpoint);
+          const toPoint = usesChildCorridorSide(edge, from, to)
+            ? corridorSidePoint(to, fromPoint)
+            : connectionPoint(to, edge.toEndpoint);
           ids.mapOverlay.append(svg('line', { class: 'corridor-wall', 'data-edge-id': edge.id, x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
           ids.mapOverlay.append(svg('line', { class: 'corridor-floor', 'data-edge-id': edge.id, x1: fromPoint.x, y1: fromPoint.y, x2: toPoint.x, y2: toPoint.y }));
         }
@@ -632,7 +634,9 @@
           if (joinsCorridors) {
             if (isEndAttachment(edge.side)) edge.fromEndpoint = edge.side;
             else delete edge.fromEndpoint;
-            edge.toEndpoint ||= 'start';
+            if (!usesChildCorridorSide(edge, nodeById.get(edge.from), nodeById.get(edge.to))) {
+              edge.toEndpoint ||= 'start';
+            }
             syncAttachedRouteCoordinates();
           }
         } else if (joinsCorridors) {
@@ -761,10 +765,9 @@
       function corridorDescendants(corridorId) {
         const children = new Map();
         for (const edge of state.level.edges) {
-          if (!edge.side || !edge.toEndpoint) continue;
           const from = state.level.nodes.find(node => node.id === edge.from);
           const to = state.level.nodes.find(node => node.id === edge.to);
-          if (from?.kind !== 'corridor' || to?.kind !== 'corridor') continue;
+          if (!isPositionedCorridorConnection(edge, from, to)) continue;
           children.set(from.id, [...(children.get(from.id) || []), to.id]);
         }
         const descendants = new Set(), queue = [...(children.get(corridorId) || [])];
@@ -787,7 +790,7 @@
           return;
         }
 
-        let edge = state.level.edges.find(candidate => candidate.to === corridor.id && candidate.side && candidate.toEndpoint);
+        let edge = state.level.edges.find(candidate => candidate.to === corridor.id && candidate.side);
         if (!edge) {
           edge = state.level.edges.find(candidate =>
             (candidate.from === parent.id && candidate.to === corridor.id)
@@ -815,9 +818,15 @@
         else delete edge.fromEndpoint;
 
         const attachmentPoint = corridorAttachmentPoint(parent, edge);
-        edge.toEndpoint = corridorOrientation(corridor) === 'vertical'
-          ? point.y >= attachmentPoint.y ? 'start' : 'end'
-          : point.x >= attachmentPoint.x ? 'start' : 'end';
+        const attachesChildSide = isEndAttachment(edge.side)
+          && corridorOrientation(parent) !== corridorOrientation(corridor);
+        if (attachesChildSide) {
+          delete edge.toEndpoint;
+        } else {
+          edge.toEndpoint = corridorOrientation(corridor) === 'vertical'
+            ? point.y >= attachmentPoint.y ? 'start' : 'end'
+            : point.x >= attachmentPoint.x ? 'start' : 'end';
+        }
         syncAttachedRouteCoordinates();
         state.selectedEdge = edge;
       }
@@ -922,7 +931,7 @@
         const nodeById = new Map(state.level.nodes.map(node => [node.id, node]));
         const placements = state.level.edges.filter(edge => {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
-          return from?.kind === 'corridor' && to?.kind === 'corridor' && edge.side && edge.toEndpoint;
+          return isPositionedCorridorConnection(edge, from, to);
         });
         const childIds = new Set(placements.map(edge => edge.to));
         const positioned = new Set(state.level.nodes.filter(node => node.kind === 'corridor' && !childIds.has(node.id)).map(node => node.id));
@@ -965,8 +974,9 @@
         }
 
         const childOrientation = corridorOrientation(child);
-        child.x = round(attachmentX + (childOrientation === 'horizontal' ? (edge.toEndpoint === 'start' ? 10 : -10) : 0));
-        child.y = round(attachmentY + (childOrientation === 'vertical' ? (edge.toEndpoint === 'start' ? 10 : -10) : 0));
+        const childDirection = edge.toEndpoint === 'start' ? 1 : edge.toEndpoint === 'end' ? -1 : 0;
+        child.x = round(attachmentX + (childOrientation === 'horizontal' ? childDirection * 10 : 0));
+        child.y = round(attachmentY + (childOrientation === 'vertical' ? childDirection * 10 : 0));
         edge.bearing = bearingBetween(parent, child);
         edge.weight = Math.max(1, round(Math.hypot(child.x - parent.x, child.y - parent.y)));
       }
@@ -1449,12 +1459,9 @@
         const nodeById = new Map(nodes.map(node => [node.id, node]));
         const placements = edges.filter(edge => {
           const from = nodeById.get(edge.from), to = nodeById.get(edge.to);
-          return from?.kind === 'corridor'
-            && to?.kind === 'corridor'
+          return isPositionedCorridorConnection(edge, from, to)
             && buildingKey(from) === buildingKey(to)
-            && Number.isFinite(edge.corridorOffset)
-            && edge.side
-            && edge.toEndpoint;
+            && Number.isFinite(edge.corridorOffset);
         });
         const branchAxes = corridorBranchAxes(placements, nodeById, layouts, edges);
         const childIds = new Set(placements.map(edge => edge.to));
@@ -1473,13 +1480,24 @@
               if (corridorOrientation(parent) === 'vertical') attachment.y = branchAxis;
               else attachment.x = branchAxis;
             }
-            const childDirection = edge.toEndpoint === 'start' ? 1 : -1;
-            if (corridorOrientation(child) === 'vertical') {
-              childLayout.x = attachment.x;
-              childLayout.y = attachment.y + childDirection * childLayout.height / 2;
+            if (usesChildCorridorSide(edge, parent, child)) {
+              const parentDirection = edge.side === 'start' ? -1 : 1;
+              if (corridorOrientation(parent) === 'horizontal') {
+                childLayout.x = attachment.x + parentDirection * childLayout.width / 2;
+                childLayout.y = attachment.y;
+              } else {
+                childLayout.x = attachment.x;
+                childLayout.y = attachment.y + parentDirection * childLayout.height / 2;
+              }
             } else {
-              childLayout.x = attachment.x + childDirection * childLayout.width / 2;
-              childLayout.y = attachment.y;
+              const childDirection = edge.toEndpoint === 'start' ? 1 : -1;
+              if (corridorOrientation(child) === 'vertical') {
+                childLayout.x = attachment.x;
+                childLayout.y = attachment.y + childDirection * childLayout.height / 2;
+              } else {
+                childLayout.x = attachment.x + childDirection * childLayout.width / 2;
+                childLayout.y = attachment.y;
+              }
             }
             childLayout.x = round(childLayout.x);
             childLayout.y = round(childLayout.y);
@@ -1861,7 +1879,7 @@
             continue;
           }
           if (from.kind === 'corridor' && to.kind === 'corridor') {
-            if (edge.side && edge.toEndpoint) setParent(from, to);
+            if (isPositionedCorridorConnection(edge, from, to)) setParent(from, to);
             continue;
           }
           if (from.kind === 'corridor') setParent(from, to);
@@ -1958,6 +1976,19 @@
         return 'M ' + start.x + ' ' + start.y + ' L ' + start.x + ' ' + middleY + ' L ' + end.x + ' ' + middleY + ' L ' + end.x + ' ' + end.y;
       }
       function corridorOrientation(node) { return node.kind === 'corridor' && node.orientation === 'vertical' ? 'vertical' : 'horizontal'; }
+      function usesChildCorridorSide(edge, parent, child) {
+        return parent?.kind === 'corridor'
+          && child?.kind === 'corridor'
+          && !edge.toEndpoint
+          && isEndAttachment(edge.side)
+          && corridorOrientation(parent) !== corridorOrientation(child);
+      }
+      function isPositionedCorridorConnection(edge, parent, child) {
+        return parent?.kind === 'corridor'
+          && child?.kind === 'corridor'
+          && Boolean(edge.side)
+          && (Boolean(edge.toEndpoint) || usesChildCorridorSide(edge, parent, child));
+      }
       function connectionPoint(node, endpoint) {
         const layout = state.displayNodes.get(node.id);
         const center = displayPoint(node);

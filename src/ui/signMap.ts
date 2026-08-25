@@ -65,7 +65,7 @@ export function renderSignMap({ map, route, startId, goalId }: SignMapOptions): 
 function renderBuildingPlates(layout: CampusLayout): string {
   return [...layout.buildings]
     .map(([building, bounds]) => `
-      <g class="building-plate">
+      <g class="building-plate" data-building="${escapeHtml(building)}">
         <rect class="floor-plate" x="${bounds.x}" y="${bounds.y}" width="${bounds.width}" height="${bounds.height}" />
         <text class="building-label" x="${bounds.x + 4}" y="${bounds.y + 7}">${escapeHtml(building)} Building</text>
       </g>

@@ -232,7 +232,7 @@
 
       function renderFloorPlate() {
         for (const [building, bounds] of state.displayBuildings) {
-          ids.mapOverlay.append(svg('rect', { class: 'floor-plate', x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height }));
+          ids.mapOverlay.append(svg('rect', { class: 'floor-plate', 'data-building': building, x: bounds.x, y: bounds.y, width: bounds.width, height: bounds.height }));
           const label = svg('text', { class: 'building-label', x: bounds.x + 4, y: bounds.y + 7 });
           label.textContent = building + ' Building';
           ids.mapOverlay.append(label);
@@ -1247,6 +1247,7 @@
         const targets = floor === 1
           ? floorOneBuildingTargets(entries)
           : floorTwoBuildingTargets(entries);
+        applyConnectedBuildingTargets(entries, targets, visibleEdges());
         for (const entry of entries) {
           const target = targets.get(entry.building);
           if (!entry.bounds || !target) continue;
@@ -1311,6 +1312,156 @@
         }
         placeRemainingBuildings(entries, targets, cursorX, chainHeight + gap);
         return targets;
+      }
+
+      function applyConnectedBuildingTargets(entries, targets, edges) {
+        const nodeById = new Map(entries.flatMap(entry => entry.nodes).map(node => [node.id, node]));
+        const entryByBuilding = new Map(entries.map(entry => [entry.building, entry]));
+        const relationships = [];
+        for (const edge of edges) {
+          const parent = nodeById.get(edge.from), child = nodeById.get(edge.to);
+          if (parent?.kind !== 'corridor' || child?.kind !== 'corridor') continue;
+          const parentBuilding = buildingKey(parent), childBuilding = buildingKey(child);
+          if (parentBuilding === childBuilding) continue;
+          relationships.push({
+            parentBuilding,
+            childBuilding,
+            direction: connectedBuildingDirection(edge, parent, child)
+          });
+        }
+        if (!relationships.length) return;
+
+        const neighbors = new Map(), incoming = new Set();
+        for (const relationship of relationships) {
+          neighbors.set(relationship.parentBuilding, [
+            ...(neighbors.get(relationship.parentBuilding) || []),
+            { building: relationship.childBuilding, direction: relationship.direction }
+          ]);
+          neighbors.set(relationship.childBuilding, [
+            ...(neighbors.get(relationship.childBuilding) || []),
+            { building: relationship.parentBuilding, direction: oppositeBuildingDirection(relationship.direction) }
+          ]);
+          incoming.add(relationship.childBuilding);
+        }
+
+        const ungrouped = new Set(entries.filter(entry => entry.bounds).map(entry => entry.building));
+        const components = [];
+        while (ungrouped.size) {
+          const first = ungrouped.values().next().value;
+          const buildings = [], componentQueue = [first];
+          ungrouped.delete(first);
+          while (componentQueue.length) {
+            const building = componentQueue.shift();
+            buildings.push(building);
+            for (const neighbor of neighbors.get(building) || []) {
+              if (!ungrouped.delete(neighbor.building)) continue;
+              componentQueue.push(neighbor.building);
+            }
+          }
+
+          const root = buildings.find(building => !incoming.has(building)) || buildings[0];
+          const positions = new Map([[root, { x: 0, y: 0 }]]), queue = [root];
+          while (queue.length) {
+            const parentBuilding = queue.shift();
+            const parentTarget = positions.get(parentBuilding);
+            const parentBounds = entryByBuilding.get(parentBuilding)?.bounds;
+            if (!parentTarget || !parentBounds) continue;
+            for (const neighbor of neighbors.get(parentBuilding) || []) {
+              if (positions.has(neighbor.building)) continue;
+              const childBounds = entryByBuilding.get(neighbor.building)?.bounds;
+              if (!childBounds) continue;
+              const childTarget = adjacentBuildingTarget(parentTarget, parentBounds, childBounds, neighbor.direction);
+              avoidBuildingOverlap(childTarget, childBounds, neighbor.direction, positions, entryByBuilding);
+              positions.set(neighbor.building, childTarget);
+              queue.push(neighbor.building);
+            }
+          }
+
+          components.push({ buildings, positions, bounds: boundsForBuildingPositions(buildings, positions, entryByBuilding) });
+        }
+
+        components.sort((left, right) => right.buildings.length - left.buildings.length);
+        const totalArea = components.reduce((sum, component) => sum + component.bounds.width * component.bounds.height, 0);
+        const rowLimit = Math.max(...components.map(component => component.bounds.width), Math.sqrt(totalArea) * 1.8);
+        let cursorX = 0, cursorY = 0, rowHeight = 0;
+        targets.clear();
+        for (const component of components) {
+          if (cursorX > 0 && cursorX + component.bounds.width > rowLimit) {
+            cursorX = 0;
+            cursorY += rowHeight + 10;
+            rowHeight = 0;
+          }
+          for (const building of component.buildings) {
+            const position = component.positions.get(building);
+            if (!position) continue;
+            targets.set(building, {
+              x: cursorX + position.x - component.bounds.x,
+              y: cursorY + position.y - component.bounds.y
+            });
+          }
+          cursorX += component.bounds.width + 10;
+          rowHeight = Math.max(rowHeight, component.bounds.height);
+        }
+      }
+
+      function connectedBuildingDirection(edge, parent, child) {
+        const hasComplementaryEndpoints = edge.fromEndpoint
+          && edge.toEndpoint
+          && edge.fromEndpoint !== edge.toEndpoint
+          && corridorOrientation(parent) === corridorOrientation(child);
+        if (hasComplementaryEndpoints) {
+          if (corridorOrientation(parent) === 'vertical') return edge.fromEndpoint === 'start' ? 'up' : 'down';
+          return edge.fromEndpoint === 'start' ? 'left' : 'right';
+        }
+        const bearing = normalizedBearing(edge.bearing);
+        if (bearing < 45 || bearing >= 315) return 'up';
+        if (bearing < 135) return 'right';
+        if (bearing < 225) return 'down';
+        return 'left';
+      }
+
+      function oppositeBuildingDirection(direction) {
+        return { up: 'down', right: 'left', down: 'up', left: 'right' }[direction];
+      }
+
+      function adjacentBuildingTarget(parent, parentBounds, childBounds, direction) {
+        const gap = 4;
+        if (direction === 'up') return { x: parent.x, y: parent.y - childBounds.height - gap };
+        if (direction === 'down') return { x: parent.x, y: parent.y + parentBounds.height + gap };
+        if (direction === 'left') return { x: parent.x - childBounds.width - gap, y: parent.y };
+        return { x: parent.x + parentBounds.width + gap, y: parent.y };
+      }
+
+      function avoidBuildingOverlap(target, bounds, direction, positions, entryByBuilding) {
+        const gap = 4;
+        for (let attempt = 0; attempt < positions.size + 1; attempt += 1) {
+          const overlap = [...positions].find(([building, position]) => {
+            const other = entryByBuilding.get(building)?.bounds;
+            return other
+              && target.x < position.x + other.width + gap
+              && target.x + bounds.width + gap > position.x
+              && target.y < position.y + other.height + gap
+              && target.y + bounds.height + gap > position.y;
+          });
+          if (!overlap) return;
+          const [building, position] = overlap;
+          const other = entryByBuilding.get(building)?.bounds;
+          if (!other) return;
+          if (direction === 'up' || direction === 'down') target.x = position.x + other.width + gap;
+          else target.y = position.y + other.height + gap;
+        }
+      }
+
+      function boundsForBuildingPositions(buildings, positions, entryByBuilding) {
+        const positioned = buildings.flatMap(building => {
+          const point = positions.get(building), bounds = entryByBuilding.get(building)?.bounds;
+          return point && bounds ? [{ ...point, width: bounds.width, height: bounds.height }] : [];
+        });
+        const minX = Math.min(...positioned.map(rect => rect.x));
+        const minY = Math.min(...positioned.map(rect => rect.y));
+        const maxX = Math.max(...positioned.map(rect => rect.x + rect.width));
+        const maxY = Math.max(...positioned.map(rect => rect.y + rect.height));
+        return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
       }
 
       function placeRemainingBuildings(entries, targets, startX, startY) {

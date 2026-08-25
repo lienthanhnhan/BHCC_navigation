@@ -36,8 +36,8 @@ type AppElements = {
 };
 
 const storageKey = "indoor-nav-state";
-const defaultStart = "N-111";
-const defaultGoal = "E-229";
+const defaultStart = "Entrance";
+const defaultGoal = "D-113";
 const metersPerWalkingMinute = 70;
 
 const app = getRequiredElement<HTMLDivElement>("#app");

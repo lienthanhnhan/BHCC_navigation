@@ -29,14 +29,6 @@
           "orientation": "horizontal"
         },
         {
-          "id": "n1-elevator",
-          "label": "N1 Elevator",
-          "kind": "elevator",
-          "floor": 1,
-          "x": 10,
-          "y": -4
-        },
-        {
           "id": "n1-west",
           "label": "N1 West Corridor",
           "kind": "corridor",
@@ -77,8 +69,8 @@
           "label": "G1 Corridor",
           "kind": "corridor",
           "floor": 1,
-          "x": 34,
-          "y": 3,
+          "x": 24,
+          "y": 16,
           "orientation": "horizontal"
         },
         {
@@ -103,7 +95,7 @@
           "y": -4,
           "exitBearing": 180,
           "aliases": [
-            "N111",
+            "N115",
             "Internships & Career Development",
             "Workforce & Economic Development"
           ]
@@ -140,8 +132,8 @@
           "label": "G-141",
           "kind": "room",
           "floor": 1,
-          "x": 31.7,
-          "y": -1,
+          "x": 20.8,
+          "y": 16.7,
           "exitBearing": 180,
           "aliases": [
             "G102",
@@ -153,8 +145,8 @@
           "label": "G-140",
           "kind": "room",
           "floor": 1,
-          "x": 33.8,
-          "y": -1,
+          "x": 22.1,
+          "y": 16.7,
           "exitBearing": 180,
           "aliases": [
             "G110",
@@ -166,8 +158,8 @@
           "label": "G-139",
           "kind": "room",
           "floor": 1,
-          "x": 36,
-          "y": -1,
+          "x": 25.2,
+          "y": 16.7,
           "exitBearing": 180,
           "aliases": [
             "G117",
@@ -179,8 +171,8 @@
           "label": "G-138",
           "kind": "room",
           "floor": 1,
-          "x": 38.2,
-          "y": -1,
+          "x": 32.2,
+          "y": 16.7,
           "exitBearing": 180,
           "aliases": [
             "G130",
@@ -192,8 +184,8 @@
           "label": "G-112B",
           "kind": "room",
           "floor": 1,
-          "x": 40.7,
-          "y": -1,
+          "x": 30.7,
+          "y": 12,
           "exitBearing": 180,
           "aliases": [
             "G229",
@@ -734,8 +726,8 @@
           "label": "B Corridor 3",
           "kind": "corridor",
           "floor": 1,
-          "x": -48,
-          "y": -5.3,
+          "x": -17.4,
+          "y": 20,
           "orientation": "horizontal"
         },
         {
@@ -743,8 +735,8 @@
           "label": "B-106",
           "kind": "room",
           "floor": 1,
-          "x": -41.3,
-          "y": -9.3,
+          "x": -10.7,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -752,8 +744,8 @@
           "label": "B-110",
           "kind": "room",
           "floor": 1,
-          "x": -40.5,
-          "y": -1.3,
+          "x": -9.9,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -761,8 +753,8 @@
           "label": "B-109",
           "kind": "room",
           "floor": 1,
-          "x": -42.9,
-          "y": -1.3,
+          "x": -12.3,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -770,8 +762,8 @@
           "label": "B-108",
           "kind": "room",
           "floor": 1,
-          "x": -38,
-          "y": -5.3,
+          "x": -7.4,
+          "y": 20,
           "exitBearing": 270
         },
         {
@@ -779,8 +771,8 @@
           "label": "B-105",
           "kind": "room",
           "floor": 1,
-          "x": -43.4,
-          "y": -9.3,
+          "x": -12.8,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -788,8 +780,8 @@
           "label": "B-104",
           "kind": "room",
           "floor": 1,
-          "x": -45.6,
-          "y": -9.3,
+          "x": -15,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -797,8 +789,8 @@
           "label": "B Room 55",
           "kind": "room",
           "floor": 1,
-          "x": -54.9,
-          "y": -1.3,
+          "x": -24.3,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -806,8 +798,8 @@
           "label": "B-102B CID",
           "kind": "room",
           "floor": 1,
-          "x": -50.2,
-          "y": -1.3,
+          "x": -19.6,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -815,8 +807,8 @@
           "label": "B-108B",
           "kind": "room",
           "floor": 1,
-          "x": -44.7,
-          "y": -1.3,
+          "x": -14.1,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -1287,7 +1279,7 @@
           "kind": "room",
           "floor": 1,
           "x": -11.4,
-          "y": 7.9,
+          "y": 7.6,
           "exitBearing": 90
         },
         {
@@ -1296,7 +1288,7 @@
           "kind": "room",
           "floor": 1,
           "x": -11.4,
-          "y": 14.4,
+          "y": 11.6,
           "exitBearing": 90
         },
         {
@@ -1305,7 +1297,7 @@
           "kind": "room",
           "floor": 1,
           "x": -11.4,
-          "y": 18.5,
+          "y": 11.7,
           "exitBearing": 90
         },
         {
@@ -1313,17 +1305,17 @@
           "label": "N Corridor 1",
           "kind": "corridor",
           "floor": 1,
-          "x": -21.4,
-          "y": 23.5,
+          "x": -17.4,
+          "y": 24,
           "orientation": "horizontal"
         },
         {
-          "id": "n-111a",
-          "label": "N-111A",
+          "id": "n-111",
+          "label": "N-111",
           "kind": "room",
           "floor": 1,
-          "x": -31.4,
-          "y": 23.5,
+          "x": -27.4,
+          "y": 24,
           "exitBearing": 90,
           "aliases": [
             "Workforce internship and career development"
@@ -1334,8 +1326,8 @@
           "label": "G-144",
           "kind": "room",
           "floor": 1,
-          "x": 27.4,
-          "y": -1,
+          "x": 17.4,
+          "y": 12,
           "exitBearing": 180
         },
         {
@@ -1343,8 +1335,8 @@
           "label": "G-143",
           "kind": "room",
           "floor": 1,
-          "x": 26.2,
-          "y": -1,
+          "x": 16.2,
+          "y": 12,
           "exitBearing": 180
         },
         {
@@ -1514,9 +1506,117 @@
           "label": "G Corridor 1",
           "kind": "corridor",
           "floor": 1,
-          "x": 24,
-          "y": 3,
+          "x": 14,
+          "y": 16,
           "orientation": "vertical"
+        },
+        {
+          "id": "g-corridor-2",
+          "label": "G Corridor 2",
+          "kind": "corridor",
+          "floor": 1,
+          "x": 28,
+          "y": 20.7,
+          "orientation": "horizontal"
+        },
+        {
+          "id": "g-gym",
+          "label": "Gym",
+          "kind": "room",
+          "floor": 1,
+          "x": 10,
+          "y": 7.6,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-elevator-1",
+          "label": "G Elevator 1",
+          "kind": "elevator",
+          "floor": 1,
+          "x": 10,
+          "y": 9.4,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-room-1",
+          "label": "G Room 1",
+          "kind": "room",
+          "floor": 1,
+          "x": 14,
+          "y": 6,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-stairs-1-1",
+          "label": "G Stairs 1-1",
+          "kind": "stairs",
+          "floor": 1,
+          "x": 18,
+          "y": 6,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-restroom-1",
+          "label": "G Restroom 1",
+          "kind": "restroom",
+          "floor": 1,
+          "x": 18,
+          "y": 9.2,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-restroom-2",
+          "label": "G Restroom 2",
+          "kind": "restroom",
+          "floor": 1,
+          "x": 18,
+          "y": 11.2,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-elevator-2",
+          "label": "G Elevator 2",
+          "kind": "elevator",
+          "floor": 1,
+          "x": 23.4,
+          "y": 12,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-stairs-1-2",
+          "label": "G Stairs 1-2",
+          "kind": "stairs",
+          "floor": 1,
+          "x": 34,
+          "y": 20,
+          "exitBearing": 0
+        },
+        {
+          "id": "n-stairs-1-1",
+          "label": "N Stairs 1-1",
+          "kind": "stairs",
+          "floor": 1,
+          "x": 8.3,
+          "y": -4,
+          "exitBearing": 180
+        },
+        {
+          "id": "n-elevator-1",
+          "label": "N Elevator 1",
+          "kind": "elevator",
+          "floor": 1,
+          "x": -19.9,
+          "y": 20,
+          "exitBearing": 180
+        },
+        {
+          "id": "n-stairs-1-2",
+          "label": "N Stairs 1-2",
+          "kind": "stairs",
+          "floor": 1,
+          "x": -24.8,
+          "y": 28,
+          "exitBearing": 0
         }
       ],
       "edges": [
@@ -1531,37 +1631,6 @@
           "toEndpoint": "start",
           "side": "right",
           "corridorOffset": 12.9
-        },
-        {
-          "id": "n1-vertical-elevator",
-          "from": "n1-core",
-          "to": "n1-elevator",
-          "weight": 5,
-          "bearing": 0,
-          "kind": "elevator",
-          "bidirectional": true
-        },
-        {
-          "id": "n1-b1",
-          "from": "n1-west",
-          "to": "b1-core",
-          "weight": 6,
-          "bearing": 180,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "start",
-          "toEndpoint": "start"
-        },
-        {
-          "id": "n1-d1",
-          "from": "n1-core",
-          "to": "d1-core",
-          "weight": 4,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
         },
         {
           "id": "n1-102",
@@ -1609,40 +1678,40 @@
         },
         {
           "id": "g1-102",
-          "from": "g1-core",
+          "from": "g-corridor-2",
           "to": "G-141",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 38.5,
+          "corridorOffset": 13.8,
           "side": "left"
         },
         {
           "id": "g1-110",
-          "from": "g1-core",
+          "from": "g-corridor-2",
           "to": "G-140",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 49,
+          "corridorOffset": 20.3,
           "side": "left"
         },
         {
           "id": "g1-117",
-          "from": "g1-core",
+          "from": "g-corridor-2",
           "to": "G-139",
           "weight": 4,
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 60,
+          "corridorOffset": 36.2,
           "side": "left"
         },
         {
           "id": "g1-130",
-          "from": "g1-core",
+          "from": "g-corridor-2",
           "to": "G-130",
           "weight": 4,
           "bearing": 0,
@@ -1659,7 +1728,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 83.3,
+          "corridorOffset": 83.4,
           "side": "left"
         },
         {
@@ -2963,7 +3032,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 19.3,
+          "corridorOffset": 18.2,
           "side": "right"
         },
         {
@@ -2974,7 +3043,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 51.9,
+          "corridorOffset": 38.1,
           "side": "right"
         },
         {
@@ -2985,25 +3054,26 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 72.4,
+          "corridorOffset": 38.4,
           "side": "right"
         },
         {
           "id": "n-corridor-1-corridor-1",
           "from": "n1-west",
           "to": "n-corridor-1",
-          "weight": 16.9,
-          "bearing": 270,
+          "weight": 14.1,
+          "bearing": 180,
           "kind": "walk",
           "bidirectional": true,
-          "side": "right",
-          "corridorOffset": 97.4,
-          "toEndpoint": "end"
+          "side": "end",
+          "corridorOffset": 100,
+          "toEndpoint": "end",
+          "fromEndpoint": "end"
         },
         {
           "id": "n-room-1-door-5",
           "from": "n-corridor-1",
-          "to": "n-111a",
+          "to": "n-111",
           "weight": 4,
           "bearing": 270,
           "kind": "door",
@@ -3092,12 +3162,13 @@
           "id": "e1-core-g1-core-1",
           "from": "e1-core",
           "to": "g1-core",
-          "weight": 16.3,
-          "bearing": 90,
+          "weight": 11.7,
+          "bearing": 180,
           "kind": "walk",
           "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
+          "toEndpoint": "start",
+          "side": "right",
+          "corridorOffset": 100
         },
         {
           "id": "b-stairs-2-stairs-1",
@@ -3253,6 +3324,161 @@
           "side": "start",
           "corridorOffset": 0,
           "fromEndpoint": "start"
+        },
+        {
+          "id": "g-corridor-2-corridor-1",
+          "from": "g-corridor-1",
+          "to": "g-corridor-2",
+          "weight": 14.8,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 73.5,
+          "toEndpoint": "start"
+        },
+        {
+          "id": "g-room-1-door-3",
+          "from": "g-corridor-1",
+          "to": "g-gym",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 7.8,
+          "side": "right"
+        },
+        {
+          "id": "g-elevator-1-elevator-1",
+          "from": "g-corridor-1",
+          "to": "g-elevator-1",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "elevator",
+          "bidirectional": true,
+          "corridorOffset": 16.9,
+          "side": "right"
+        },
+        {
+          "id": "g-room-1-door-4",
+          "from": "g-corridor-1",
+          "to": "g-room-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "start"
+        },
+        {
+          "id": "g-stairs-1-stairs-1",
+          "from": "g-corridor-1",
+          "to": "g-stairs-1-1",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "left"
+        },
+        {
+          "id": "g-restroom-1-door-1",
+          "from": "g-corridor-1",
+          "to": "g-restroom-1",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 16.2,
+          "side": "left"
+        },
+        {
+          "id": "g-restroom-2-door-1",
+          "from": "g-corridor-1",
+          "to": "g-restroom-2",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 26,
+          "side": "left"
+        },
+        {
+          "id": "g-elevator-2-elevator-1",
+          "from": "g1-core",
+          "to": "g-elevator-2",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "elevator",
+          "bidirectional": true,
+          "corridorOffset": 47.1,
+          "side": "left"
+        },
+        {
+          "id": "g-stairs-1-stairs-2",
+          "from": "g1-core",
+          "to": "g-stairs-1-2",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "right"
+        },
+        {
+          "id": "n-stairs-2-stairs-1",
+          "from": "n1-core",
+          "to": "n-stairs-1-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 91.5,
+          "side": "left"
+        },
+        {
+          "id": "n-elevator-1-elevator-1",
+          "from": "n-corridor-1",
+          "to": "n-elevator-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "elevator",
+          "bidirectional": true,
+          "corridorOffset": 37.7,
+          "side": "left"
+        },
+        {
+          "id": "n-stairs-2-stairs-2",
+          "from": "n-corridor-1",
+          "to": "n-stairs-1-2",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 12.9,
+          "side": "right"
+        },
+        {
+          "id": "n1-b1",
+          "from": "n-corridor-1",
+          "to": "b-corridor-3",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "walk",
+          "bidirectional": true,
+          "toEndpoint": "start",
+          "side": "left",
+          "corridorOffset": 0
+        },
+        {
+          "id": "n1-d1",
+          "from": "n1-core",
+          "to": "d-corridor-1",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "fromEndpoint": "end"
         }
       ]
     },
@@ -3283,8 +3509,8 @@
           "label": "D2 Corridor",
           "kind": "corridor",
           "floor": 2,
-          "x": -2,
-          "y": -2,
+          "x": 62,
+          "y": 10,
           "orientation": "vertical"
         },
         {
@@ -3301,8 +3527,8 @@
           "label": "G2 Corridor",
           "kind": "corridor",
           "floor": 2,
-          "x": 34,
-          "y": 3,
+          "x": 8,
+          "y": -4,
           "orientation": "horizontal"
         },
         {
@@ -3331,8 +3557,8 @@
           "label": "D-206",
           "kind": "room",
           "floor": 2,
-          "x": 15.1,
-          "y": -16,
+          "x": 79.1,
+          "y": -4,
           "exitBearing": 180,
           "aliases": [
             "D206",
@@ -3413,11 +3639,11 @@
           "label": "N-218",
           "kind": "room",
           "floor": 2,
-          "x": 45.3,
+          "x": 53.4,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
-            "N210",
+            "N218",
             "LifeMap Commons",
             "Advising",
             "Transfer Services",
@@ -3426,10 +3652,10 @@
         },
         {
           "id": "N-219",
-          "label": "N-216",
+          "label": "N-219",
           "kind": "room",
           "floor": 2,
-          "x": 48.7,
+          "x": 54.8,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
@@ -3443,7 +3669,7 @@
           "label": "N-217",
           "kind": "room",
           "floor": 2,
-          "x": 44.1,
+          "x": 42,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
@@ -3456,26 +3682,12 @@
           "label": "N-221",
           "kind": "room",
           "floor": 2,
-          "x": 52,
+          "x": 57.9,
           "y": -4,
           "exitBearing": 180,
           "aliases": [
             "N221",
             "International Center"
-          ]
-        },
-        {
-          "id": "A-206",
-          "label": "A-206",
-          "kind": "room",
-          "floor": 2,
-          "x": -20,
-          "y": -5.3,
-          "exitBearing": 90,
-          "aliases": [
-            "A206",
-            "Public Safety",
-            "Campus Police"
           ]
         },
         {
@@ -3645,8 +3857,8 @@
           "label": "D Corridor 3",
           "kind": "corridor",
           "floor": 2,
-          "x": 12,
-          "y": 8,
+          "x": 76,
+          "y": 20,
           "orientation": "horizontal"
         },
         {
@@ -3654,8 +3866,8 @@
           "label": "D-222",
           "kind": "room",
           "floor": 2,
-          "x": 22,
-          "y": 12,
+          "x": 86,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -3663,8 +3875,8 @@
           "label": "D-214",
           "kind": "room",
           "floor": 2,
-          "x": 5.4,
-          "y": 4,
+          "x": 69.4,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3672,8 +3884,8 @@
           "label": "D-215",
           "kind": "room",
           "floor": 2,
-          "x": 7.3,
-          "y": 4,
+          "x": 71.3,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3681,8 +3893,8 @@
           "label": "D-216",
           "kind": "room",
           "floor": 2,
-          "x": 10.6,
-          "y": 4,
+          "x": 74.6,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3690,8 +3902,8 @@
           "label": "D-217",
           "kind": "room",
           "floor": 2,
-          "x": 15.3,
-          "y": 4,
+          "x": 79.3,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3699,8 +3911,8 @@
           "label": "D-218",
           "kind": "room",
           "floor": 2,
-          "x": 18,
-          "y": 4,
+          "x": 82,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3708,8 +3920,8 @@
           "label": "D-219",
           "kind": "room",
           "floor": 2,
-          "x": 21.8,
-          "y": 4,
+          "x": 85.8,
+          "y": 16,
           "exitBearing": 180
         },
         {
@@ -3717,8 +3929,8 @@
           "label": "D Corridor 4",
           "kind": "corridor",
           "floor": 2,
-          "x": 12,
-          "y": -12,
+          "x": 76,
+          "y": 0,
           "orientation": "horizontal"
         },
         {
@@ -3726,8 +3938,8 @@
           "label": "D-208",
           "kind": "room",
           "floor": 2,
-          "x": 7.7,
-          "y": -8,
+          "x": 71.7,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3735,8 +3947,8 @@
           "label": "D-209",
           "kind": "room",
           "floor": 2,
-          "x": 10.7,
-          "y": -8,
+          "x": 74.7,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3744,8 +3956,8 @@
           "label": "D-210",
           "kind": "room",
           "floor": 2,
-          "x": 13.1,
-          "y": -8,
+          "x": 77.1,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3753,8 +3965,8 @@
           "label": "D-211",
           "kind": "room",
           "floor": 2,
-          "x": 14.2,
-          "y": -8,
+          "x": 78.2,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3762,8 +3974,8 @@
           "label": "D-212",
           "kind": "room",
           "floor": 2,
-          "x": 17.9,
-          "y": -8,
+          "x": 81.9,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3771,8 +3983,8 @@
           "label": "D-213",
           "kind": "room",
           "floor": 2,
-          "x": 20.5,
-          "y": -8,
+          "x": 84.5,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3780,8 +3992,8 @@
           "label": "D2 Stairs 2-1",
           "kind": "stairs",
           "floor": 2,
-          "x": 7,
-          "y": 12,
+          "x": 71,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -3789,8 +4001,8 @@
           "label": "D2 Stairs 2-3",
           "kind": "stairs",
           "floor": 2,
-          "x": 2.8,
-          "y": -8,
+          "x": 66.8,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -3798,8 +4010,8 @@
           "label": "D-201D",
           "kind": "room",
           "floor": 2,
-          "x": -6,
-          "y": -3.5,
+          "x": 58,
+          "y": 8.5,
           "exitBearing": 90
         },
         {
@@ -3807,8 +4019,8 @@
           "label": "D-201C",
           "kind": "room",
           "floor": 2,
-          "x": -6,
-          "y": 0.2,
+          "x": 58,
+          "y": 12.2,
           "exitBearing": 90
         },
         {
@@ -3816,8 +4028,8 @@
           "label": "D-201B",
           "kind": "room",
           "floor": 2,
-          "x": -6,
-          "y": 1.3,
+          "x": 58,
+          "y": 13.3,
           "exitBearing": 90
         },
         {
@@ -3825,8 +4037,8 @@
           "label": "D-201A",
           "kind": "room",
           "floor": 2,
-          "x": -6,
-          "y": 2.6,
+          "x": 58,
+          "y": 14.6,
           "exitBearing": 90
         },
         {
@@ -3834,8 +4046,8 @@
           "label": "D-205C",
           "kind": "room",
           "floor": 2,
-          "x": -6,
-          "y": 8,
+          "x": 58,
+          "y": 20,
           "exitBearing": 90
         },
         {
@@ -3843,7 +4055,7 @@
           "label": "N Corridor 2",
           "kind": "corridor",
           "floor": 2,
-          "x": 49.3,
+          "x": 56.9,
           "y": 14,
           "orientation": "vertical"
         },
@@ -3852,7 +4064,7 @@
           "label": "N-210B",
           "kind": "room",
           "floor": 2,
-          "x": 42.5,
+          "x": 43.1,
           "y": 4,
           "exitBearing": 0
         },
@@ -3861,7 +4073,7 @@
           "label": "N-209",
           "kind": "room",
           "floor": 2,
-          "x": 44.9,
+          "x": 45.6,
           "y": 4,
           "exitBearing": 0
         },
@@ -3870,7 +4082,7 @@
           "label": "N-206",
           "kind": "room",
           "floor": 2,
-          "x": 47.6,
+          "x": 49.7,
           "y": 4,
           "exitBearing": 0
         },
@@ -3879,7 +4091,7 @@
           "label": "N-215",
           "kind": "room",
           "floor": 2,
-          "x": 45.3,
+          "x": 52.9,
           "y": 7,
           "exitBearing": 90
         },
@@ -3888,8 +4100,8 @@
           "label": "N-214",
           "kind": "room",
           "floor": 2,
-          "x": 45.3,
-          "y": 9.3,
+          "x": 52.9,
+          "y": 11.1,
           "exitBearing": 90
         },
         {
@@ -3897,8 +4109,8 @@
           "label": "N-213",
           "kind": "room",
           "floor": 2,
-          "x": 45.3,
-          "y": 10.9,
+          "x": 52.9,
+          "y": 15.3,
           "exitBearing": 90
         },
         {
@@ -3906,8 +4118,8 @@
           "label": "N-212",
           "kind": "room",
           "floor": 2,
-          "x": 45.3,
-          "y": 12.3,
+          "x": 52.9,
+          "y": 15.9,
           "exitBearing": 90
         },
         {
@@ -3915,27 +4127,27 @@
           "label": "N Corridor 3",
           "kind": "corridor",
           "floor": 2,
-          "x": 35.3,
-          "y": 23.5,
+          "x": 46.9,
+          "y": 24,
           "orientation": "horizontal"
         },
         {
           "id": "n-room-1",
-          "label": "N Room 1",
+          "label": "N-210",
           "kind": "room",
           "floor": 2,
-          "x": 42.4,
-          "y": 19.5,
-          "exitBearing": 180
+          "x": 52.9,
+          "y": 23.5,
+          "exitBearing": 90
         },
         {
-          "id": "n-stairs-1",
-          "label": "N Stairs 1",
+          "id": "n-stairs-2-2",
+          "label": "N Stairs 2-2",
           "kind": "stairs",
           "floor": 2,
-          "x": 28.1,
-          "y": 19.5,
-          "exitBearing": 180
+          "x": 40.8,
+          "y": 28,
+          "exitBearing": 0
         },
         {
           "id": "e2-stairs-1",
@@ -4035,8 +4247,8 @@
           "label": "D Stairs 2-2",
           "kind": "stairs",
           "floor": 2,
-          "x": 22,
-          "y": 12,
+          "x": 86,
+          "y": 24,
           "exitBearing": 0
         },
         {
@@ -4044,8 +4256,8 @@
           "label": "D Stairs 2-4",
           "kind": "stairs",
           "floor": 2,
-          "x": 22,
-          "y": -8,
+          "x": 86,
+          "y": 4,
           "exitBearing": 0
         },
         {
@@ -4053,8 +4265,8 @@
           "label": "D Restroom 3",
           "kind": "restroom",
           "floor": 2,
-          "x": -6,
-          "y": 6.9,
+          "x": 58,
+          "y": 18.9,
           "exitBearing": 90
         },
         {
@@ -4137,6 +4349,303 @@
           "x": 22,
           "y": 11.2,
           "exitBearing": 270
+        },
+        {
+          "id": "g-corridor-3",
+          "label": "G Corridor 3",
+          "kind": "corridor",
+          "floor": 2,
+          "x": 5.8,
+          "y": -18,
+          "orientation": "vertical"
+        },
+        {
+          "id": "g-247",
+          "label": "G-247",
+          "kind": "room",
+          "floor": 2,
+          "x": 16.8,
+          "y": -8,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-restroom-3",
+          "label": "G Restroom 3",
+          "kind": "restroom",
+          "floor": 2,
+          "x": 12.7,
+          "y": -8,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-restroom-4",
+          "label": "G Restroom 4",
+          "kind": "restroom",
+          "floor": 2,
+          "x": 8.7,
+          "y": -8,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-corridor-4",
+          "label": "G Corridor 4",
+          "kind": "corridor",
+          "floor": 2,
+          "x": -2,
+          "y": -14,
+          "orientation": "vertical"
+        },
+        {
+          "id": "g-227",
+          "label": "G-227",
+          "kind": "room",
+          "floor": 2,
+          "x": 16.3,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-226",
+          "label": "G-226",
+          "kind": "room",
+          "floor": 2,
+          "x": 14.6,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-225",
+          "label": "G-225",
+          "kind": "room",
+          "floor": 2,
+          "x": 12.2,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-data",
+          "label": "Data",
+          "kind": "room",
+          "floor": 2,
+          "x": 10.7,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-electrical",
+          "label": "Electrical",
+          "kind": "room",
+          "floor": 2,
+          "x": 10.3,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-222",
+          "label": "G-222",
+          "kind": "room",
+          "floor": 2,
+          "x": 6.7,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-220",
+          "label": "G-220",
+          "kind": "room",
+          "floor": 2,
+          "x": 4.4,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-218",
+          "label": "G-218",
+          "kind": "room",
+          "floor": 2,
+          "x": 3.2,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-231",
+          "label": "G-231",
+          "kind": "room",
+          "floor": 2,
+          "x": 1.8,
+          "y": -11.1,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-240",
+          "label": "G-240",
+          "kind": "room",
+          "floor": 2,
+          "x": 1.8,
+          "y": -14.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-243",
+          "label": "G-243",
+          "kind": "room",
+          "floor": 2,
+          "x": 9.8,
+          "y": -14.4,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-elevator-3",
+          "label": "G Elevator 3",
+          "kind": "elevator",
+          "floor": 2,
+          "x": -1.9,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "g-restroom-5",
+          "label": "G Restroom 5",
+          "kind": "restroom",
+          "floor": 2,
+          "x": -6,
+          "y": -5.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-restroom-6",
+          "label": "G Restroom 6",
+          "kind": "restroom",
+          "floor": 2,
+          "x": 2,
+          "y": -6.9,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-210",
+          "label": "G-210",
+          "kind": "room",
+          "floor": 2,
+          "x": 2,
+          "y": -10.1,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-211",
+          "label": "G-211",
+          "kind": "room",
+          "floor": 2,
+          "x": 2,
+          "y": -12.8,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-212",
+          "label": "G-212",
+          "kind": "room",
+          "floor": 2,
+          "x": 2,
+          "y": -15.4,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-213",
+          "label": "G-213",
+          "kind": "room",
+          "floor": 2,
+          "x": 2,
+          "y": -18.2,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-214",
+          "label": "G-214",
+          "kind": "room",
+          "floor": 2,
+          "x": 2,
+          "y": -20.6,
+          "exitBearing": 270
+        },
+        {
+          "id": "g-207",
+          "label": "G-207",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -9.9,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-206",
+          "label": "G-206",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -12.1,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-205",
+          "label": "G-205",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -15,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-204",
+          "label": "G-204",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -17.5,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-203",
+          "label": "G-203",
+          "kind": "room",
+          "floor": 2,
+          "x": -6,
+          "y": -19.8,
+          "exitBearing": 90
+        },
+        {
+          "id": "g-stairs-2-1",
+          "label": "G Stairs 2-1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": -2,
+          "y": -24,
+          "exitBearing": 180
+        },
+        {
+          "id": "g-stairs-2-2",
+          "label": "G Stairs 2-2",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 18,
+          "y": 0,
+          "exitBearing": 0
+        },
+        {
+          "id": "n-stairs-2-1",
+          "label": "N Stairs 2-1",
+          "kind": "stairs",
+          "floor": 2,
+          "x": 62,
+          "y": -4,
+          "exitBearing": 180
+        },
+        {
+          "id": "n-elevator-2",
+          "label": "N Elevator 2",
+          "kind": "elevator",
+          "floor": 2,
+          "x": 42.1,
+          "y": 20,
+          "exitBearing": 180
         }
       ],
       "edges": [
@@ -4148,8 +4657,8 @@
           "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
+          "fromEndpoint": "start",
+          "toEndpoint": "end"
         },
         {
           "id": "floor2-cd",
@@ -4159,8 +4668,8 @@
           "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
+          "fromEndpoint": "start",
+          "toEndpoint": "end"
         },
         {
           "id": "floor2-de",
@@ -4170,30 +4679,21 @@
           "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
-          "fromEndpoint": "end",
+          "fromEndpoint": "start",
           "toEndpoint": "end"
         },
         {
           "id": "floor2-eg",
           "from": "e2-core",
           "to": "g2-core",
-          "weight": 16,
-          "bearing": 90,
+          "weight": 14.1,
+          "bearing": 270,
           "kind": "walk",
           "bidirectional": true,
           "fromEndpoint": "start",
-          "toEndpoint": "start"
-        },
-        {
-          "id": "floor2-gn",
-          "from": "g2-core",
-          "to": "n2-core",
-          "weight": 18,
-          "bearing": 90,
-          "kind": "walk",
-          "bidirectional": true,
-          "fromEndpoint": "end",
-          "toEndpoint": "start"
+          "toEndpoint": "end",
+          "side": "start",
+          "corridorOffset": 0
         },
         {
           "id": "c2-202",
@@ -4280,7 +4780,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 16.7,
+          "corridorOffset": 57.2,
           "side": "left"
         },
         {
@@ -4291,7 +4791,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 33.3,
+          "corridorOffset": 64.1,
           "side": "left"
         },
         {
@@ -4302,7 +4802,7 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 10.6,
+          "corridorOffset": 0,
           "side": "left"
         },
         {
@@ -4313,19 +4813,8 @@
           "bearing": 0,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 50.2,
+          "corridorOffset": 79.6,
           "side": "left"
-        },
-        {
-          "id": "a2-206",
-          "from": "c2-core",
-          "to": "A-206",
-          "weight": 6,
-          "bearing": 270,
-          "kind": "door",
-          "bidirectional": true,
-          "corridorOffset": 33.3,
-          "side": "right"
         },
         {
           "id": "b-corridor-5-corridor-1",
@@ -4775,12 +5264,12 @@
           "id": "n-corridor-2-corridor-1",
           "from": "n2-core",
           "to": "n-corridor-2",
-          "weight": 14.3,
+          "weight": 14.8,
           "bearing": 180,
           "kind": "walk",
           "bidirectional": true,
           "side": "right",
-          "corridorOffset": 36.7,
+          "corridorOffset": 74.6,
           "toEndpoint": "start"
         },
         {
@@ -4791,7 +5280,7 @@
           "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 2.3,
+          "corridorOffset": 5.6,
           "side": "right"
         },
         {
@@ -4802,7 +5291,7 @@
           "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 14.4,
+          "corridorOffset": 18.2,
           "side": "right"
         },
         {
@@ -4813,7 +5302,7 @@
           "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 28,
+          "corridorOffset": 38.7,
           "side": "right"
         },
         {
@@ -4835,7 +5324,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 26.4,
+          "corridorOffset": 35.4,
           "side": "right"
         },
         {
@@ -4846,7 +5335,7 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 34.7,
+          "corridorOffset": 56.6,
           "side": "right"
         },
         {
@@ -4857,42 +5346,43 @@
           "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 41.6,
+          "corridorOffset": 59.5,
           "side": "right"
         },
         {
           "id": "n-corridor-3-corridor-1",
           "from": "n-corridor-2",
           "to": "n-corridor-3",
-          "weight": 16.9,
+          "weight": 14.1,
           "bearing": 270,
           "kind": "walk",
           "bidirectional": true,
-          "side": "right",
-          "corridorOffset": 97.3,
-          "toEndpoint": "end"
+          "side": "end",
+          "corridorOffset": 100,
+          "toEndpoint": "end",
+          "fromEndpoint": "end"
         },
         {
           "id": "n-room-1-door-13",
-          "from": "n-corridor-3",
+          "from": "n-corridor-2",
           "to": "n-room-1",
           "weight": 4,
-          "bearing": 0,
+          "bearing": 270,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 85.5,
-          "side": "left"
+          "corridorOffset": 97.3,
+          "side": "right"
         },
         {
           "id": "n-stairs-1-stairs-1",
           "from": "n-corridor-3",
-          "to": "n-stairs-1",
+          "to": "n-stairs-2-2",
           "weight": 4,
-          "bearing": 0,
+          "bearing": 180,
           "kind": "stairs",
           "bidirectional": true,
-          "corridorOffset": 13.8,
-          "side": "left"
+          "corridorOffset": 19.7,
+          "side": "right"
         },
         {
           "id": "e-stairs-1-stairs-1",
@@ -5137,6 +5627,385 @@
           "bidirectional": true,
           "corridorOffset": 76.1,
           "side": "left"
+        },
+        {
+          "id": "g-corridor-3-corridor-1",
+          "from": "g2-core",
+          "to": "g-corridor-3",
+          "weight": 14.2,
+          "bearing": 0,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "left",
+          "corridorOffset": 38.9,
+          "toEndpoint": "end"
+        },
+        {
+          "id": "g-room-2-door-1",
+          "from": "g2-core",
+          "to": "g-247",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 94.1,
+          "side": "left"
+        },
+        {
+          "id": "g-restroom-3-door-1",
+          "from": "g2-core",
+          "to": "g-restroom-3",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 73.4,
+          "side": "left"
+        },
+        {
+          "id": "g-restroom-4-door-1",
+          "from": "g2-core",
+          "to": "g-restroom-4",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 53.6,
+          "side": "left"
+        },
+        {
+          "id": "g-corridor-4-corridor-1",
+          "from": "g2-core",
+          "to": "g-corridor-4",
+          "weight": 14.1,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "start",
+          "corridorOffset": 0,
+          "toEndpoint": "end",
+          "fromEndpoint": "start"
+        },
+        {
+          "id": "g-room-2-door-2",
+          "from": "g2-core",
+          "to": "g-227",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 91.4,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-3",
+          "from": "g2-core",
+          "to": "g-226",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 83.2,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-4",
+          "from": "g2-core",
+          "to": "g-225",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 71,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-5",
+          "from": "g2-core",
+          "to": "g-data",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 63.5,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-6",
+          "from": "g2-core",
+          "to": "g-electrical",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 61.4,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-7",
+          "from": "g2-core",
+          "to": "g-222",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 43.7,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-8",
+          "from": "g2-core",
+          "to": "g-220",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 32.2,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-9",
+          "from": "g2-core",
+          "to": "g-218",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 25.8,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-10",
+          "from": "g-corridor-3",
+          "to": "g-231",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 84.7,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-11",
+          "from": "g-corridor-3",
+          "to": "g-240",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 66,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-12",
+          "from": "g-corridor-3",
+          "to": "g-243",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 67.8,
+          "side": "left"
+        },
+        {
+          "id": "g-elevator-3-elevator-1",
+          "from": "g2-core",
+          "to": "g-elevator-3",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "elevator",
+          "bidirectional": true,
+          "corridorOffset": 0.7,
+          "side": "right"
+        },
+        {
+          "id": "g-restroom-5-door-1",
+          "from": "g-corridor-4",
+          "to": "g-restroom-5",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 91.1,
+          "side": "right"
+        },
+        {
+          "id": "g-restroom-6-door-1",
+          "from": "g-corridor-4",
+          "to": "g-restroom-6",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 85.4,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-13",
+          "from": "g-corridor-4",
+          "to": "g-210",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 69.4,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-14",
+          "from": "g-corridor-4",
+          "to": "g-211",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 55.8,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-15",
+          "from": "g-corridor-4",
+          "to": "g-212",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 42.8,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-16",
+          "from": "g-corridor-4",
+          "to": "g-213",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 28.9,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-17",
+          "from": "g-corridor-4",
+          "to": "g-214",
+          "weight": 4,
+          "bearing": 90,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 17.2,
+          "side": "left"
+        },
+        {
+          "id": "g-room-2-door-18",
+          "from": "g-corridor-4",
+          "to": "g-207",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 70.4,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-19",
+          "from": "g-corridor-4",
+          "to": "g-206",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 59.3,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-20",
+          "from": "g-corridor-4",
+          "to": "g-205",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 44.8,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-21",
+          "from": "g-corridor-4",
+          "to": "g-204",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 32.7,
+          "side": "right"
+        },
+        {
+          "id": "g-room-2-door-22",
+          "from": "g-corridor-4",
+          "to": "g-203",
+          "weight": 4,
+          "bearing": 270,
+          "kind": "door",
+          "bidirectional": true,
+          "corridorOffset": 21.2,
+          "side": "right"
+        },
+        {
+          "id": "g-stairs-1-stairs-3",
+          "from": "g-corridor-4",
+          "to": "g-stairs-2-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 0,
+          "side": "start"
+        },
+        {
+          "id": "g-stairs-1-stairs-4",
+          "from": "g2-core",
+          "to": "g-stairs-2-2",
+          "weight": 4,
+          "bearing": 180,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "right"
+        },
+        {
+          "id": "n-stairs-2-stairs-3",
+          "from": "n2-core",
+          "to": "n-stairs-2-1",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "stairs",
+          "bidirectional": true,
+          "corridorOffset": 100,
+          "side": "left"
+        },
+        {
+          "id": "n-elevator-2-elevator-1",
+          "from": "n-corridor-3",
+          "to": "n-elevator-2",
+          "weight": 4,
+          "bearing": 0,
+          "kind": "elevator",
+          "bidirectional": true,
+          "corridorOffset": 26,
+          "side": "left"
+        },
+        {
+          "id": "d2-n2",
+          "from": "n2-core",
+          "to": "d2-core",
+          "weight": 14.1,
+          "bearing": 90,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "end",
+          "corridorOffset": 100,
+          "toEndpoint": "start",
+          "fromEndpoint": "end"
         }
       ]
     }
@@ -5276,6 +6145,51 @@
       "weight": 6,
       "bearing": 0,
       "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "g-stairs-1-2-g-stairs-2-2-1",
+      "from": "g-stairs-1-2",
+      "to": "g-stairs-2-2",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "g-stairs-1-1-g-stairs-2-1-1",
+      "from": "g-stairs-1-1",
+      "to": "g-stairs-2-1",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "n-stairs-1-1-n-stairs-2-1-1",
+      "from": "n-stairs-1-1",
+      "to": "n-stairs-2-1",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "n-stairs-1-2-n-stairs-2-2-1",
+      "from": "n-stairs-1-2",
+      "to": "n-stairs-2-2",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "stairs",
+      "bidirectional": true
+    },
+    {
+      "id": "n-elevator-1-n-elevator-2-1",
+      "from": "n-elevator-1",
+      "to": "n-elevator-2",
+      "weight": 6,
+      "bearing": 0,
+      "kind": "elevator",
       "bidirectional": true
     }
   ]

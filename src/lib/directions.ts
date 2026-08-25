@@ -263,54 +263,37 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
   const destinationInstruction = destinationDoorInstruction(graph, path);
   const firstRelation = start.exitBearing ?? reverseBearing(firstEdge.bearing);
   const firstTurn = classifyTurn(firstRelation, firstEdge.bearing);
+  const addStep = (text: string, distance: number, focusNode: BuildingNode): void => {
+    steps.push({ text, distance, focusNodeId: focusNode.id });
+  };
 
   if (isRoomLikeNode(start)) {
     const landmarkDeparture = departureInstruction(graph, path);
     const departure = roomLandmark(start);
     if (landmarkDeparture) {
-      steps.push({
-        text: landmarkDeparture,
-        distance: firstEdge.weight,
-      });
+      addStep(landmarkDeparture, firstEdge.weight, start);
     } else if (firstTurn === "left") {
-      steps.push({
-        text: `Turn left out of ${departure}`,
-        distance: firstEdge.weight,
-      });
+      addStep(`Turn left out of ${departure}`, firstEdge.weight, start);
     } else if (firstTurn === "right") {
-      steps.push({
-        text: `Turn right out of ${departure}`,
-        distance: firstEdge.weight,
-      });
+      addStep(`Turn right out of ${departure}`, firstEdge.weight, start);
     } else if (firstTurn === "around") {
-      steps.push({
-        text: `Turn around and leave ${departure}`,
-        distance: firstEdge.weight,
-      });
+      addStep(`Turn around and leave ${departure}`, firstEdge.weight, start);
     } else {
-      steps.push({
-        text: `Leave ${departure} and continue straight`,
-        distance: firstEdge.weight,
-      });
+      addStep(`Leave ${departure} and continue straight`, firstEdge.weight, start);
     }
   } else {
-    steps.push({
-      text: `Head ${headingText(firstEdge.bearing)} from ${navigationLandmark(start)}`,
-      distance: firstEdge.weight,
-    });
+    addStep(`Head ${headingText(firstEdge.bearing)} from ${navigationLandmark(start)}`, firstEdge.weight, start);
   }
 
   let straightRunDistance = 0;
+  let straightRunFocusNode = start;
 
   const flushStraightRun = (): void => {
     if (straightRunDistance <= 0) {
       return;
     }
 
-    steps.push({
-      text: "Walk to the end of the corridor",
-      distance: straightRunDistance,
-    });
+    addStep("Walk to the end of the corridor", straightRunDistance, straightRunFocusNode);
     straightRunDistance = 0;
   };
 
@@ -326,40 +309,29 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
 
     if (destinationInstruction && edgeIndex === edges.length - 1) {
       flushStraightRun();
-      steps.push({
-        text: destinationInstruction,
-        distance: currentEdge.weight,
-      });
+      addStep(destinationInstruction, currentEdge.weight, currentNode ?? previousNode);
       continue;
     }
 
     if (currentEdgeIsSpecial && currentNode) {
       flushStraightRun();
-      steps.push({
-        text: specialEdgeText(currentEdge.kind, previousNode, currentNode, relation),
-        distance: currentEdge.weight,
-      });
+      addStep(specialEdgeText(currentEdge.kind, previousNode, currentNode, relation), currentEdge.weight, currentNode);
       continue;
     }
 
     if (turn === "straight" && !isRoomLikeNode(currentNode) && !currentNodeIsSpecial) {
       straightRunDistance += currentEdge.weight;
+      straightRunFocusNode = currentNode ?? previousNode;
       continue;
     }
 
     if (currentNodeIsSpecial && currentNode) {
-      steps.push({
-        text: specialEdgeText(currentNode.kind, previousNode, currentNode, relation),
-        distance: currentEdge.weight,
-      });
+      addStep(specialEdgeText(currentNode.kind, previousNode, currentNode, relation), currentEdge.weight, currentNode);
       continue;
     }
 
     if (turn === "straight") {
-      steps.push({
-        text: `Continue straight toward ${navigationLandmark(currentNode)}`,
-        distance: currentEdge.weight,
-      });
+      addStep(`Continue straight toward ${navigationLandmark(currentNode)}`, currentEdge.weight, currentNode ?? previousNode);
       continue;
     }
 
@@ -368,26 +340,17 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
       : `at ${previousNode.label}`;
 
     if (turn === "around") {
-      steps.push({
-        text: `Turn around ${turnLocation}`,
-        distance: currentEdge.weight,
-      });
+      addStep(`Turn around ${turnLocation}`, currentEdge.weight, previousNode);
       continue;
     }
 
-    steps.push({
-      text: `Turn ${relation} ${turnLocation}`,
-      distance: currentEdge.weight,
-    });
+    addStep(`Turn ${relation} ${turnLocation}`, currentEdge.weight, previousNode);
   }
 
   flushStraightRun();
 
   const destination = nodes[nodes.length - 1];
-  steps.push({
-    text: `Arrive at ${destination.label}`,
-    distance: 0,
-  });
+  addStep(`Arrive at ${destination.label}`, 0, destination);
 
   return steps;
 }

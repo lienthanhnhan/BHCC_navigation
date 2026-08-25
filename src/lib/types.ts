@@ -57,4 +57,5 @@ export interface PathResult {
 export interface DirectionStep {
   text: string;
   distance: number;
+  focusNodeId: string;
 }

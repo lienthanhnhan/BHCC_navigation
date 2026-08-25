@@ -6,6 +6,7 @@ import { loadBuildingDataset } from "./lib/sampleBuilding";
 import type { BuildingGraph, PathResult } from "./lib/types";
 import { registerServiceWorker } from "./pwa";
 import { setupAutocomplete } from "./ui/autocomplete";
+import { buildingKey } from "./ui/campusLayout";
 import { getRequiredElement } from "./ui/dom";
 import { renderSignMap, type SignMapData } from "./ui/signMap";
 
@@ -29,6 +30,7 @@ type AppElements = {
   startSuggestions: HTMLDivElement;
   goalSuggestions: HTMLDivElement;
   mapTabs: HTMLDivElement;
+  mapReset: HTMLButtonElement;
   mapVisual: HTMLDivElement;
   mapCaption: HTMLParagraphElement;
 };
@@ -75,6 +77,7 @@ async function initializeApp(): Promise<void> {
     setupLocationSearch(elements.startInput, elements.startSuggestions);
     setupLocationSearch(elements.goalInput, elements.goalSuggestions);
     setupFloorMapTabs();
+    setupMapControls();
 
     elements.form.addEventListener("submit", (event) => {
       event.preventDefault();
@@ -111,6 +114,7 @@ function getAppElements(): AppElements {
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
     goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
     mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
+    mapReset: getRequiredElement<HTMLButtonElement>("#map-reset"),
     mapVisual: getRequiredElement<HTMLDivElement>("#map-visual"),
     mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
   };
@@ -177,7 +181,10 @@ function createAppMarkup(graph: BuildingGraph): string {
               <h2>Floor map</h2>
               <p id="map-caption" class="muted"></p>
             </div>
-            <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
+            <div class="map-controls">
+              <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
+              <button id="map-reset" class="map-reset" type="button" hidden>Show full floor</button>
+            </div>
           </div>
           <div id="map-visual" class="map-frame sign-map-frame"></div>
         </article>
@@ -201,9 +208,14 @@ function setupFloorMapTabs(): void {
   }
 }
 
+function setupMapControls(): void {
+  elements.mapReset.addEventListener("click", showFullFloorMap);
+}
+
 function showFloorMap(map: FloorMap): void {
   currentFloorMap = map;
   elements.mapCaption.textContent = map.title ?? `${map.label} simplified campus map`;
+  clearDirectionSelection();
 
   for (const tab of elements.mapTabs.querySelectorAll<HTMLButtonElement>(".map-tab")) {
     const isSelected = tab.dataset.level === String(map.level);
@@ -224,6 +236,61 @@ function renderFloorMap(): void {
     startId: currentStartId,
     goalId: currentGoalId,
   });
+  elements.mapReset.hidden = true;
+}
+
+function focusDirectionNode(nodeId: string, button: HTMLButtonElement): void {
+  const node = buildingGraph.nodes.find((candidate) => candidate.id === nodeId);
+  if (!node) return;
+
+  const floorMap = floorMaps.find((map) => map.level === node.floor);
+  if (floorMap && floorMap !== currentFloorMap) showFloorMap(floorMap);
+
+  for (const directionButton of elements.directionsList.querySelectorAll<HTMLButtonElement>(".direction-focus")) {
+    directionButton.setAttribute("aria-pressed", String(directionButton === button));
+  }
+
+  focusBuilding(buildingKey(node));
+  elements.mapVisual.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function focusBuilding(building: string): void {
+  const svg = elements.mapVisual.querySelector<SVGSVGElement>(".sign-map");
+  if (!svg) return;
+
+  const buildingRects = [...svg.querySelectorAll<SVGGElement>(".building-plate")]
+    .filter((plate) => plate.dataset.building === building)
+    .map((plate) => plate.querySelector<SVGRectElement>(".floor-plate"))
+    .filter((rect): rect is SVGRectElement => rect !== null);
+  if (!buildingRects.length) return;
+
+  const left = Math.min(...buildingRects.map((rect) => Number(rect.getAttribute("x"))));
+  const top = Math.min(...buildingRects.map((rect) => Number(rect.getAttribute("y"))));
+  const right = Math.max(...buildingRects.map((rect) => Number(rect.getAttribute("x")) + Number(rect.getAttribute("width"))));
+  const bottom = Math.max(...buildingRects.map((rect) => Number(rect.getAttribute("y")) + Number(rect.getAttribute("height"))));
+  const padding = Math.max(6, Math.max(right - left, bottom - top) * 0.08);
+
+  svg.setAttribute("viewBox", `${left - padding} ${top - padding} ${right - left + padding * 2} ${bottom - top + padding * 2}`);
+  svg.classList.add("is-building-focused");
+  for (const plate of svg.querySelectorAll<SVGGElement>(".building-plate")) {
+    plate.classList.toggle("is-focused", plate.dataset.building === building);
+  }
+
+  elements.mapCaption.textContent = `Focused on ${building} Building.`;
+  elements.mapReset.hidden = false;
+}
+
+function showFullFloorMap(): void {
+  if (!currentFloorMap) return;
+  clearDirectionSelection();
+  renderFloorMap();
+  elements.mapCaption.textContent = currentFloorMap.title ?? `${currentFloorMap.label} simplified campus map`;
+}
+
+function clearDirectionSelection(): void {
+  for (const button of elements.directionsList.querySelectorAll<HTMLButtonElement>(".direction-focus")) {
+    button.setAttribute("aria-pressed", "false");
+  }
 }
 
 function createLocationFieldMarkup(label: string, fieldName: "start" | "goal", placeholderRoom: string): string {
@@ -332,10 +399,18 @@ function renderRoute(route: PathResult): void {
   elements.directionsList.innerHTML = "";
   for (const step of directions) {
     const item = document.createElement("li");
-    item.innerHTML = `
-      <span>${step.text}</span>
-      <small>${step.distance > 0 ? `${step.distance.toFixed(1)} m` : "destination"}</small>
-    `;
+    const button = document.createElement("button");
+    const instruction = document.createElement("span");
+    const distance = document.createElement("small");
+
+    button.type = "button";
+    button.className = "direction-focus";
+    button.setAttribute("aria-pressed", "false");
+    instruction.textContent = step.text;
+    distance.textContent = step.distance > 0 ? `${step.distance.toFixed(1)} m` : "destination";
+    button.append(instruction, distance);
+    button.addEventListener("click", () => focusDirectionNode(step.focusNodeId, button));
+    item.append(button);
     elements.directionsList.append(item);
   }
 

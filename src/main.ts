@@ -25,7 +25,7 @@ type AppElements = {
   directionsCard: HTMLElement;
   routeLoading: HTMLDivElement;
   directionsList: HTMLOListElement;
-  trace: HTMLDivElement;
+  trace: HTMLDivElement | null;
   startSuggestions: HTMLDivElement;
   goalSuggestions: HTMLDivElement;
   mapTabs: HTMLDivElement;
@@ -107,7 +107,7 @@ function getAppElements(): AppElements {
     directionsCard: getRequiredElement<HTMLElement>("#directions-card"),
     routeLoading: getRequiredElement<HTMLDivElement>("#route-loading"),
     directionsList: getRequiredElement<HTMLOListElement>("#directions"),
-    trace: getRequiredElement<HTMLDivElement>("#trace"),
+    trace: document.querySelector<HTMLDivElement>("#trace"),
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
     goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
     mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
@@ -117,6 +117,30 @@ function getAppElements(): AppElements {
 }
 
 function createAppMarkup(graph: BuildingGraph): string {
+  const developmentCards = import.meta.env.DEV
+    ? `
+        <article class="card">
+          <div class="card-header">
+            <h2>Route trace</h2>
+            <p class="muted">Nodes, bearings, and turn logic used by the engine.</p>
+          </div>
+          <div id="trace" class="trace"></div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h2>BHCC graph</h2>
+            <p class="muted">Rooms, corridors, corridor endpoints, stairs, and elevators are represented in the navigation graph.</p>
+          </div>
+          <ul class="meta-list">
+            <li><strong>${graph.nodes.length}</strong> nodes</li>
+            <li><strong>${graph.edges.length}</strong> corridor connections</li>
+            <li><strong>floor-aware</strong> weights</li>
+          </ul>
+        </article>
+      `
+    : "";
+
   return `
     <main class="shell">
       <section class="content-intro">
@@ -158,25 +182,7 @@ function createAppMarkup(graph: BuildingGraph): string {
           <div id="map-visual" class="map-frame sign-map-frame"></div>
         </article>
 
-        <article class="card">
-          <div class="card-header">
-            <h2>Route trace</h2>
-            <p class="muted">Nodes, bearings, and turn logic used by the engine.</p>
-          </div>
-          <div id="trace" class="trace"></div>
-        </article>
-
-        <article class="card">
-          <div class="card-header">
-            <h2>BHCC graph</h2>
-            <p class="muted">Rooms, corridors, corridor endpoints, stairs, and elevators are represented in the navigation graph.</p>
-          </div>
-          <ul class="meta-list">
-            <li><strong>${graph.nodes.length}</strong> nodes</li>
-            <li><strong>${graph.edges.length}</strong> corridor connections</li>
-            <li><strong>floor-aware</strong> weights</li>
-          </ul>
-        </article>
+        ${developmentCards}
       </section>
     </main>
   `;
@@ -257,12 +263,12 @@ function setRouteLoading(isLoading: boolean): void {
   elements.submitButton.disabled = isLoading;
   elements.routeLoading.hidden = !isLoading;
   elements.directionsList.toggleAttribute("aria-busy", isLoading);
-  elements.trace.toggleAttribute("aria-busy", isLoading);
+  elements.trace?.toggleAttribute("aria-busy", isLoading);
 
   if (isLoading) {
     elements.summary.textContent = "";
     elements.directionsList.innerHTML = "";
-    elements.trace.innerHTML = "";
+    elements.trace?.replaceChildren();
     setStatus("Searching for a new route...", false);
   }
 }
@@ -333,7 +339,11 @@ function renderRoute(route: PathResult): void {
     elements.directionsList.append(item);
   }
 
-  elements.trace.innerHTML = "";
+  elements.trace?.replaceChildren();
+  if (!elements.trace) {
+    return;
+  }
+
   route.nodes.forEach((node, index) => {
     const chip = document.createElement("div");
     chip.className = "trace-chip";
@@ -369,7 +379,7 @@ function traceDetail(route: PathResult, nodeIndex: number): string {
 function showEmptyRoute(message: string): void {
   setStatus(message, true);
   elements.directionsList.innerHTML = "";
-  elements.trace.innerHTML = "";
+  elements.trace?.replaceChildren();
   elements.summary.textContent = "";
 }
 

@@ -115,6 +115,100 @@ function oppositeSide(side: "left" | "right"): "left" | "right" {
   return side === "left" ? "right" : "left";
 }
 
+function roomLandmark(node: BuildingNode): string {
+  return node.kind === "restroom" ? node.label : `room ${node.label}`;
+}
+
+function navigationLandmark(node: BuildingNode | undefined): string {
+  if (!node) return "the next waypoint";
+  if (node.kind === "corridor") return "the next corridor junction";
+  return node.label;
+}
+
+function corridorTravelBearing(corridor: BuildingNode, movesTowardEnd: boolean): number {
+  if (corridor.orientation === "vertical") return movesTowardEnd ? 180 : 0;
+  return movesTowardEnd ? 90 : 270;
+}
+
+function corridorEdgeOffset(edge: BuildingEdge): number | undefined {
+  if (edge.fromEndpoint === "start") return 0;
+  if (edge.fromEndpoint === "end") return 100;
+  if (typeof edge.corridorOffset === "number") return edge.corridorOffset;
+  return undefined;
+}
+
+function corridorDoors(graph: BuildingGraph, corridorId: string): CorridorDoor[] {
+  const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
+  const doors = graph.edges
+    .map((edge) => corridorDoor(nodeById, edge))
+    .filter((door): door is CorridorDoor => door?.corridor.id === corridorId);
+  return [...new Map(doors.map((door) => [door.room.id, door])).values()];
+}
+
+function nearestRoomAlongCorridor(
+  graph: BuildingGraph,
+  corridorId: string,
+  startOffset: number,
+  targetOffset: number,
+  excludedRoomId?: string,
+): CorridorDoor | undefined {
+  const movesTowardEnd = targetOffset >= startOffset;
+  return corridorDoors(graph, corridorId)
+    .filter((door) => door.room.id !== excludedRoomId)
+    .filter((door) => movesTowardEnd
+      ? door.offset > startOffset && door.offset <= targetOffset
+      : door.offset < startOffset && door.offset >= targetOffset)
+    .sort((left, right) => Math.abs(left.offset - startOffset) - Math.abs(right.offset - startOffset))[0];
+}
+
+function nearestRoomAtCorridorPoint(
+  graph: BuildingGraph,
+  corridorId: string,
+  offset: number,
+): CorridorDoor | undefined {
+  return corridorDoors(graph, corridorId)
+    .sort((left, right) => Math.abs(left.offset - offset) - Math.abs(right.offset - offset))[0];
+}
+
+function departureInstruction(graph: BuildingGraph, path: PathResult): string | undefined {
+  const start = path.nodes[0];
+  const firstEdge = path.edges[0];
+  const nextEdge = path.edges[1];
+  if (!isRoomLikeNode(start) || !firstEdge || !nextEdge) return undefined;
+
+  const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
+  const startDoor = corridorDoor(nodeById, firstEdge);
+  if (!startDoor || startDoor.room.id !== start.id || nextEdge.from !== startDoor.corridor.id) return undefined;
+
+  const targetOffset = corridorEdgeOffset(nextEdge);
+  if (targetOffset === undefined || targetOffset === startDoor.offset) return undefined;
+  const movesTowardEnd = targetOffset > startDoor.offset;
+  const travelBearing = corridorTravelBearing(startDoor.corridor, movesTowardEnd);
+  const turn = classifyTurn(firstEdge.bearing, travelBearing);
+  const landmark = nearestRoomAlongCorridor(
+    graph,
+    startDoor.corridor.id,
+    startDoor.offset,
+    targetOffset,
+    start.id,
+  );
+  const toward = landmark ? ` toward ${roomLandmark(landmark.room)}` : " along the corridor";
+  const departure = roomLandmark(start);
+
+  if (turn === "left" || turn === "right") return `Go ${turn} from ${departure}${toward}`;
+  if (turn === "around") return `Turn around after leaving ${departure}, then continue${toward}`;
+  return `Leave ${departure} and walk straight${toward}`;
+}
+
+function corridorTurnLocation(graph: BuildingGraph, corridor: BuildingNode, edge: BuildingEdge): string {
+  const offset = corridorEdgeOffset(edge);
+  if (offset === undefined) return "at the corridor junction";
+  const landmark = nearestRoomAtCorridorPoint(graph, corridor.id, offset);
+  if (landmark) return `near ${roomLandmark(landmark.room)}`;
+  if (offset === 0 || offset === 100) return "at the end of the corridor";
+  return "at the corridor junction";
+}
+
 function destinationDoorInstruction(graph: BuildingGraph, path: PathResult): string | undefined {
   const destinationEdge = path.edges.at(-1);
   const nodeById = new Map(graph.nodes.map((node) => [node.id, node]));
@@ -122,7 +216,7 @@ function destinationDoorInstruction(graph: BuildingGraph, path: PathResult): str
   if (!destinationEdge || !destinationDoor || destinationEdge.to !== destinationDoor.room.id) return undefined;
 
   if (destinationDoor.side === "start" || destinationDoor.side === "end") {
-    return `Continue to the end of ${destinationDoor.corridor.label}; ${destinationDoor.room.label} is straight ahead`;
+    return `Continue to the end of the corridor; ${destinationDoor.room.label} is straight ahead`;
   }
 
   const firstDoor = corridorDoor(nodeById, path.edges[0]);
@@ -152,7 +246,7 @@ function destinationDoorInstruction(graph: BuildingGraph, path: PathResult): str
   const visibleSide = movesTowardEnd ? destinationDoor.side : oppositeSide(destinationDoor.side);
   const positionText = doorPosition === 1 ? "next door" : `${doorOrdinal(doorPosition)} door ahead`;
 
-  return `Continue along ${destinationDoor.corridor.label}; ${destinationDoor.room.label} is the ${positionText} on your ${visibleSide}`;
+  return `Continue along the corridor; ${destinationDoor.room.label} is the ${positionText} on your ${visibleSide}`;
 }
 
 export function describeRoute(graph: BuildingGraph, path: PathResult): DirectionStep[] {
@@ -171,8 +265,14 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
   const firstTurn = classifyTurn(firstRelation, firstEdge.bearing);
 
   if (isRoomLikeNode(start)) {
-    const departure = start.kind === "restroom" ? start.label : `room ${start.label}`;
-    if (firstTurn === "left") {
+    const landmarkDeparture = departureInstruction(graph, path);
+    const departure = roomLandmark(start);
+    if (landmarkDeparture) {
+      steps.push({
+        text: landmarkDeparture,
+        distance: firstEdge.weight,
+      });
+    } else if (firstTurn === "left") {
       steps.push({
         text: `Turn left out of ${departure}`,
         distance: firstEdge.weight,
@@ -195,7 +295,7 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
     }
   } else {
     steps.push({
-      text: `Head ${headingText(firstEdge.bearing)} from ${start.label}`,
+      text: `Head ${headingText(firstEdge.bearing)} from ${navigationLandmark(start)}`,
       distance: firstEdge.weight,
     });
   }
@@ -257,22 +357,26 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
 
     if (turn === "straight") {
       steps.push({
-        text: `Continue straight toward ${currentNode?.label ?? "the next waypoint"}`,
+        text: `Continue straight toward ${navigationLandmark(currentNode)}`,
         distance: currentEdge.weight,
       });
       continue;
     }
 
+    const turnLocation = previousNode?.kind === "corridor"
+      ? corridorTurnLocation(graph, previousNode, currentEdge)
+      : `at ${previousNode.label}`;
+
     if (turn === "around") {
       steps.push({
-        text: `Turn around at ${previousNode.label}`,
+        text: `Turn around ${turnLocation}`,
         distance: currentEdge.weight,
       });
       continue;
     }
 
     steps.push({
-      text: `Turn ${relation} at ${previousNode.label}`,
+      text: `Turn ${relation} ${turnLocation}`,
       distance: currentEdge.weight,
     });
   }

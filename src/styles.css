@@ -331,6 +331,11 @@ h1 {
   stroke-width: 0.65;
 }
 
+.restroom-cell rect {
+  fill: #d9f3e8;
+  stroke: #26735b;
+}
+
 .room-route rect {
   fill: #fff7d8;
   stroke: #c40000;

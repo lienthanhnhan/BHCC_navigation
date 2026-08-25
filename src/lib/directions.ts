@@ -1,4 +1,5 @@
 import { classifyTurn, compassLabel, reverseBearing } from "./graph";
+import { isRoomLikeNode } from "./types";
 import type { BuildingEdge, BuildingGraph, BuildingNode, CorridorAttachment, DirectionStep, PathResult } from "./types";
 
 function headingText(bearing: number): string {
@@ -92,7 +93,7 @@ function corridorDoor(
   const from = nodeById.get(edge.from);
   const to = nodeById.get(edge.to);
   const corridor = from?.kind === "corridor" ? from : to?.kind === "corridor" ? to : undefined;
-  const room = from?.kind === "room" ? from : to?.kind === "room" ? to : undefined;
+  const room = isRoomLikeNode(from) ? from : isRoomLikeNode(to) ? to : undefined;
 
   return corridor && room
     ? { corridor, room, offset: edge.corridorOffset, side: edge.side }
@@ -169,25 +170,26 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
   const firstRelation = start.exitBearing ?? reverseBearing(firstEdge.bearing);
   const firstTurn = classifyTurn(firstRelation, firstEdge.bearing);
 
-  if (start.kind === "room") {
+  if (isRoomLikeNode(start)) {
+    const departure = start.kind === "restroom" ? start.label : `room ${start.label}`;
     if (firstTurn === "left") {
       steps.push({
-        text: `Turn left out of room ${start.label}`,
+        text: `Turn left out of ${departure}`,
         distance: firstEdge.weight,
       });
     } else if (firstTurn === "right") {
       steps.push({
-        text: `Turn right out of room ${start.label}`,
+        text: `Turn right out of ${departure}`,
         distance: firstEdge.weight,
       });
     } else if (firstTurn === "around") {
       steps.push({
-        text: `Turn around and leave room ${start.label}`,
+        text: `Turn around and leave ${departure}`,
         distance: firstEdge.weight,
       });
     } else {
       steps.push({
-        text: `Leave room ${start.label} and continue straight`,
+        text: `Leave ${departure} and continue straight`,
         distance: firstEdge.weight,
       });
     }
@@ -240,7 +242,7 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
       continue;
     }
 
-    if (turn === "straight" && currentNode.kind !== "room" && !currentNodeIsSpecial) {
+    if (turn === "straight" && !isRoomLikeNode(currentNode) && !currentNodeIsSpecial) {
       straightRunDistance += currentEdge.weight;
       continue;
     }

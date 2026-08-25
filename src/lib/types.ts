@@ -1,5 +1,6 @@
 export type NodeKind =
   | "room"
+  | "restroom"
   | "corridor"
   | "stairs"
   | "elevator"
@@ -18,6 +19,10 @@ export interface BuildingNode {
   orientation?: "horizontal" | "vertical";
   aliases?: string[];
   exitBearing?: number;
+}
+
+export function isRoomLikeNode(node: BuildingNode | undefined): node is BuildingNode {
+  return node?.kind === "room" || node?.kind === "restroom";
 }
 
 export interface BuildingEdge {

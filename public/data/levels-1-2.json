@@ -229,7 +229,7 @@
         {
           "id": "B-restroom",
           "label": "Restroom",
-          "kind": "room",
+          "kind": "restroom",
           "floor": 1,
           "x": -38,
           "y": -9.3,

@@ -1,3 +1,4 @@
+import { isRoomLikeNode } from "../lib/types";
 import type { BuildingEdge, BuildingNode, PathResult } from "../lib/types";
 import {
   buildingKey,
@@ -114,14 +115,14 @@ function renderRooms(
   layout: CampusLayout,
 ): string {
   return nodes
-    .filter((node) => node.kind === "room")
+    .filter(isRoomLikeNode)
     .map((node) => {
       const nodeLayout = layout.nodes.get(node.id);
       if (!nodeLayout) return "";
       const stateClass = node.id === startId ? " room-start" : node.id === goalId ? " room-goal" : routeNodeIds.has(node.id) ? " room-route" : "";
       const label = fitLabel(node.label, nodeLayout.width);
       return `
-        <g class="room-cell${stateClass}">
+        <g class="room-cell ${node.kind}-cell${stateClass}">
           <rect x="${nodeLayout.x - nodeLayout.width / 2}" y="${nodeLayout.y - nodeLayout.height / 2}" width="${nodeLayout.width}" height="${nodeLayout.height}" rx=".35" />
           <text x="${nodeLayout.x}" y="${nodeLayout.y}" textLength="${Math.max(2, nodeLayout.width - 2.4)}" lengthAdjust="spacingAndGlyphs">${escapeHtml(label)}</text>
         </g>
@@ -138,7 +139,7 @@ function renderNavigationNodes(
   layout: CampusLayout,
 ): string {
   return nodes
-    .filter((node) => node.kind !== "room")
+    .filter((node) => !isRoomLikeNode(node))
     .map((node) => {
       const nodeLayout = layout.nodes.get(node.id);
       if (!nodeLayout) return "";

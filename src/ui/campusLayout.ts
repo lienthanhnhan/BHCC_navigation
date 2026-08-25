@@ -1,3 +1,4 @@
+import { isRoomLikeNode } from "../lib/types";
 import type { BuildingEdge, BuildingNode, CorridorEndpoint } from "../lib/types";
 
 export interface Point {
@@ -95,6 +96,7 @@ function applyCorridorPlacements(nodes: BuildingNode[], edges: BuildingEdge[], l
       && Boolean(edge.side)
       && Boolean(edge.toEndpoint);
   });
+  const branchAxes = corridorBranchAxes(placements, nodeById, layouts, edges);
   const childIds = new Set(placements.map((edge) => edge.to));
   const positioned = new Set(
     nodes.filter((node) => node.kind === "corridor" && !childIds.has(node.id)).map((node) => node.id),
@@ -112,6 +114,11 @@ function applyCorridorPlacements(nodes: BuildingNode[], edges: BuildingEdge[], l
       if (!parent || !child || !parentLayout || !childLayout || !edge.toEndpoint) continue;
 
       const attachment = corridorAttachmentPoint(parent, edge, parentLayout);
+      const branchAxis = branchAxes.get(edge);
+      if (branchAxis !== undefined) {
+        if (corridorOrientation(parent) === "vertical") attachment.y = branchAxis;
+        else attachment.x = branchAxis;
+      }
       const childDirection = edge.toEndpoint === "start" ? 1 : -1;
       if (corridorOrientation(child) === "vertical") {
         childLayout.x = attachment.x;
@@ -128,11 +135,142 @@ function applyCorridorPlacements(nodes: BuildingNode[], edges: BuildingEdge[], l
   }
 }
 
+function corridorBranchAxes(
+  placements: BuildingEdge[],
+  nodeById: Map<string, BuildingNode>,
+  layouts: Map<string, NodeLayout>,
+  edges: BuildingEdge[],
+): Map<BuildingEdge, number> {
+  const groups = new Map<string, Array<{
+    edge: BuildingEdge;
+    parent: BuildingNode;
+    parentLayout: NodeLayout;
+    branchSpan: number;
+  }>>();
+  const parentByChild = new Map(placements.map((edge) => [edge.to, edge.from]));
+
+  for (const edge of placements) {
+    if (edge.side === "start" || edge.side === "end") continue;
+    const parent = nodeById.get(edge.from);
+    const childLayout = layouts.get(edge.to);
+    const parentLayout = layouts.get(edge.from);
+    if (!parent || !childLayout || !parentLayout) continue;
+    const key = `${parent.id}|${edge.side}`;
+    const branchSpan = corridorBranchClearance(edge.to, parent, childLayout, layouts, edges, nodeById);
+    const item = { edge, parent, parentLayout, branchSpan };
+    groups.set(key, [...(groups.get(key) ?? []), item]);
+  }
+
+  const depth = (corridorId: string): number => {
+    let currentId = corridorId;
+    let value = 0;
+    const visited = new Set<string>();
+    while (parentByChild.has(currentId) && !visited.has(currentId)) {
+      visited.add(currentId);
+      currentId = parentByChild.get(currentId) ?? currentId;
+      value += 1;
+    }
+    return value;
+  };
+  const orderedGroups = [...groups.values()]
+    .sort((left, right) => depth(right[0].parent.id) - depth(left[0].parent.id));
+  const gap = 2;
+
+  for (const items of orderedGroups) {
+    const { parent, parentLayout } = items[0];
+    const vertical = corridorOrientation(parent) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    const requiredSpan = items.reduce((total, item) => total + item.branchSpan, 0)
+      + gap * (items.length - 1)
+      + 4;
+    expandCorridorAwayFromParent(parent, parentLayout, axisKey, spanKey, requiredSpan, placements, nodeById);
+  }
+
+  const result = new Map<BuildingEdge, number>();
+  for (const items of orderedGroups) {
+    const { parent, parentLayout } = items[0];
+    const vertical = corridorOrientation(parent) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    const start = parentLayout[axisKey] - parentLayout[spanKey] / 2;
+    const end = parentLayout[axisKey] + parentLayout[spanKey] / 2;
+    const ordered = [...items].sort((left, right) => (left.edge.corridorOffset ?? 50) - (right.edge.corridorOffset ?? 50));
+    let previousEnd = start;
+
+    for (const [index, item] of ordered.entries()) {
+      const halfSpan = item.branchSpan / 2;
+      const offset = clamp(item.edge.corridorOffset ?? 50, 0, 100) / 100;
+      const desiredCenter = start + parentLayout[spanKey] * offset;
+      const center = Math.max(desiredCenter, previousEnd + halfSpan + (index ? gap : 0));
+      result.set(item.edge, center);
+      previousEnd = center + halfSpan;
+    }
+
+    const last = ordered.at(-1);
+    if (!last) continue;
+    const overflow = (result.get(last.edge) ?? end) + last.branchSpan / 2 - end;
+    if (overflow > 0) {
+      for (const item of ordered) result.set(item.edge, (result.get(item.edge) ?? 0) - overflow);
+    }
+    const first = ordered[0];
+    const underflow = start - ((result.get(first.edge) ?? start) - first.branchSpan / 2);
+    if (underflow > 0) {
+      for (const item of ordered) result.set(item.edge, (result.get(item.edge) ?? 0) + underflow);
+    }
+  }
+  return result;
+}
+
+function corridorBranchClearance(
+  childId: string,
+  parent: BuildingNode,
+  childLayout: NodeLayout,
+  layouts: Map<string, NodeLayout>,
+  edges: BuildingEdge[],
+  nodeById: Map<string, BuildingNode>,
+): number {
+  const parentAxisSpan = corridorOrientation(parent) === "vertical" ? "height" : "width";
+  const child = nodeById.get(childId);
+  let attachedSpan = 0;
+  for (const edge of edges) {
+    if (!edge.side || edge.side === "start" || edge.side === "end") continue;
+    const attachment = roomCorridorDetails(edge, nodeById);
+    if (attachment?.corridor.id !== childId) continue;
+    const attachedLayout = layouts.get(attachment.room.id);
+    if (attachedLayout) attachedSpan = Math.max(attachedSpan, attachedLayout[parentAxisSpan]);
+  }
+  if (!child || attachedSpan === 0) return childLayout[parentAxisSpan];
+  const sideCenterDistance = corridorOrientation(child) === "vertical" ? 17 : 13;
+  return Math.max(childLayout[parentAxisSpan], sideCenterDistance * 2 + attachedSpan);
+}
+
+function expandCorridorAwayFromParent(
+  corridor: BuildingNode,
+  layout: NodeLayout,
+  axisKey: "x" | "y",
+  spanKey: "width" | "height",
+  requiredSpan: number,
+  placements: BuildingEdge[],
+  nodeById: Map<string, BuildingNode>,
+): void {
+  const previousSpan = layout[spanKey];
+  const nextSpan = Math.max(previousSpan, requiredSpan);
+  if (nextSpan === previousSpan) return;
+
+  const parentEdge = placements.find((edge) => edge.to === corridor.id && nodeById.get(edge.from)?.kind === "corridor");
+  if (parentEdge?.toEndpoint) {
+    const growthDirection = parentEdge.toEndpoint === "start" ? 1 : -1;
+    layout[axisKey] = round(layout[axisKey] + growthDirection * (nextSpan - previousSpan) / 2);
+  }
+  layout[spanKey] = nextSpan;
+}
+
 function roomCorridorDetails(edge: BuildingEdge, nodeById: Map<string, BuildingNode>): { corridor: BuildingNode; room: BuildingNode } | undefined {
   const from = nodeById.get(edge.from);
   const to = nodeById.get(edge.to);
   const corridor = from?.kind === "corridor" ? from : to?.kind === "corridor" ? to : undefined;
-  const room = from?.kind === "room" ? from : to?.kind === "room" ? to : undefined;
+  const room = isRoomLikeNode(from) ? from : isRoomLikeNode(to) ? to : undefined;
   return corridor && room ? { corridor, room } : undefined;
 }
 
@@ -388,7 +526,7 @@ function buildingOrientation(nodes: BuildingNode[]): Orientation {
   if (backbone?.orientation) return backbone.orientation;
 
   const bearings = nodes
-    .filter((node) => node.kind === "room" && Number.isFinite(node.exitBearing))
+    .filter((node) => isRoomLikeNode(node) && Number.isFinite(node.exitBearing))
     .map((node) => cardinalBearing(node.exitBearing ?? 0));
   const verticalScore = bearings.filter((bearing) => bearing === 90 || bearing === 270).length;
   const horizontalScore = bearings.filter((bearing) => bearing === 0 || bearing === 180).length;
@@ -472,7 +610,7 @@ function contentBounds(layouts: Map<string, NodeLayout>, buildings: Map<string, 
 
 function nodeSize(node: BuildingNode): { width: number; height: number } {
   if (node.kind === "stairs" || node.kind === "elevator") return { width: 7.2, height: 4.8 };
-  if (node.kind === "room") return { width: Math.max(7.2, Math.min(18, node.label.length * 1.05 + 4)), height: 5.8 };
+  if (isRoomLikeNode(node)) return { width: Math.max(7.2, Math.min(18, node.label.length * 1.05 + 4)), height: 5.8 };
   return { width: Math.max(8, node.label.length * 0.95 + 3.8), height: 5.8 };
 }
 

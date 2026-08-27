@@ -53,9 +53,9 @@ export function renderSignMap({ map, route, startId, goalId }: SignMapOptions): 
       <rect class="sign-map-background" x="${layout.bounds.x}" y="${layout.bounds.y}" width="${layout.bounds.width}" height="${layout.bounds.height}" />
       ${renderBuildingPlates(layout)}
       ${renderConnections(map.edges, nodeById, layout)}
-      ${renderRoute(map.edges, nodeById, routeEdgeIds, layout)}
       ${renderRooms(map.nodes, routeNodeIds, startId, goalId, layout)}
       ${renderNavigationNodes(map.nodes, routeNodeIds, startId, goalId, layout)}
+      ${renderRoute(map.edges, nodeById, routeEdgeIds, route, map.level, layout)}
       ${renderCallouts(map.nodes, startId, goalId, layout)}
       <text class="floor-mark" x="${layout.bounds.x + layout.bounds.width - 8}" y="${layout.bounds.y + layout.bounds.height - 8}">${escapeHtml(map.label.replace("Level", "L"))}</text>
     </svg>
@@ -96,9 +96,11 @@ function renderRoute(
   edges: BuildingEdge[],
   nodeById: Map<string, BuildingNode>,
   routeEdgeIds: Set<string>,
+  route: PathResult | undefined,
+  floor: number,
   layout: CampusLayout,
 ): string {
-  return uniqueConnections(edges)
+  const edgeSegments = uniqueConnections(edges)
     .filter((edge) => routeEdgeIds.has(edge.id))
     .map((edge) => {
       const from = nodeById.get(edge.from);
@@ -106,6 +108,24 @@ function renderRoute(
       return from && to ? `<path class="route-line" d="${edgePath(edge, from, to, layout)}" />` : "";
     })
     .join("");
+
+  if (!route) return edgeSegments;
+  const edgeById = new Map(edges.map((edge) => [edge.id, edge]));
+  const corridorSegments = route.nodes.flatMap((node, index) => {
+    if (index === 0 || index === route.nodes.length - 1 || node.floor !== floor || node.kind !== "corridor") return [];
+    const previousEdge = edgeById.get(route.edges[index - 1]?.id);
+    const nextEdge = edgeById.get(route.edges[index]?.id);
+    const previousNode = route.nodes[index - 1];
+    const nextNode = route.nodes[index + 1];
+    if (!previousEdge || !nextEdge || !previousNode || !nextNode) return [];
+
+    const entry = edgePointAtNode(previousEdge, node, nodeById, layout);
+    const exit = edgePointAtNode(nextEdge, node, nodeById, layout);
+    if (!entry || !exit) return [];
+    return [`<path class="route-line route-corridor-line" d="${corridorTransitPath(node, entry, exit, layout)}" />`];
+  }).join("");
+
+  return `${edgeSegments}${corridorSegments}`;
 }
 
 function renderRooms(
@@ -233,6 +253,57 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
   if (edge.side === "start" || edge.side === "end") return linePath(pathPoint, roomPoint);
   const orientation = pathNode.kind === "corridor" ? corridorOrientation(pathNode) : "horizontal";
   return orthogonalPath(pathPoint, roomPoint, orientation);
+}
+
+function edgePointAtNode(
+  edge: BuildingEdge,
+  node: BuildingNode,
+  nodeById: Map<string, BuildingNode>,
+  layout: CampusLayout,
+): Point | undefined {
+  const from = nodeById.get(edge.from);
+  const to = nodeById.get(edge.to);
+  if (!from || !to || (node.id !== from.id && node.id !== to.id)) return undefined;
+
+  if (buildingKey(from) !== buildingKey(to)) {
+    return node.id === from.id
+      ? connectionPoint(from, edge.fromEndpoint, layout)
+      : connectionPoint(to, edge.toEndpoint, layout);
+  }
+
+  if (isPathNode(from) && isPathNode(to)) {
+    const fromLayout = layout.nodes.get(from.id);
+    const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && fromLayout
+      ? corridorAttachmentPoint(from, edge, fromLayout)
+      : connectionPoint(from, edge.fromEndpoint, layout);
+    const toPoint = usesChildCorridorSide(edge, from, to)
+      ? corridorSidePoint(to, fromPoint, layout)
+      : connectionPoint(to, edge.toEndpoint, layout);
+    return node.id === from.id ? fromPoint : toPoint;
+  }
+
+  const pathNode = isPathNode(from) ? from : to;
+  const roomNode = isPathNode(from) ? to : from;
+  const roomLayout = layout.nodes.get(roomNode.id);
+  const pathLayout = layout.nodes.get(pathNode.id);
+  if (!roomLayout || !pathLayout) return undefined;
+  if (node.id === roomNode.id) return { x: roomLayout.x, y: roomLayout.y };
+
+  const roomPoint = { x: roomLayout.x, y: roomLayout.y };
+  return pathNode.kind === "corridor"
+    ? edge.side === "start" || edge.side === "end"
+      ? connectionPoint(pathNode, edge.side, layout)
+      : corridorSidePoint(pathNode, roomPoint, layout)
+    : { x: pathLayout.x, y: pathLayout.y };
+}
+
+function corridorTransitPath(corridor: BuildingNode, entry: Point, exit: Point, layout: CampusLayout): string {
+  const corridorLayout = layout.nodes.get(corridor.id);
+  if (!corridorLayout) return linePath(entry, exit);
+
+  return corridorOrientation(corridor) === "vertical"
+    ? `M ${entry.x} ${entry.y} L ${corridorLayout.x} ${entry.y} L ${corridorLayout.x} ${exit.y} L ${exit.x} ${exit.y}`
+    : `M ${entry.x} ${entry.y} L ${entry.x} ${corridorLayout.y} L ${exit.x} ${corridorLayout.y} L ${exit.x} ${exit.y}`;
 }
 
 function buildingConnectionPath(start: Point, end: Point, bearing: number): string {

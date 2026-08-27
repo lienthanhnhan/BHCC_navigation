@@ -25,6 +25,7 @@ type MapPanState = {
   originX: number;
   originY: number;
   hasMoved: boolean;
+  allowsVerticalPan: boolean;
 };
 type MapTouchPoint = {
   svg: SVGSVGElement;
@@ -434,9 +435,10 @@ function startMapPan(event: PointerEvent): void {
         if (!svg.hasPointerCapture(pointerId)) svg.setPointerCapture(pointerId);
       }
       beginMapPinch(svg, touches);
-    } else if (document.fullscreenElement === elements.mapVisual && isMapZoomed(svg)) {
-      mapPanState = createMapPanState(event, svg);
-      svg.setPointerCapture(event.pointerId);
+    } else if (isMapZoomed(svg)) {
+      const allowsVerticalPan = document.fullscreenElement === elements.mapVisual;
+      mapPanState = createMapPanState(event, svg, allowsVerticalPan);
+      if (allowsVerticalPan) svg.setPointerCapture(event.pointerId);
     }
     return;
   }
@@ -463,13 +465,20 @@ function moveMapPan(event: PointerEvent): void {
 
   if (!mapPanState || mapPanState.pointerId !== event.pointerId) return;
   if (!mapPanState.hasMoved) {
-    const distance = Math.hypot(event.clientX - mapPanState.originX, event.clientY - mapPanState.originY);
+    const deltaFromStartX = event.clientX - mapPanState.originX;
+    const deltaFromStartY = event.clientY - mapPanState.originY;
+    const distance = Math.hypot(deltaFromStartX, deltaFromStartY);
     if (distance < 4) return;
+    if (event.pointerType === "touch" && !mapPanState.allowsVerticalPan
+      && Math.abs(deltaFromStartY) >= Math.abs(deltaFromStartX)) {
+      mapPanState = undefined;
+      return;
+    }
     mapPanState.hasMoved = true;
     mapPanState.svg.classList.add("is-panning");
   }
   const deltaX = mapPanState.clientX - event.clientX;
-  const deltaY = mapPanState.clientY - event.clientY;
+  const deltaY = mapPanState.allowsVerticalPan ? mapPanState.clientY - event.clientY : 0;
   mapPanState.clientX = event.clientX;
   mapPanState.clientY = event.clientY;
   panMapByPixels(mapPanState.svg, deltaX, deltaY);
@@ -496,7 +505,7 @@ function finishMapPan(event: PointerEvent): void {
   svg?.classList.remove("is-panning", "is-pinching");
 }
 
-function createMapPanState(event: PointerEvent, svg: SVGSVGElement): MapPanState {
+function createMapPanState(event: PointerEvent, svg: SVGSVGElement, allowsVerticalPan = true): MapPanState {
   return {
     pointerId: event.pointerId,
     svg,
@@ -505,6 +514,7 @@ function createMapPanState(event: PointerEvent, svg: SVGSVGElement): MapPanState
     originX: event.clientX,
     originY: event.clientY,
     hasMoved: false,
+    allowsVerticalPan,
   };
 }
 

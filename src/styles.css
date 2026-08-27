@@ -894,6 +894,7 @@ h1 {
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior: auto;
+    touch-action: pan-y;
   }
 
   .sign-map-frame {
@@ -917,6 +918,7 @@ h1 {
     width: 960px !important;
     min-width: 960px;
     height: auto !important;
+    touch-action: pan-y;
   }
 
   .card-header {

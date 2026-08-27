@@ -54,6 +54,7 @@ export function layoutCampusMap(nodes: BuildingNode[], edges: BuildingEdge[], fl
 
   const targets = floor === 1 ? floorOneTargets(entries) : floorTwoTargets(entries);
   applyConnectedBuildingTargets(entries, targets, edges, layouts);
+  if (floor === 1) applyLevelOneBuildingPlacement(entries, targets);
   for (const entry of entries) {
     const target = targets.get(entry.building);
     if (!entry.bounds || !target) continue;
@@ -857,6 +858,24 @@ function applyConnectedBuildingTargets(
     cursorX += component.bounds.width + 10;
     rowHeight = Math.max(rowHeight, component.bounds.height);
   }
+}
+
+function applyLevelOneBuildingPlacement(entries: BuildingEntry[], targets: Map<string, Point>): void {
+  const byBuilding = new Map(entries.map((entry) => [entry.building, entry]));
+  const nEntry = byBuilding.get("N");
+  const dEntry = byBuilding.get("D");
+  const bEntry = byBuilding.get("B");
+  const dTarget = targets.get("D");
+  const bTarget = targets.get("B");
+  if (!nEntry?.bounds || !dEntry?.bounds || !bEntry?.bounds || !dTarget || !bTarget) return;
+
+  // The Level 1 N building connects to both D and B. Its connection metadata is
+  // incomplete, so preserve the intended campus arrangement instead of inferring it.
+  const gap = 4;
+  targets.set("N", {
+    x: dTarget.x - nEntry.bounds.width - gap,
+    y: bTarget.y - nEntry.bounds.height - gap,
+  });
 }
 
 type BuildingDirection = "up" | "right" | "down" | "left";

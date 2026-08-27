@@ -56,6 +56,7 @@ type AppElements = {
   mapZoomIn: HTMLButtonElement;
   mapZoomOut: HTMLButtonElement;
   mapReset: HTMLButtonElement;
+  mapFullscreen: HTMLButtonElement;
   mapVisual: HTMLDivElement;
   mapCaption: HTMLParagraphElement;
   shareDirections: HTMLButtonElement;
@@ -148,6 +149,7 @@ function getAppElements(): AppElements {
     mapZoomIn: getRequiredElement<HTMLButtonElement>("#map-zoom-in"),
     mapZoomOut: getRequiredElement<HTMLButtonElement>("#map-zoom-out"),
     mapReset: getRequiredElement<HTMLButtonElement>("#map-reset"),
+    mapFullscreen: getRequiredElement<HTMLButtonElement>("#map-fullscreen"),
     mapVisual: getRequiredElement<HTMLDivElement>("#map-visual"),
     mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
     shareDirections: getRequiredElement<HTMLButtonElement>("#share-directions"),
@@ -225,11 +227,24 @@ function createAppMarkup(graph: BuildingGraph): string {
             </div>
             <div class="map-controls">
               <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
-              <button id="map-reset" class="map-reset" type="button" hidden>Show full floor</button>
             </div>
           </div>
           <div id="map-visual" class="map-visual">
             <div id="map-canvas" class="map-frame sign-map-frame"></div>
+            <div class="map-action-controls" aria-label="Map actions">
+              <button id="map-reset" type="button" aria-label="Show full floor" title="Show full floor" disabled>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M20 11a8 8 0 1 1-2.34-5.66L20 8M20 4v4h-4" />
+                </svg>
+                <span class="visually-hidden">Show full floor</span>
+              </button>
+              <button id="map-fullscreen" type="button" aria-label="Show map fullscreen" title="Show map fullscreen">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />
+                </svg>
+                <span class="visually-hidden">Show map fullscreen</span>
+              </button>
+            </div>
             <div class="map-zoom-controls" aria-label="Map zoom controls">
               <button id="map-zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
               <button id="map-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
@@ -260,6 +275,8 @@ function setupMapControls(): void {
   elements.mapZoomIn.addEventListener("click", zoomInMap);
   elements.mapZoomOut.addEventListener("click", zoomOutMap);
   elements.mapReset.addEventListener("click", showFullFloorMap);
+  elements.mapFullscreen.addEventListener("click", toggleMapFullscreen);
+  document.addEventListener("fullscreenchange", updateFullscreenControl);
   elements.shareDirections.addEventListener("click", shareDirections);
   elements.mapCanvas.addEventListener("dblclick", zoomMapAtPointer);
   elements.mapCanvas.addEventListener("wheel", panMapWithWheel, { passive: false });
@@ -579,7 +596,28 @@ function copyViewBox(viewBox: SVGRect): MapViewBox {
 function setMapZoomControls(isZoomed: boolean): void {
   elements.mapZoomIn.disabled = false;
   elements.mapZoomOut.disabled = !isZoomed;
-  elements.mapReset.hidden = !isZoomed;
+  elements.mapReset.disabled = !isZoomed;
+}
+
+async function toggleMapFullscreen(): Promise<void> {
+  try {
+    if (document.fullscreenElement === elements.mapVisual) {
+      await document.exitFullscreen();
+      return;
+    }
+
+    await elements.mapVisual.requestFullscreen();
+  } catch {
+    setStatus("Fullscreen is not available in this browser.", true);
+  }
+}
+
+function updateFullscreenControl(): void {
+  const isFullscreen = document.fullscreenElement === elements.mapVisual;
+  const label = isFullscreen ? "Exit map fullscreen" : "Show map fullscreen";
+  elements.mapVisual.classList.toggle("is-fullscreen", isFullscreen);
+  elements.mapFullscreen.setAttribute("aria-label", label);
+  elements.mapFullscreen.title = label;
 }
 
 function restoreFullMapView(svg: SVGSVGElement, fullViewBox: MapViewBox): void {

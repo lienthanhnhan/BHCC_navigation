@@ -1293,6 +1293,7 @@
           ? floorOneBuildingTargets(entries)
           : floorTwoBuildingTargets(entries);
         applyConnectedBuildingTargets(entries, targets, visibleEdges(), layouts);
+        if (floor === 1) applyLevelOneBuildingPlacement(entries, targets);
         for (const entry of entries) {
           const target = targets.get(entry.building);
           if (!entry.bounds || !target) continue;
@@ -1478,6 +1479,22 @@
           cursorX += component.bounds.width + 10;
           rowHeight = Math.max(rowHeight, component.bounds.height);
         }
+      }
+
+      function applyLevelOneBuildingPlacement(entries, targets) {
+        const byBuilding = new Map(entries.map(entry => [entry.building, entry]));
+        const nEntry = byBuilding.get('N');
+        const dEntry = byBuilding.get('D');
+        const bEntry = byBuilding.get('B');
+        const dTarget = targets.get('D');
+        const bTarget = targets.get('B');
+        if (!nEntry?.bounds || !dEntry?.bounds || !bEntry?.bounds || !dTarget || !bTarget) return;
+
+        const gap = 4;
+        targets.set('N', {
+          x: dTarget.x - nEntry.bounds.width - gap,
+          y: bTarget.y - nEntry.bounds.height - gap
+        });
       }
 
       function connectedBuildingDirection(edge, parent, child) {

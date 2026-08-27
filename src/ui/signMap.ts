@@ -45,7 +45,7 @@ export function renderSignMap({ map, route, startId, goalId }: SignMapOptions): 
     <svg
       class="sign-map"
       viewBox="${layout.bounds.x} ${layout.bounds.y} ${layout.bounds.width} ${layout.bounds.height}"
-      preserveAspectRatio="xMinYMin meet"
+      preserveAspectRatio="xMidYMid meet"
       style="width:${canvasWidth}px;height:${Math.round(canvasHeight)}px"
       role="img"
       aria-label="${escapeHtml(map.label)} architectural navigation map"

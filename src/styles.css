@@ -467,20 +467,24 @@ h1 {
 
 .stairs-node rect {
   fill: var(--navy);
-  stroke: white;
+  stroke: #071a2e;
 }
 
 .elevator-node rect {
   fill: #8fd0e8;
-  stroke: white;
+  stroke: var(--navy);
 }
 
 .stairs-node text,
-.elevator-node text,
 .start-node text,
 .goal-node text {
   fill: white;
-  stroke: #111111;
+  stroke: none;
+}
+
+.elevator-node text {
+  fill: var(--navy);
+  stroke: none;
 }
 
 .route-node rect {

@@ -57,13 +57,15 @@
       .graph-node-room rect { fill: #fff36a; }
       .graph-node-restroom rect { fill: #d9f3e8; stroke: #26735b; }
       .graph-node-corridor rect { fill: #fbfbf8; stroke: #222; stroke-width: 1.1; }
-      .graph-node-stairs rect, .graph-node-elevator rect { fill: var(--navy); stroke: #fff; }
+      .graph-node-stairs rect { fill: var(--navy); stroke: #071a2e; }
+      .graph-node-elevator rect { fill: #8fd0e8; stroke: var(--navy); }
       .graph-node.unconnected rect { stroke: #666; stroke-dasharray: 2 1.2; }
       .graph-node.unconnected:not(.selected) rect { fill: #eee; }
       .graph-node.selected rect { fill: var(--accent); stroke: #111; stroke-width: 1; }
       .graph-node text { fill: #111; paint-order: stroke; stroke: #fff; stroke-width: .65; font-size: 2.7px; font-weight: 900; text-anchor: middle; dominant-baseline: central; pointer-events: none; vector-effect: non-scaling-stroke; }
       .graph-node-corridor text { font-size: 2.2px; stroke-width: .35; }
-      .graph-node-stairs text, .graph-node-elevator text, .graph-node.selected text { fill: #fff; stroke: #111; }
+      .graph-node-stairs text, .graph-node.selected text { fill: #fff; stroke: none; }
+      .graph-node-elevator text { fill: var(--navy); stroke: none; }
       .hint { margin: 10px 0 0; color: var(--muted); font-size: .92rem; }
       .forms { display: grid; gap: 14px; }
       .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -1219,11 +1221,12 @@
 
       function settleCorridorAttachments(nodes, edges, layouts) {
         const nodeById = new Map(nodes.map(node => [node.id, node]));
-        for (let pass = 0; pass < 5; pass += 1) {
+        const maximumLayoutPasses = 10;
+        for (let pass = 0; pass < maximumLayoutPasses; pass += 1) {
           applyCorridorPlacements(nodes, edges, layouts);
           applyAttachedNodePlacements(nodes, edges, layouts);
           const blockedAttachments = separateOverlappingAttachments(nodes, edges, layouts);
-          if (!blockedAttachments.length || pass === 4) break;
+          if (!blockedAttachments.length || pass === maximumLayoutPasses - 1) break;
           expandCorridorsForBlockedAttachments(blockedAttachments, layouts, edges, nodeById);
         }
       }
@@ -1595,6 +1598,7 @@
         for (const edge of edges) {
           if (!edge.side || isEndAttachment(edge.side)) continue;
           const placement = corridorAttachmentDetails(edge, nodeById);
+          if (!placement || !isRoomLikeNode(placement.node)) continue;
           const corridorLayout = placement && layouts.get(placement.corridor.id);
           const nodeLayout = placement && layouts.get(placement.node.id);
           if (!placement || !corridorLayout || !nodeLayout) continue;
@@ -1696,7 +1700,23 @@
             return blockers.every(blocker => !nodeRectsOverlap(nodeLayout, blocker, gap));
           });
           nodeLayout[axisKey] = freePosition ?? original;
-          if (freePosition === undefined) blocked.push({ corridor, node, nodeLayout });
+          if (freePosition !== undefined) continue;
+
+          if (isEquipmentNode(node)) {
+            const outsidePositions = blockers.flatMap(blocker => [
+              blocker[axisKey] - blocker[spanKey] / 2 - halfSpan - gap,
+              blocker[axisKey] + blocker[spanKey] / 2 + halfSpan + gap
+            ]).filter(candidate => candidate < minimum || candidate > maximum)
+              .sort((left, right) => Math.abs(left - original) - Math.abs(right - original));
+            const outsidePosition = outsidePositions.find(candidate => {
+              nodeLayout[axisKey] = candidate;
+              return blockers.every(blocker => !nodeRectsOverlap(nodeLayout, blocker, gap));
+            });
+            nodeLayout[axisKey] = outsidePosition ?? original;
+            continue;
+          }
+
+          blocked.push({ corridor, node, nodeLayout });
         }
         return blocked;
       }
@@ -2064,7 +2084,7 @@
       function cardinalBearing(bearing) { return Math.round(normalizedBearing(bearing) / 90) * 90 % 360; }
 
       function nodeSize(node) {
-        if (node.kind === 'stairs' || node.kind === 'elevator') return { width: equipmentRectWidth(node), height: 4.8 };
+        if (node.kind === 'stairs' || node.kind === 'elevator') return { width: equipmentRectWidth(node), height: 5.8 };
         if (isRoomLikeNode(node)) return { width: nodeRectWidth(node), height: 5.8 };
         return { width: Math.max(8, node.label.length * .95 + 3.8), height: 5.8 };
       }
@@ -2360,7 +2380,7 @@
       function uniqueId(prefix) { const existing = new Set(state.data.levels.flatMap(level => level.nodes.map(node => node.id)).concat(state.data.levels.flatMap(level => level.edges.map(edge => edge.id)), state.crossLevelEdges.map(edge => edge.id))); let index = 1; while (existing.has(prefix + '-' + index)) index += 1; return prefix + '-' + index; }
       function svg(name, attrs = {}) { const el = document.createElementNS('http://www.w3.org/2000/svg', name); for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value)); return el; }
       function nodeRectWidth(node) { return Math.max(7.2, Math.min(18, node.label.length * 1.05 + 4)); }
-      function equipmentRectWidth(node) { return Math.max(9, Math.min(16, node.label.length * .9 + 4)); }
+      function equipmentRectWidth(node) { return Math.max(10, node.label.length * 1.05 + 4); }
       function fitLabel(value, width) { const label = String(value); const limit = Math.max(3, Math.floor(width / .9)); return label.length <= limit ? label : label.slice(0, Math.max(1, limit - 3)) + '...'; }
       function normalizedBearing(value) { return ((value % 360) + 360) % 360; }
       function reverseBearing(value) { return normalizedBearing(value + 180); }

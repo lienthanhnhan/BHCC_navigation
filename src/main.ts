@@ -16,6 +16,28 @@ type RouteFormState = {
   goal: string;
 };
 type FloorMap = SignMapData;
+type MapViewBox = { x: number; y: number; width: number; height: number };
+type MapPanState = {
+  pointerId: number;
+  svg: SVGSVGElement;
+  clientX: number;
+  clientY: number;
+  originX: number;
+  originY: number;
+  hasMoved: boolean;
+};
+type MapTouchPoint = {
+  svg: SVGSVGElement;
+  clientX: number;
+  clientY: number;
+};
+type MapPinchState = {
+  svg: SVGSVGElement;
+  startDistance: number;
+  startMidpoint: { x: number; y: number };
+  mapPoint: DOMPoint;
+  startViewBox: MapViewBox;
+};
 type AppElements = {
   startInput: HTMLInputElement;
   goalInput: HTMLInputElement;
@@ -30,6 +52,7 @@ type AppElements = {
   startSuggestions: HTMLDivElement;
   goalSuggestions: HTMLDivElement;
   mapTabs: HTMLDivElement;
+  mapZoomOut: HTMLButtonElement;
   mapReset: HTMLButtonElement;
   mapVisual: HTMLDivElement;
   mapCaption: HTMLParagraphElement;
@@ -48,6 +71,9 @@ let currentFloorMap: FloorMap | undefined;
 let currentRoute: PathResult | undefined;
 let currentStartId: string | undefined;
 let currentGoalId: string | undefined;
+let mapPanState: MapPanState | undefined;
+let mapPinchState: MapPinchState | undefined;
+const mapTouchPoints = new Map<number, MapTouchPoint>();
 
 void initializeApp();
 
@@ -114,6 +140,7 @@ function getAppElements(): AppElements {
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
     goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
     mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
+    mapZoomOut: getRequiredElement<HTMLButtonElement>("#map-zoom-out"),
     mapReset: getRequiredElement<HTMLButtonElement>("#map-reset"),
     mapVisual: getRequiredElement<HTMLDivElement>("#map-visual"),
     mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
@@ -183,6 +210,7 @@ function createAppMarkup(graph: BuildingGraph): string {
             </div>
             <div class="map-controls">
               <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
+              <button id="map-zoom-out" class="map-zoom-out" type="button" hidden>Zoom out</button>
               <button id="map-reset" class="map-reset" type="button" hidden>Show full floor</button>
             </div>
           </div>
@@ -209,7 +237,14 @@ function setupFloorMapTabs(): void {
 }
 
 function setupMapControls(): void {
+  elements.mapZoomOut.addEventListener("click", zoomOutMap);
   elements.mapReset.addEventListener("click", showFullFloorMap);
+  elements.mapVisual.addEventListener("dblclick", zoomMapAtPointer);
+  elements.mapVisual.addEventListener("wheel", panMapWithWheel, { passive: false });
+  elements.mapVisual.addEventListener("pointerdown", startMapPan);
+  elements.mapVisual.addEventListener("pointermove", moveMapPan);
+  elements.mapVisual.addEventListener("pointerup", finishMapPan);
+  elements.mapVisual.addEventListener("pointercancel", finishMapPan);
 }
 
 function showFloorMap(map: FloorMap): void {
@@ -230,13 +265,329 @@ function renderFloorMap(): void {
     return;
   }
 
+  mapPanState = undefined;
+  mapPinchState = undefined;
+  mapTouchPoints.clear();
   elements.mapVisual.innerHTML = renderSignMap({
     map: currentFloorMap,
     route: currentRoute,
     startId: currentStartId,
     goalId: currentGoalId,
   });
-  elements.mapReset.hidden = true;
+  const svg = elements.mapVisual.querySelector<SVGSVGElement>(".sign-map");
+  if (svg) svg.dataset.fullViewBox = svg.getAttribute("viewBox") ?? "";
+  setMapZoomControls(false);
+}
+
+function zoomMapAtPointer(event: MouseEvent): void {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const svg = target.closest<SVGSVGElement>(".sign-map");
+  const screenMatrix = svg?.getScreenCTM();
+  if (!svg || !screenMatrix) return;
+
+  const fullViewBox = parseViewBox(svg.dataset.fullViewBox);
+  const currentViewBox = svg.viewBox.baseVal;
+  if (!fullViewBox || currentViewBox.width <= fullViewBox.width * 0.08) return;
+
+  event.preventDefault();
+  const pointer = svg.createSVGPoint();
+  pointer.x = event.clientX;
+  pointer.y = event.clientY;
+  const mapPoint = pointer.matrixTransform(screenMatrix.inverse());
+  const scale = Math.max(0.08 * fullViewBox.width / currentViewBox.width, 0.62);
+  const width = currentViewBox.width * scale;
+  const height = currentViewBox.height * scale;
+  const x = clampMapPosition(
+    mapPoint.x - (mapPoint.x - currentViewBox.x) * scale,
+    fullViewBox.x,
+    fullViewBox.x + fullViewBox.width - width,
+  );
+  const y = clampMapPosition(
+    mapPoint.y - (mapPoint.y - currentViewBox.y) * scale,
+    fullViewBox.y,
+    fullViewBox.y + fullViewBox.height - height,
+  );
+
+  svg.setAttribute("viewBox", `${x} ${y} ${width} ${height}`);
+  svg.classList.add("is-map-zoomed");
+  setMapZoomControls(true);
+}
+
+function zoomOutMap(): void {
+  const svg = elements.mapVisual.querySelector<SVGSVGElement>(".sign-map");
+  const fullViewBox = svg ? parseViewBox(svg.dataset.fullViewBox) : undefined;
+  if (!svg || !fullViewBox || !isMapZoomed(svg)) return;
+
+  const current = copyViewBox(svg.viewBox.baseVal);
+  const scale = 1.5;
+  if (current.width * scale >= fullViewBox.width || current.height * scale >= fullViewBox.height) {
+    restoreFullMapView(svg, fullViewBox);
+    return;
+  }
+
+  const width = current.width * scale;
+  const height = current.height * scale;
+  const centerX = current.x + current.width / 2;
+  const centerY = current.y + current.height / 2;
+  const x = clampMapPosition(centerX - width / 2, fullViewBox.x, fullViewBox.x + fullViewBox.width - width);
+  const y = clampMapPosition(centerY - height / 2, fullViewBox.y, fullViewBox.y + fullViewBox.height - height);
+  svg.setAttribute("viewBox", `${x} ${y} ${width} ${height}`);
+}
+
+function panMapWithWheel(event: WheelEvent): void {
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const svg = target.closest<SVGSVGElement>(".sign-map");
+  if (!svg || !isMapZoomed(svg)) return;
+
+  const deltaScale = event.deltaMode === WheelEvent.DOM_DELTA_LINE
+    ? 16
+    : event.deltaMode === WheelEvent.DOM_DELTA_PAGE
+      ? svg.getBoundingClientRect().height
+      : 1;
+  const deltaX = (event.shiftKey ? event.deltaY : event.deltaX) * deltaScale;
+  const deltaY = (event.shiftKey ? 0 : event.deltaY) * deltaScale;
+  if (panMapByPixels(svg, deltaX, deltaY)) event.preventDefault();
+}
+
+function startMapPan(event: PointerEvent): void {
+  if (event.button !== 0) return;
+  const target = event.target;
+  if (!(target instanceof Element)) return;
+  const svg = target.closest<SVGSVGElement>(".sign-map");
+  if (!svg) return;
+
+  if (event.pointerType === "touch") {
+    mapTouchPoints.set(event.pointerId, { svg, clientX: event.clientX, clientY: event.clientY });
+    svg.setPointerCapture(event.pointerId);
+    const touches = touchesForMap(svg);
+    if (touches.length === 2) beginMapPinch(svg, touches);
+    else if (touches.length === 1 && isMapZoomed(svg)) mapPanState = createMapPanState(event, svg);
+    return;
+  }
+
+  if (!isMapZoomed(svg)) return;
+
+  mapPanState = createMapPanState(event, svg);
+  svg.setPointerCapture(event.pointerId);
+}
+
+function moveMapPan(event: PointerEvent): void {
+  if (event.pointerType === "touch") {
+    const touch = mapTouchPoints.get(event.pointerId);
+    if (!touch) return;
+    touch.clientX = event.clientX;
+    touch.clientY = event.clientY;
+    const touches = touchesForMap(touch.svg);
+    if (mapPinchState?.svg === touch.svg && touches.length >= 2) {
+      updateMapPinch(mapPinchState, touches);
+      event.preventDefault();
+      return;
+    }
+  }
+
+  if (!mapPanState || mapPanState.pointerId !== event.pointerId) return;
+  if (!mapPanState.hasMoved) {
+    const distance = Math.hypot(event.clientX - mapPanState.originX, event.clientY - mapPanState.originY);
+    if (distance < 4) return;
+    mapPanState.hasMoved = true;
+    mapPanState.svg.classList.add("is-panning");
+  }
+  const deltaX = mapPanState.clientX - event.clientX;
+  const deltaY = mapPanState.clientY - event.clientY;
+  mapPanState.clientX = event.clientX;
+  mapPanState.clientY = event.clientY;
+  panMapByPixels(mapPanState.svg, deltaX, deltaY);
+  event.preventDefault();
+}
+
+function finishMapPan(event: PointerEvent): void {
+  const touch = mapTouchPoints.get(event.pointerId);
+  const svg = touch?.svg ?? mapPanState?.svg;
+  if (svg?.hasPointerCapture(event.pointerId)) svg.releasePointerCapture(event.pointerId);
+
+  if (event.pointerType === "touch" && touch) {
+    mapTouchPoints.delete(event.pointerId);
+    if (mapPinchState?.svg === touch.svg) mapPinchState = undefined;
+    const remainingTouches = touchesForMap(touch.svg);
+    if (remainingTouches.length === 1 && isMapZoomed(touch.svg)) {
+      const [pointerId, point] = remainingTouches[0];
+      mapPanState = {
+        pointerId,
+        svg: touch.svg,
+        clientX: point.clientX,
+        clientY: point.clientY,
+        originX: point.clientX,
+        originY: point.clientY,
+        hasMoved: false,
+      };
+    } else {
+      mapPanState = undefined;
+    }
+  } else if (mapPanState?.pointerId === event.pointerId) {
+    mapPanState = undefined;
+  }
+
+  svg?.classList.remove("is-panning", "is-pinching");
+}
+
+function createMapPanState(event: PointerEvent, svg: SVGSVGElement): MapPanState {
+  return {
+    pointerId: event.pointerId,
+    svg,
+    clientX: event.clientX,
+    clientY: event.clientY,
+    originX: event.clientX,
+    originY: event.clientY,
+    hasMoved: false,
+  };
+}
+
+function touchesForMap(svg: SVGSVGElement): Array<[number, MapTouchPoint]> {
+  return [...mapTouchPoints].filter(([, point]) => point.svg === svg);
+}
+
+function beginMapPinch(svg: SVGSVGElement, touches: Array<[number, MapTouchPoint]>): void {
+  const first = touches[0][1];
+  const second = touches[1][1];
+  const midpoint = touchMidpoint(first, second);
+  const mapPoint = clientPointToMap(svg, midpoint.x, midpoint.y);
+  if (!mapPoint) return;
+
+  mapPanState = undefined;
+  svg.classList.remove("is-panning");
+  svg.classList.add("is-pinching");
+  mapPinchState = {
+    svg,
+    startDistance: touchDistance(first, second),
+    startMidpoint: midpoint,
+    mapPoint,
+    startViewBox: copyViewBox(svg.viewBox.baseVal),
+  };
+}
+
+function updateMapPinch(state: MapPinchState, touches: Array<[number, MapTouchPoint]>): void {
+  const first = touches[0][1];
+  const second = touches[1][1];
+  const distance = touchDistance(first, second);
+  const fullViewBox = parseViewBox(state.svg.dataset.fullViewBox);
+  const bounds = state.svg.getBoundingClientRect();
+  if (!fullViewBox || distance <= 0 || state.startDistance <= 0 || bounds.width <= 0 || bounds.height <= 0) return;
+
+  const midpoint = touchMidpoint(first, second);
+  const minimumScale = Math.max(
+    fullViewBox.width * 0.08 / state.startViewBox.width,
+    fullViewBox.height * 0.08 / state.startViewBox.height,
+  );
+  const maximumScale = Math.min(
+    fullViewBox.width / state.startViewBox.width,
+    fullViewBox.height / state.startViewBox.height,
+  );
+  const requestedScale = state.startDistance / distance;
+  if (requestedScale >= maximumScale * 0.995) {
+    restoreFullMapView(state.svg, fullViewBox);
+    return;
+  }
+
+  const scale = clampMapPosition(requestedScale, minimumScale, maximumScale);
+  const width = state.startViewBox.width * scale;
+  const height = state.startViewBox.height * scale;
+  const midpointDeltaX = (midpoint.x - state.startMidpoint.x) * state.startViewBox.width / bounds.width * scale;
+  const midpointDeltaY = (midpoint.y - state.startMidpoint.y) * state.startViewBox.height / bounds.height * scale;
+  const x = clampMapPosition(
+    state.mapPoint.x - (state.mapPoint.x - state.startViewBox.x) * scale - midpointDeltaX,
+    fullViewBox.x,
+    fullViewBox.x + fullViewBox.width - width,
+  );
+  const y = clampMapPosition(
+    state.mapPoint.y - (state.mapPoint.y - state.startViewBox.y) * scale - midpointDeltaY,
+    fullViewBox.y,
+    fullViewBox.y + fullViewBox.height - height,
+  );
+
+  state.svg.setAttribute("viewBox", `${x} ${y} ${width} ${height}`);
+  state.svg.classList.toggle("is-map-zoomed", width < fullViewBox.width - 0.01 || height < fullViewBox.height - 0.01);
+  setMapZoomControls(isMapZoomed(state.svg));
+}
+
+function touchDistance(first: MapTouchPoint, second: MapTouchPoint): number {
+  return Math.hypot(second.clientX - first.clientX, second.clientY - first.clientY);
+}
+
+function touchMidpoint(first: MapTouchPoint, second: MapTouchPoint): { x: number; y: number } {
+  return { x: (first.clientX + second.clientX) / 2, y: (first.clientY + second.clientY) / 2 };
+}
+
+function clientPointToMap(svg: SVGSVGElement, clientX: number, clientY: number): DOMPoint | undefined {
+  const matrix = svg.getScreenCTM();
+  if (!matrix) return undefined;
+  const point = svg.createSVGPoint();
+  point.x = clientX;
+  point.y = clientY;
+  return point.matrixTransform(matrix.inverse());
+}
+
+function copyViewBox(viewBox: SVGRect): MapViewBox {
+  return { x: viewBox.x, y: viewBox.y, width: viewBox.width, height: viewBox.height };
+}
+
+function setMapZoomControls(isZoomed: boolean): void {
+  elements.mapZoomOut.hidden = !isZoomed;
+  elements.mapReset.hidden = !isZoomed;
+}
+
+function restoreFullMapView(svg: SVGSVGElement, fullViewBox: MapViewBox): void {
+  svg.setAttribute("viewBox", `${fullViewBox.x} ${fullViewBox.y} ${fullViewBox.width} ${fullViewBox.height}`);
+  svg.classList.remove("is-building-focused", "is-map-zoomed", "is-panning", "is-pinching");
+  for (const plate of svg.querySelectorAll<SVGGElement>(".building-plate.is-focused")) {
+    plate.classList.remove("is-focused");
+  }
+  clearDirectionSelection();
+  elements.mapCaption.textContent = currentFloorMap?.title ?? `${currentFloorMap?.label ?? "Floor"} simplified campus map`;
+  setMapZoomControls(false);
+}
+
+function panMapByPixels(svg: SVGSVGElement, deltaX: number, deltaY: number): boolean {
+  const fullViewBox = parseViewBox(svg.dataset.fullViewBox);
+  const bounds = svg.getBoundingClientRect();
+  const current = svg.viewBox.baseVal;
+  if (!fullViewBox || bounds.width <= 0 || bounds.height <= 0) return false;
+
+  const x = clampMapPosition(
+    current.x + deltaX * current.width / bounds.width,
+    fullViewBox.x,
+    fullViewBox.x + fullViewBox.width - current.width,
+  );
+  const y = clampMapPosition(
+    current.y + deltaY * current.height / bounds.height,
+    fullViewBox.y,
+    fullViewBox.y + fullViewBox.height - current.height,
+  );
+  if (Math.abs(x - current.x) < 0.001 && Math.abs(y - current.y) < 0.001) return false;
+
+  svg.setAttribute("viewBox", `${x} ${y} ${current.width} ${current.height}`);
+  return true;
+}
+
+function isMapZoomed(svg: SVGSVGElement): boolean {
+  const fullViewBox = parseViewBox(svg.dataset.fullViewBox);
+  const current = svg.viewBox.baseVal;
+  return Boolean(fullViewBox && (
+    current.width < fullViewBox.width - 0.01
+    || current.height < fullViewBox.height - 0.01
+  ));
+}
+
+function clampMapPosition(value: number, minimum: number, maximum: number): number {
+  return Math.min(Math.max(value, minimum), Math.max(minimum, maximum));
+}
+
+function parseViewBox(value: string | undefined): { x: number; y: number; width: number; height: number } | undefined {
+  const values = value?.trim().split(/\s+/).map(Number);
+  if (!values || values.length !== 4 || values.some((number) => !Number.isFinite(number))) return undefined;
+  const [x, y, width, height] = values;
+  return { x, y, width, height };
 }
 
 function focusDirectionNode(nodeId: string, button: HTMLButtonElement): void {
@@ -271,13 +622,13 @@ function focusBuilding(building: string): void {
   const padding = Math.max(6, Math.max(right - left, bottom - top) * 0.08);
 
   svg.setAttribute("viewBox", `${left - padding} ${top - padding} ${right - left + padding * 2} ${bottom - top + padding * 2}`);
-  svg.classList.add("is-building-focused");
+  svg.classList.add("is-building-focused", "is-map-zoomed");
   for (const plate of svg.querySelectorAll<SVGGElement>(".building-plate")) {
     plate.classList.toggle("is-focused", plate.dataset.building === building);
   }
 
-  elements.mapCaption.textContent = `Focused on ${building} Building.`;
-  elements.mapReset.hidden = false;
+  elements.mapCaption.textContent = `Focused on ${building} Building. Scroll, drag, or pinch the map to follow the route.`;
+  setMapZoomControls(true);
 }
 
 function showFullFloorMap(): void {

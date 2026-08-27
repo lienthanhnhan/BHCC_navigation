@@ -39,9 +39,14 @@ export function layoutCampusMap(nodes: BuildingNode[], edges: BuildingEdge[], fl
 
   applyCorridorPlacements(nodes, edges, layouts);
   ensureCorridorRoomCapacity(nodes, edges, layouts);
-  applyCorridorPlacements(nodes, edges, layouts);
-  applyRoomPlacements(nodes, edges, layouts);
-  spreadRoomsAlongCorridors(nodes, edges, layouts);
+  for (let pass = 0; pass < 5; pass += 1) {
+    applyCorridorPlacements(nodes, edges, layouts);
+    applyRoomPlacements(nodes, edges, layouts);
+    spreadRoomsAlongCorridors(nodes, edges, layouts);
+    const blockedRooms = separateOverlappingRooms(nodes, edges, layouts);
+    if (!blockedRooms.length || pass === 4) break;
+    expandCorridorsForBlockedRooms(blockedRooms, layouts, edges, new Map(nodes.map((node) => [node.id, node])));
+  }
 
   const measuredBounds = buildingBounds(groups, layouts);
   for (const entry of entries) entry.bounds = measuredBounds.get(entry.building);
@@ -183,6 +188,122 @@ function spreadRoomsAlongCorridors(
       for (const placement of ordered) placement.roomLayout[axisKey] = round(placement.roomLayout[axisKey]);
     }
   }
+}
+
+function separateOverlappingRooms(
+  nodes: BuildingNode[],
+  edges: BuildingEdge[],
+  layouts: Map<string, NodeLayout>,
+): CorridorRoomPlacement[] {
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
+  const seen = new Set<string>();
+  const attachments = edges.flatMap((edge) => {
+    if (!edge.side) return [];
+    const placement = roomCorridorDetails(edge, nodeById);
+    if (!placement || seen.has(placement.room.id)) return [];
+    seen.add(placement.room.id);
+    return [{ edge, ...placement }];
+  });
+  const attachedIds = new Set(edges.flatMap((edge) => {
+    const placement = roomCorridorDetails(edge, nodeById);
+    return placement ? [placement.room.id] : [];
+  }));
+  const blocked: CorridorRoomPlacement[] = [];
+  const gap = 0.8;
+
+  for (const { edge, corridor, room } of attachments) {
+    const corridorLayout = layouts.get(corridor.id);
+    const roomLayout = layouts.get(room.id);
+    if (!corridorLayout || !roomLayout) continue;
+
+    const vertical = corridorOrientation(corridor) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    const halfSpan = roomLayout[spanKey] / 2;
+
+    const blockers = [...layouts.values()].filter((layout) => (
+      layout.node.id !== room.id
+      && layout.node.id !== corridor.id
+      && buildingKey(layout.node) === buildingKey(room)
+      && (isPathNode(layout.node) || attachedIds.has(layout.node.id))
+    ));
+    if (!blockers.some((blocker) => nodeRectsOverlap(roomLayout, blocker, gap))) continue;
+
+    const original = roomLayout[axisKey];
+    if (edge.side === "start" || edge.side === "end") {
+      const direction = edge.side === "start" ? -1 : 1;
+      const candidates = [original, ...blockers.map((blocker) => (
+        blocker[axisKey] + direction * (blocker[spanKey] / 2 + halfSpan + gap)
+      ))].filter((candidate) => direction * (candidate - original) >= 0)
+        .sort((left, right) => Math.abs(left - original) - Math.abs(right - original));
+      const freePosition = candidates.find((candidate) => {
+        roomLayout[axisKey] = candidate;
+        return blockers.every((blocker) => !nodeRectsOverlap(roomLayout, blocker, gap));
+      });
+      roomLayout[axisKey] = freePosition ?? original;
+      continue;
+    }
+
+    const minimum = corridorLayout[axisKey] - corridorLayout[spanKey] / 2 + halfSpan + 1;
+    const maximum = corridorLayout[axisKey] + corridorLayout[spanKey] / 2 - halfSpan - 1;
+    if (minimum > maximum) continue;
+    const candidates = [original, minimum, maximum];
+    for (const blocker of blockers) {
+      candidates.push(
+        blocker[axisKey] - blocker[spanKey] / 2 - halfSpan - gap,
+        blocker[axisKey] + blocker[spanKey] / 2 + halfSpan + gap,
+      );
+    }
+
+    const available = [...new Set(candidates.map((candidate) => round(clamp(candidate, minimum, maximum))))]
+      .sort((left, right) => Math.abs(left - original) - Math.abs(right - original));
+    const freePosition = available.find((candidate) => {
+      roomLayout[axisKey] = candidate;
+      return blockers.every((blocker) => !nodeRectsOverlap(roomLayout, blocker, gap));
+    });
+    roomLayout[axisKey] = freePosition ?? original;
+    if (freePosition === undefined) blocked.push({ edge, corridor, room, roomLayout });
+  }
+
+  return blocked;
+}
+
+function expandCorridorsForBlockedRooms(
+  blockedRooms: CorridorRoomPlacement[],
+  layouts: Map<string, NodeLayout>,
+  edges: BuildingEdge[],
+  nodeById: Map<string, BuildingNode>,
+): void {
+  const growthByCorridor = new Map<string, number>();
+  for (const { corridor, roomLayout } of blockedRooms) {
+    const spanKey = corridorOrientation(corridor) === "vertical" ? "height" : "width";
+    growthByCorridor.set(corridor.id, (growthByCorridor.get(corridor.id) ?? 0) + roomLayout[spanKey] + 2);
+  }
+
+  for (const [corridorId, growth] of growthByCorridor) {
+    const corridor = nodeById.get(corridorId);
+    const corridorLayout = layouts.get(corridorId);
+    if (!corridor || !corridorLayout) continue;
+    const vertical = corridorOrientation(corridor) === "vertical";
+    const axisKey = vertical ? "y" : "x";
+    const spanKey = vertical ? "height" : "width";
+    expandCorridorAwayFromParent(
+      corridor,
+      corridorLayout,
+      axisKey,
+      spanKey,
+      corridorLayout[spanKey] + growth,
+      edges,
+      nodeById,
+    );
+  }
+}
+
+function nodeRectsOverlap(left: NodeLayout, right: NodeLayout, gap: number): boolean {
+  return left.x - left.width / 2 < right.x + right.width / 2 + gap
+    && left.x + left.width / 2 + gap > right.x - right.width / 2
+    && left.y - left.height / 2 < right.y + right.height / 2 + gap
+    && left.y + left.height / 2 + gap > right.y - right.height / 2;
 }
 
 function applyRoomPlacements(nodes: BuildingNode[], edges: BuildingEdge[], layouts: Map<string, NodeLayout>): void {

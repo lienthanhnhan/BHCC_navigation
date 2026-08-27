@@ -1218,9 +1218,13 @@
       }
 
       function settleCorridorAttachments(nodes, edges, layouts) {
-        for (let pass = 0; pass < 2; pass += 1) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        for (let pass = 0; pass < 5; pass += 1) {
           applyCorridorPlacements(nodes, edges, layouts);
           applyAttachedNodePlacements(nodes, edges, layouts);
+          const blockedAttachments = separateOverlappingAttachments(nodes, edges, layouts);
+          if (!blockedAttachments.length || pass === 4) break;
+          expandCorridorsForBlockedAttachments(blockedAttachments, layouts, edges, nodeById);
         }
       }
 
@@ -1625,6 +1629,107 @@
           const underflow = start - (first.nodeLayout[axisKey] - first.nodeLayout[spanKey] / 2);
           if (underflow > 0) for (const item of ordered) item.nodeLayout[axisKey] += underflow;
         }
+      }
+
+      function separateOverlappingAttachments(nodes, edges, layouts) {
+        const nodeById = new Map(nodes.map(node => [node.id, node]));
+        const seen = new Set();
+        const attachments = [];
+        for (const edge of edges) {
+          if (!edge.side) continue;
+          const placement = corridorAttachmentDetails(edge, nodeById);
+          if (!placement || seen.has(placement.node.id)) continue;
+          seen.add(placement.node.id);
+          attachments.push({ edge, ...placement });
+        }
+        const attachedIds = new Set(edges.flatMap(edge => {
+          const placement = corridorAttachmentDetails(edge, nodeById);
+          return placement ? [placement.node.id] : [];
+        }));
+        const blocked = [];
+        const gap = .8;
+
+        for (const { edge, corridor, node } of attachments) {
+          const corridorLayout = layouts.get(corridor.id), nodeLayout = layouts.get(node.id);
+          if (!corridorLayout || !nodeLayout) continue;
+          const vertical = corridorOrientation(corridor) === 'vertical';
+          const axisKey = vertical ? 'y' : 'x';
+          const spanKey = vertical ? 'height' : 'width';
+          const halfSpan = nodeLayout[spanKey] / 2;
+
+          const blockers = [...layouts.values()].filter(layout =>
+            layout.node.id !== node.id
+            && layout.node.id !== corridor.id
+            && buildingKey(layout.node) === buildingKey(node)
+            && (isPathNode(layout.node) || attachedIds.has(layout.node.id)));
+          if (!blockers.some(blocker => nodeRectsOverlap(nodeLayout, blocker, gap))) continue;
+
+          const original = nodeLayout[axisKey];
+          if (isEndAttachment(edge.side)) {
+            const direction = edge.side === 'start' ? -1 : 1;
+            const candidates = [original, ...blockers.map(blocker =>
+              blocker[axisKey] + direction * (blocker[spanKey] / 2 + halfSpan + gap))]
+              .filter(candidate => direction * (candidate - original) >= 0)
+              .sort((left, right) => Math.abs(left - original) - Math.abs(right - original));
+            const freePosition = candidates.find(candidate => {
+              nodeLayout[axisKey] = candidate;
+              return blockers.every(blocker => !nodeRectsOverlap(nodeLayout, blocker, gap));
+            });
+            nodeLayout[axisKey] = freePosition ?? original;
+            continue;
+          }
+
+          const minimum = corridorLayout[axisKey] - corridorLayout[spanKey] / 2 + halfSpan + 1;
+          const maximum = corridorLayout[axisKey] + corridorLayout[spanKey] / 2 - halfSpan - 1;
+          if (minimum > maximum) continue;
+          const candidates = [original, minimum, maximum];
+          for (const blocker of blockers) {
+            candidates.push(
+              blocker[axisKey] - blocker[spanKey] / 2 - halfSpan - gap,
+              blocker[axisKey] + blocker[spanKey] / 2 + halfSpan + gap
+            );
+          }
+          const available = [...new Set(candidates.map(candidate => round(clamp(candidate, minimum, maximum))))]
+            .sort((left, right) => Math.abs(left - original) - Math.abs(right - original));
+          const freePosition = available.find(candidate => {
+            nodeLayout[axisKey] = candidate;
+            return blockers.every(blocker => !nodeRectsOverlap(nodeLayout, blocker, gap));
+          });
+          nodeLayout[axisKey] = freePosition ?? original;
+          if (freePosition === undefined) blocked.push({ corridor, node, nodeLayout });
+        }
+        return blocked;
+      }
+
+      function expandCorridorsForBlockedAttachments(blockedAttachments, layouts, edges, nodeById) {
+        const growthByCorridor = new Map();
+        for (const { corridor, nodeLayout } of blockedAttachments) {
+          const spanKey = corridorOrientation(corridor) === 'vertical' ? 'height' : 'width';
+          growthByCorridor.set(corridor.id, (growthByCorridor.get(corridor.id) || 0) + nodeLayout[spanKey] + 2);
+        }
+        for (const [corridorId, growth] of growthByCorridor) {
+          const corridor = nodeById.get(corridorId), corridorLayout = layouts.get(corridorId);
+          if (!corridor || !corridorLayout) continue;
+          const vertical = corridorOrientation(corridor) === 'vertical';
+          const axisKey = vertical ? 'y' : 'x';
+          const spanKey = vertical ? 'height' : 'width';
+          expandCorridorAwayFromParent(
+            corridor,
+            corridorLayout,
+            axisKey,
+            spanKey,
+            corridorLayout[spanKey] + growth,
+            edges,
+            nodeById
+          );
+        }
+      }
+
+      function nodeRectsOverlap(left, right, gap) {
+        return left.x - left.width / 2 < right.x + right.width / 2 + gap
+          && left.x + left.width / 2 + gap > right.x - right.width / 2
+          && left.y - left.height / 2 < right.y + right.height / 2 + gap
+          && left.y + left.height / 2 + gap > right.y - right.height / 2;
       }
 
       function expandCorridorAwayFromParent(corridor, layout, axisKey, spanKey, requiredSpan, edges, nodeById) {

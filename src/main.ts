@@ -52,10 +52,13 @@ type AppElements = {
   startSuggestions: HTMLDivElement;
   goalSuggestions: HTMLDivElement;
   mapTabs: HTMLDivElement;
+  mapCanvas: HTMLDivElement;
+  mapZoomIn: HTMLButtonElement;
   mapZoomOut: HTMLButtonElement;
   mapReset: HTMLButtonElement;
   mapVisual: HTMLDivElement;
   mapCaption: HTMLParagraphElement;
+  shareDirections: HTMLButtonElement;
 };
 
 const storageKey = "indoor-nav-state";
@@ -96,9 +99,10 @@ async function initializeApp(): Promise<void> {
     app.innerHTML = createAppMarkup(buildingGraph);
     elements = getAppElements();
 
+    const queryState = readRouteQueryState();
     const savedState = readState();
-    elements.startInput.value = validSavedLocation(savedState.start, defaultStart);
-    elements.goalInput.value = validSavedLocation(savedState.goal, defaultGoal);
+    elements.startInput.value = validRouteLocation(queryState.start, validRouteLocation(savedState.start, defaultStart));
+    elements.goalInput.value = validRouteLocation(queryState.goal, validRouteLocation(savedState.goal, defaultGoal));
 
     setupLocationSearch(elements.startInput, elements.startSuggestions);
     setupLocationSearch(elements.goalInput, elements.goalSuggestions);
@@ -140,10 +144,13 @@ function getAppElements(): AppElements {
     startSuggestions: getRequiredElement<HTMLDivElement>("#start-suggestions"),
     goalSuggestions: getRequiredElement<HTMLDivElement>("#goal-suggestions"),
     mapTabs: getRequiredElement<HTMLDivElement>("#map-tabs"),
+    mapCanvas: getRequiredElement<HTMLDivElement>("#map-canvas"),
+    mapZoomIn: getRequiredElement<HTMLButtonElement>("#map-zoom-in"),
     mapZoomOut: getRequiredElement<HTMLButtonElement>("#map-zoom-out"),
     mapReset: getRequiredElement<HTMLButtonElement>("#map-reset"),
     mapVisual: getRequiredElement<HTMLDivElement>("#map-visual"),
     mapCaption: getRequiredElement<HTMLParagraphElement>("#map-caption"),
+    shareDirections: getRequiredElement<HTMLButtonElement>("#share-directions"),
   };
 }
 
@@ -191,9 +198,17 @@ function createAppMarkup(graph: BuildingGraph): string {
 
       <section class="grid">
         <article id="directions-card" class="card directions-card">
-          <div class="card-header">
-            <h2>Directions</h2>
-            <p id="summary" class="muted"></p>
+          <div class="card-header directions-header">
+            <div>
+              <h2>Directions</h2>
+              <p id="summary" class="muted"></p>
+            </div>
+            <button id="share-directions" class="share-directions" type="button" aria-label="Share directions" title="Share directions" disabled>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M18 8a3 3 0 1 0-2.83-4A3 3 0 0 0 15.17 5L8.9 8.14a3 3 0 1 0 0 7.72L15.17 19A3 3 0 1 0 16.06 17l-6.27-3.14a3.1 3.1 0 0 0 0-3.72L16.06 7A3 3 0 0 0 18 8Z" />
+              </svg>
+              <span class="visually-hidden">Share directions</span>
+            </button>
           </div>
           <div id="route-loading" class="route-loading" role="status" aria-live="polite" hidden>
             <span class="route-loader" aria-hidden="true"></span>
@@ -210,11 +225,16 @@ function createAppMarkup(graph: BuildingGraph): string {
             </div>
             <div class="map-controls">
               <div id="map-tabs" class="map-tabs" role="tablist" aria-label="Floor maps"></div>
-              <button id="map-zoom-out" class="map-zoom-out" type="button" hidden>Zoom out</button>
               <button id="map-reset" class="map-reset" type="button" hidden>Show full floor</button>
             </div>
           </div>
-          <div id="map-visual" class="map-frame sign-map-frame"></div>
+          <div id="map-visual" class="map-visual">
+            <div id="map-canvas" class="map-frame sign-map-frame"></div>
+            <div class="map-zoom-controls" aria-label="Map zoom controls">
+              <button id="map-zoom-in" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+              <button id="map-zoom-out" type="button" aria-label="Zoom out" title="Zoom out">−</button>
+            </div>
+          </div>
         </article>
 
         ${developmentCards}
@@ -237,14 +257,16 @@ function setupFloorMapTabs(): void {
 }
 
 function setupMapControls(): void {
+  elements.mapZoomIn.addEventListener("click", zoomInMap);
   elements.mapZoomOut.addEventListener("click", zoomOutMap);
   elements.mapReset.addEventListener("click", showFullFloorMap);
-  elements.mapVisual.addEventListener("dblclick", zoomMapAtPointer);
-  elements.mapVisual.addEventListener("wheel", panMapWithWheel, { passive: false });
-  elements.mapVisual.addEventListener("pointerdown", startMapPan);
-  elements.mapVisual.addEventListener("pointermove", moveMapPan);
-  elements.mapVisual.addEventListener("pointerup", finishMapPan);
-  elements.mapVisual.addEventListener("pointercancel", finishMapPan);
+  elements.shareDirections.addEventListener("click", shareDirections);
+  elements.mapCanvas.addEventListener("dblclick", zoomMapAtPointer);
+  elements.mapCanvas.addEventListener("wheel", panMapWithWheel, { passive: false });
+  elements.mapCanvas.addEventListener("pointerdown", startMapPan);
+  elements.mapCanvas.addEventListener("pointermove", moveMapPan);
+  elements.mapCanvas.addEventListener("pointerup", finishMapPan);
+  elements.mapCanvas.addEventListener("pointercancel", finishMapPan);
 }
 
 function showFloorMap(map: FloorMap): void {
@@ -268,7 +290,7 @@ function renderFloorMap(): void {
   mapPanState = undefined;
   mapPinchState = undefined;
   mapTouchPoints.clear();
-  elements.mapVisual.innerHTML = renderSignMap({
+  elements.mapCanvas.innerHTML = renderSignMap({
     map: currentFloorMap,
     route: currentRoute,
     startId: currentStartId,
@@ -314,8 +336,37 @@ function zoomMapAtPointer(event: MouseEvent): void {
   setMapZoomControls(true);
 }
 
+function zoomInMap(): void {
+  const svg = elements.mapCanvas.querySelector<SVGSVGElement>(".sign-map");
+  const fullViewBox = svg ? parseViewBox(svg.dataset.fullViewBox) : undefined;
+  if (!svg || !fullViewBox) return;
+
+  const current = copyViewBox(svg.viewBox.baseVal);
+  const scale = 0.62;
+  const width = current.width * scale;
+  const height = current.height * scale;
+  const minimumWidth = fullViewBox.width * 0.08;
+  const minimumHeight = fullViewBox.height * 0.08;
+  if (width < minimumWidth || height < minimumHeight) return;
+
+  const x = clampMapPosition(
+    current.x + (current.width - width) / 2,
+    fullViewBox.x,
+    fullViewBox.x + fullViewBox.width - width,
+  );
+  const y = clampMapPosition(
+    current.y + (current.height - height) / 2,
+    fullViewBox.y,
+    fullViewBox.y + fullViewBox.height - height,
+  );
+
+  svg.setAttribute("viewBox", `${x} ${y} ${width} ${height}`);
+  svg.classList.add("is-map-zoomed");
+  setMapZoomControls(true);
+}
+
 function zoomOutMap(): void {
-  const svg = elements.mapVisual.querySelector<SVGSVGElement>(".sign-map");
+  const svg = elements.mapCanvas.querySelector<SVGSVGElement>(".sign-map");
   const fullViewBox = svg ? parseViewBox(svg.dataset.fullViewBox) : undefined;
   if (!svg || !fullViewBox || !isMapZoomed(svg)) return;
 
@@ -360,10 +411,13 @@ function startMapPan(event: PointerEvent): void {
 
   if (event.pointerType === "touch") {
     mapTouchPoints.set(event.pointerId, { svg, clientX: event.clientX, clientY: event.clientY });
-    svg.setPointerCapture(event.pointerId);
     const touches = touchesForMap(svg);
-    if (touches.length === 2) beginMapPinch(svg, touches);
-    else if (touches.length === 1 && isMapZoomed(svg)) mapPanState = createMapPanState(event, svg);
+    if (touches.length === 2) {
+      for (const [pointerId] of touches) {
+        if (!svg.hasPointerCapture(pointerId)) svg.setPointerCapture(pointerId);
+      }
+      beginMapPinch(svg, touches);
+    }
     return;
   }
 
@@ -411,20 +465,10 @@ function finishMapPan(event: PointerEvent): void {
     mapTouchPoints.delete(event.pointerId);
     if (mapPinchState?.svg === touch.svg) mapPinchState = undefined;
     const remainingTouches = touchesForMap(touch.svg);
-    if (remainingTouches.length === 1 && isMapZoomed(touch.svg)) {
-      const [pointerId, point] = remainingTouches[0];
-      mapPanState = {
-        pointerId,
-        svg: touch.svg,
-        clientX: point.clientX,
-        clientY: point.clientY,
-        originX: point.clientX,
-        originY: point.clientY,
-        hasMoved: false,
-      };
-    } else {
-      mapPanState = undefined;
+    for (const [pointerId] of remainingTouches) {
+      if (touch.svg.hasPointerCapture(pointerId)) touch.svg.releasePointerCapture(pointerId);
     }
+    mapPanState = undefined;
   } else if (mapPanState?.pointerId === event.pointerId) {
     mapPanState = undefined;
   }
@@ -533,7 +577,8 @@ function copyViewBox(viewBox: SVGRect): MapViewBox {
 }
 
 function setMapZoomControls(isZoomed: boolean): void {
-  elements.mapZoomOut.hidden = !isZoomed;
+  elements.mapZoomIn.disabled = false;
+  elements.mapZoomOut.disabled = !isZoomed;
   elements.mapReset.hidden = !isZoomed;
 }
 
@@ -719,6 +764,10 @@ function runRoute(focusFirstInstruction = false): void {
   }
 
   currentRoute = route;
+  elements.shareDirections.disabled = false;
+  if (focusFirstInstruction || hasRouteQuery()) {
+    writeRouteQuery(state);
+  }
   showRouteFloor(route);
   renderFloorMap();
   renderRoute(route, focusFirstInstruction);
@@ -812,6 +861,7 @@ function showEmptyRoute(message: string): void {
   elements.directionsList.innerHTML = "";
   elements.trace?.replaceChildren();
   elements.summary.textContent = "";
+  elements.shareDirections.disabled = true;
 }
 
 function setStatus(message: string, isError: boolean): void {
@@ -832,10 +882,73 @@ function readState(): SavedState {
   }
 }
 
+function readRouteQueryState(): SavedState {
+  const params = new URLSearchParams(window.location.search);
+
+  return {
+    start: params.get("from") ?? params.get("start") ?? undefined,
+    goal: params.get("to") ?? params.get("goal") ?? undefined,
+  };
+}
+
+function hasRouteQuery(): boolean {
+  const params = new URLSearchParams(window.location.search);
+  return ["from", "to", "start", "goal"].some((name) => params.has(name));
+}
+
+function writeRouteQuery(state: RouteFormState): void {
+  const url = new URL(window.location.href);
+  url.searchParams.set("from", state.start);
+  url.searchParams.set("to", state.goal);
+  url.searchParams.delete("start");
+  url.searchParams.delete("goal");
+  window.history.replaceState(null, "", url);
+}
+
+async function shareDirections(): Promise<void> {
+  if (!currentRoute) return;
+
+  const state = getRouteFormState();
+  writeRouteQuery(state);
+  const url = window.location.href;
+  const shareData = {
+    title: "BHCC indoor directions",
+    text: `Directions from ${state.start} to ${state.goal}`,
+    url,
+  };
+
+  try {
+    if (navigator.share) {
+      await navigator.share(shareData);
+      return;
+    }
+
+    await navigator.clipboard.writeText(url);
+    showShareConfirmation();
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") return;
+    window.prompt("Copy this directions link", url);
+  }
+}
+
+function showShareConfirmation(): void {
+  const button = elements.shareDirections;
+  const previousLabel = button.getAttribute("aria-label") ?? "Share directions";
+  button.setAttribute("aria-label", "Directions link copied");
+  button.title = "Directions link copied";
+  button.classList.add("is-copied");
+
+  window.setTimeout(() => {
+    button.setAttribute("aria-label", previousLabel);
+    button.title = previousLabel;
+    button.classList.remove("is-copied");
+  }, 1800);
+}
+
 function saveState(state: RouteFormState): void {
   localStorage.setItem(storageKey, JSON.stringify(state));
 }
 
-function validSavedLocation(savedValue: string | undefined, fallback: string): string {
-  return savedValue && findNodeId(buildingGraph, savedValue) ? savedValue : fallback;
+function validRouteLocation(value: string | undefined, fallback: string): string {
+  return value && findNodeId(buildingGraph, value) ? value : fallback;
 }

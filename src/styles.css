@@ -243,6 +243,54 @@ h1 {
   min-width: 0;
 }
 
+.directions-header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+
+.share-directions {
+  display: grid;
+  width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid var(--navy);
+  border-radius: 0;
+  background: white;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.share-directions svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.share-directions:hover:not(:disabled),
+.share-directions:focus-visible,
+.share-directions.is-copied {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+.share-directions:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .card-header {
   display: grid;
   gap: 6px;
@@ -292,7 +340,6 @@ h1 {
   flex-wrap: wrap;
 }
 
-.map-zoom-out,
 .map-reset {
   min-height: 42px;
   border-color: var(--navy);
@@ -301,9 +348,44 @@ h1 {
   font-weight: 800;
 }
 
-.map-zoom-out {
+.map-visual {
+  position: relative;
+}
+
+.map-zoom-controls {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  z-index: 4;
+  display: grid;
+  gap: 6px;
+}
+
+.map-zoom-controls button {
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  border: 1px solid var(--navy);
+  border-radius: 0;
   background: white;
   color: var(--navy);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.map-zoom-controls button:hover:not(:disabled),
+.map-zoom-controls button:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+.map-zoom-controls button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .map-frame {
@@ -313,7 +395,8 @@ h1 {
   border: 1px solid var(--accent);
   border-radius: 0;
   background: #f7f7f2;
-  overscroll-behavior: contain;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: auto;
   scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x pan-y;
@@ -329,7 +412,7 @@ h1 {
   max-width: none;
   background: #f7f7f2;
   cursor: zoom-in;
-  touch-action: none;
+  touch-action: pan-x pan-y;
   user-select: none;
 }
 
@@ -759,11 +842,19 @@ h1 {
   }
 
   .map-frame {
-    max-height: 58svh;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior: auto;
   }
 
   .sign-map-frame {
     padding: 6px;
+  }
+
+  .map-zoom-controls {
+    right: 16px;
+    bottom: 16px;
   }
 
   .sign-map {

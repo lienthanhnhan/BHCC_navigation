@@ -133,6 +133,10 @@ h1 {
   z-index: 30;
 }
 
+.autocomplete:focus-within {
+  z-index: 40;
+}
+
 .suggestions {
   position: absolute;
   z-index: 1000;

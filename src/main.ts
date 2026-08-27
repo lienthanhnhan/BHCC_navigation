@@ -434,6 +434,9 @@ function startMapPan(event: PointerEvent): void {
         if (!svg.hasPointerCapture(pointerId)) svg.setPointerCapture(pointerId);
       }
       beginMapPinch(svg, touches);
+    } else if (document.fullscreenElement === elements.mapVisual && isMapZoomed(svg)) {
+      mapPanState = createMapPanState(event, svg);
+      svg.setPointerCapture(event.pointerId);
     }
     return;
   }

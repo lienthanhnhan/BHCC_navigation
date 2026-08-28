@@ -1,6 +1,6 @@
 import type { BuildingGraph } from "./types";
 
-const editorDatasetStorageKey = "bhcc-map-editor-dataset-v4";
+const editorDatasetStorageKey = "bhcc-map-editor-dataset-v5";
 
 export interface FloorMapData {
   level: number;
@@ -23,6 +23,11 @@ interface BuildingDatasetFile {
   crossLevelEdges: BuildingGraph["edges"];
 }
 
+interface SavedDataset {
+  baseFingerprint: string;
+  dataset: BuildingDatasetFile;
+}
+
 export interface BuildingDataset extends BuildingDatasetFile {
   graph: BuildingGraph;
 }
@@ -34,13 +39,12 @@ export async function loadBuildingDataset(): Promise<BuildingDataset> {
     throw new Error(`Could not load building data: ${response.status}`);
   }
 
-  const baseDataset = migrateDataset(await response.json() as BuildingDatasetFile);
-  const savedDataset = readSavedDataset(baseDataset.schemaVersion);
+  const baseDataset = await response.json() as BuildingDatasetFile;
+  const savedDataset = readSavedDataset(baseDataset);
 
   if (savedDataset) {
     try {
-      const migratedDataset = migrateDataset(savedDataset);
-      return { ...migratedDataset, graph: buildGraph(migratedDataset) };
+      return { ...savedDataset, graph: buildGraph(savedDataset) };
     } catch {
       window.localStorage.removeItem(editorDatasetStorageKey);
     }
@@ -49,54 +53,32 @@ export async function loadBuildingDataset(): Promise<BuildingDataset> {
   return { ...baseDataset, graph: buildGraph(baseDataset) };
 }
 
-function readSavedDataset(schemaVersion: number): BuildingDatasetFile | undefined {
+function readSavedDataset(baseDataset: BuildingDatasetFile): BuildingDatasetFile | undefined {
   try {
     const savedJson = window.localStorage.getItem(editorDatasetStorageKey);
     if (!savedJson) return undefined;
 
-    const dataset = JSON.parse(savedJson) as BuildingDatasetFile;
-    if (dataset.schemaVersion !== schemaVersion || !Array.isArray(dataset.levels)) {
+    const saved = JSON.parse(savedJson) as SavedDataset;
+    if (saved.baseFingerprint !== datasetFingerprint(baseDataset) || !Array.isArray(saved.dataset?.levels)) {
       window.localStorage.removeItem(editorDatasetStorageKey);
       return undefined;
     }
-    return dataset;
+    return saved.dataset;
   } catch {
     window.localStorage.removeItem(editorDatasetStorageKey);
     return undefined;
   }
 }
 
-function migrateDataset(dataset: BuildingDatasetFile): BuildingDatasetFile {
-  const nodesById = new Map(dataset.levels.flatMap((level) => level.nodes.map((node) => [node.id, node])));
-  const correctedConnections = new Map([
-    ["b-corridor-6-corridor-1", { bearing: 270, corridorOffset: 22.5 }],
-    ["b-corridor-7-corridor-1", { bearing: 90 }],
-    ["b1-d1", { bearing: 270 }],
-    ["d-corridor-2-corridor-1", { bearing: 0 }],
-  ]);
-  const levels = dataset.levels.map((level) => ({
-    ...level,
-    nodes: level.nodes.map((node) => (
-      node.id === "B-101" && node.label === "C-101"
-        ? { ...node, label: "B-101" }
-        : node
-    )),
-    edges: level.edges.map((edge) => {
-      const correction = correctedConnections.get(edge.id);
-      return correction ? { ...edge, ...correction } : edge;
-    }),
-  }));
-  const crossLevelEdges = dataset.crossLevelEdges.filter((edge) => {
-    const from = nodesById.get(edge.from);
-    const to = nodesById.get(edge.to);
-    if (!from || !to || from.floor === to.floor) return false;
+function datasetFingerprint(dataset: BuildingDatasetFile): string {
+  const json = JSON.stringify(dataset);
+  let hash = 5381;
 
-    return (from.kind === "stairs" || from.kind === "elevator")
-      && from.kind === to.kind
-      && edge.kind === from.kind;
-  });
+  for (let index = 0; index < json.length; index += 1) {
+    hash = ((hash << 5) + hash) ^ json.charCodeAt(index);
+  }
 
-  return { ...dataset, levels, crossLevelEdges };
+  return `${dataset.schemaVersion}-${hash >>> 0}`;
 }
 
 function buildGraph(dataset: BuildingDatasetFile): BuildingGraph {

@@ -174,8 +174,8 @@
       </section>
     </main>
     <script type="module">
-      const datasetStorageKey = 'bhcc-map-editor-dataset-v4';
-      const state = { data: null, level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
+      const datasetStorageKey = 'bhcc-map-editor-dataset-v5';
+      const state = { data: null, baseFingerprint: '', level: null, building: 'all', selectedNode: null, selectedEdge: null, bounds: null, displayNodes: new Map(), displayBuildings: new Map(), crossLevelEdges: [], createKind: null, draggingNode: null, dragStartPoint: null, movedNode: false, savedSnapshot: '', hasSavedOverride: false, saveMessage: '', nodeMessage: '', autoIdNodes: new WeakSet(), expandedNodeIds: new Set() };
       const $ = (id) => document.getElementById(id);
       const ids = Object.fromEntries(['floor-select','building-select','shape-palette','map-title','map-count','map-overlay','node-list','node-status','node-json','node-form','node-id','node-label','node-kind','node-orientation','node-floor','node-x','node-y','node-exit-bearing','node-aliases','vertical-connections','vertical-list','vertical-target','add-vertical-edge','edge-list','edge-form','edge-id','edge-from','edge-to','edge-from-endpoint','edge-to-endpoint','edge-corridor-offset','edge-side','edge-weight','edge-bearing','edge-kind','edge-bidirectional','add-node','delete-node','add-edge','delete-edge','apply-changes','reset-changes','export-json','save-status'].map(id => [camel(id), $(id)]));
 
@@ -184,7 +184,8 @@
       async function init() {
         const response = await fetch('./data/levels-1-2.json');
         const baseData = await response.json();
-        state.data = migrateDataset(loadSavedDataset(baseData));
+        state.baseFingerprint = datasetFingerprint(baseData);
+        state.data = loadSavedDataset(baseData);
         state.savedSnapshot = serializeDataset();
         state.crossLevelEdges = [...(state.data.crossLevelEdges || [])];
         ids.floorSelect.innerHTML = state.data.levels.map(level => '<option value="' + level.level + '">' + escapeHtml(level.label) + '</option>').join('');
@@ -1136,44 +1137,24 @@
         try {
           const savedJson = localStorage.getItem(datasetStorageKey);
           if (!savedJson) return baseData;
-          const savedData = JSON.parse(savedJson);
-          if (savedData.schemaVersion !== baseData.schemaVersion || !Array.isArray(savedData.levels)) {
+          const saved = JSON.parse(savedJson);
+          if (saved.baseFingerprint !== datasetFingerprint(baseData) || !Array.isArray(saved.dataset?.levels)) {
             localStorage.removeItem(datasetStorageKey);
             return baseData;
           }
           state.hasSavedOverride = true;
           state.saveMessage = 'Saved edits loaded';
-          return savedData;
+          return saved.dataset;
         } catch {
           localStorage.removeItem(datasetStorageKey);
           return baseData;
         }
       }
-      function migrateDataset(data) {
-        const correctedConnections = {
-          'b-corridor-6-corridor-1': { bearing: 270, corridorOffset: 22.5 },
-          'b-corridor-7-corridor-1': { bearing: 90 },
-          'b1-d1': { bearing: 270 },
-          'd-corridor-2-corridor-1': { bearing: 0 }
-        };
-        for (const level of data.levels) {
-          for (const node of level.nodes) {
-            if (node.kind === 'room' && /\brestrooms?\b/i.test(node.label)) node.kind = 'restroom';
-            if (node.id === 'B-101' && node.label === 'C-101') node.label = 'B-101';
-          }
-          for (const edge of level.edges) {
-            if (correctedConnections[edge.id]) Object.assign(edge, correctedConnections[edge.id]);
-          }
-        }
-        const nodesById = new Map(data.levels.flatMap(level => level.nodes.map(node => [node.id, node])));
-        data.crossLevelEdges = (data.crossLevelEdges || []).filter(edge => {
-          const from = nodesById.get(edge.from), to = nodesById.get(edge.to);
-          return from && to && from.floor !== to.floor
-            && (from.kind === 'stairs' || from.kind === 'elevator')
-            && from.kind === to.kind
-            && edge.kind === from.kind;
-        });
-        return data;
+      function datasetFingerprint(data) {
+        const json = JSON.stringify(data);
+        let hash = 5381;
+        for (let index = 0; index < json.length; index += 1) hash = ((hash << 5) + hash) ^ json.charCodeAt(index);
+        return data.schemaVersion + '-' + (hash >>> 0);
       }
       function serializeDataset() { return JSON.stringify(state.data); }
       function renderSaveState() {
@@ -1191,7 +1172,7 @@
       function applyChanges() {
         syncDataset();
         try {
-          localStorage.setItem(datasetStorageKey, serializeDataset());
+          localStorage.setItem(datasetStorageKey, JSON.stringify({ baseFingerprint: state.baseFingerprint, dataset: state.data }));
           state.savedSnapshot = serializeDataset();
           state.hasSavedOverride = true;
           state.saveMessage = 'Changes applied';

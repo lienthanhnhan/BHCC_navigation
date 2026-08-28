@@ -1152,11 +1152,14 @@
       function migrateDataset(data) {
         const correctedConnections = {
           'b-corridor-6-corridor-1': { bearing: 270, corridorOffset: 22.5 },
-          'b-corridor-7-corridor-1': { bearing: 90 }
+          'b-corridor-7-corridor-1': { bearing: 90 },
+          'b1-d1': { bearing: 270 },
+          'd-corridor-2-corridor-1': { bearing: 0 }
         };
         for (const level of data.levels) {
           for (const node of level.nodes) {
             if (node.kind === 'room' && /\brestrooms?\b/i.test(node.label)) node.kind = 'restroom';
+            if (node.id === 'B-101' && node.label === 'C-101') node.label = 'B-101';
           }
           for (const edge of level.edges) {
             if (correctedConnections[edge.id]) Object.assign(edge, correctedConnections[edge.id]);

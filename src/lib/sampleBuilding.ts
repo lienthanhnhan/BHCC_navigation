@@ -71,9 +71,16 @@ function migrateDataset(dataset: BuildingDatasetFile): BuildingDatasetFile {
   const correctedConnections = new Map([
     ["b-corridor-6-corridor-1", { bearing: 270, corridorOffset: 22.5 }],
     ["b-corridor-7-corridor-1", { bearing: 90 }],
+    ["b1-d1", { bearing: 270 }],
+    ["d-corridor-2-corridor-1", { bearing: 0 }],
   ]);
   const levels = dataset.levels.map((level) => ({
     ...level,
+    nodes: level.nodes.map((node) => (
+      node.id === "B-101" && node.label === "C-101"
+        ? { ...node, label: "B-101" }
+        : node
+    )),
     edges: level.edges.map((edge) => {
       const correction = correctedConnections.get(edge.id);
       return correction ? { ...edge, ...correction } : edge;

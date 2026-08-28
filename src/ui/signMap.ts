@@ -227,7 +227,7 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
     );
   }
 
-  if (isPathNode(from) && isPathNode(to)) {
+  if (from.kind === "corridor" && to.kind === "corridor") {
     const fromLayout = layout.nodes.get(from.id);
     const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && fromLayout
       ? corridorAttachmentPoint(from, edge, fromLayout)
@@ -236,6 +236,12 @@ function edgePath(edge: BuildingEdge, from: BuildingNode, to: BuildingNode, layo
       ? corridorSidePoint(to, fromPoint, layout)
       : connectionPoint(to, edge.toEndpoint, layout);
     return linePath(fromPoint, toPoint);
+  }
+
+  const attachment = corridorAttachmentPoints(edge, from, to, layout);
+  if (attachment) {
+    if (edge.side === "start" || edge.side === "end") return linePath(attachment.corridorPoint, attachment.attachedPoint);
+    return orthogonalPath(attachment.corridorPoint, attachment.attachedPoint, corridorOrientation(attachment.corridor));
   }
 
   const pathNode = isPathNode(from) ? from : to;
@@ -271,15 +277,27 @@ function edgePointAtNode(
       : connectionPoint(to, edge.toEndpoint, layout);
   }
 
-  if (isPathNode(from) && isPathNode(to)) {
+  if (from.kind === "corridor" && to.kind === "corridor") {
     const fromLayout = layout.nodes.get(from.id);
-    const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && fromLayout
+    // A reversed route edge carries the child's declared endpoint as fromEndpoint.
+    // Prefer that endpoint so a parent corridor offset is never projected onto the child.
+    const fromPoint = from.kind === "corridor" && to.kind === "corridor" && edge.side && !edge.fromEndpoint && fromLayout
       ? corridorAttachmentPoint(from, edge, fromLayout)
       : connectionPoint(from, edge.fromEndpoint, layout);
-    const toPoint = usesChildCorridorSide(edge, from, to)
+    const toLayout = layout.nodes.get(to.id);
+    const toPoint = edge.toEndpoint
+      ? connectionPoint(to, edge.toEndpoint, layout)
+      : usesChildCorridorSide(edge, from, to)
       ? corridorSidePoint(to, fromPoint, layout)
+      : to.kind === "corridor" && from.kind === "corridor" && edge.side && toLayout
+        ? corridorAttachmentPoint(to, edge, toLayout)
       : connectionPoint(to, edge.toEndpoint, layout);
     return node.id === from.id ? fromPoint : toPoint;
+  }
+
+  const attachment = corridorAttachmentPoints(edge, from, to, layout);
+  if (attachment) {
+    return node.id === attachment.corridor.id ? attachment.corridorPoint : attachment.attachedPoint;
   }
 
   const pathNode = isPathNode(from) ? from : to;
@@ -295,6 +313,27 @@ function edgePointAtNode(
       ? connectionPoint(pathNode, edge.side, layout)
       : corridorSidePoint(pathNode, roomPoint, layout)
     : { x: pathLayout.x, y: pathLayout.y };
+}
+
+function corridorAttachmentPoints(
+  edge: BuildingEdge,
+  from: BuildingNode,
+  to: BuildingNode,
+  layout: CampusLayout,
+): { corridor: BuildingNode; corridorPoint: Point; attachedPoint: Point } | undefined {
+  const corridor = from.kind === "corridor" ? from : to.kind === "corridor" ? to : undefined;
+  if (!corridor || (from.kind === "corridor" && to.kind === "corridor")) return undefined;
+
+  const attached = corridor.id === from.id ? to : from;
+  const attachedLayout = layout.nodes.get(attached.id);
+  if (!attachedLayout) return undefined;
+
+  const attachedPoint = { x: attachedLayout.x, y: attachedLayout.y };
+  const corridorPoint = edge.side === "start" || edge.side === "end"
+    ? connectionPoint(corridor, edge.side, layout)
+    : corridorSidePoint(corridor, attachedPoint, layout);
+
+  return { corridor, corridorPoint, attachedPoint };
 }
 
 function corridorTransitPath(corridor: BuildingNode, entry: Point, exit: Point, layout: CampusLayout): string {

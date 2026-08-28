@@ -34,12 +34,12 @@ export async function loadBuildingDataset(): Promise<BuildingDataset> {
     throw new Error(`Could not load building data: ${response.status}`);
   }
 
-  const baseDataset = keepPhysicalFloorConnections(await response.json() as BuildingDatasetFile);
+  const baseDataset = migrateDataset(await response.json() as BuildingDatasetFile);
   const savedDataset = readSavedDataset(baseDataset.schemaVersion);
 
   if (savedDataset) {
     try {
-      const migratedDataset = keepPhysicalFloorConnections(savedDataset);
+      const migratedDataset = migrateDataset(savedDataset);
       return { ...migratedDataset, graph: buildGraph(migratedDataset) };
     } catch {
       window.localStorage.removeItem(editorDatasetStorageKey);
@@ -66,8 +66,19 @@ function readSavedDataset(schemaVersion: number): BuildingDatasetFile | undefine
   }
 }
 
-function keepPhysicalFloorConnections(dataset: BuildingDatasetFile): BuildingDatasetFile {
+function migrateDataset(dataset: BuildingDatasetFile): BuildingDatasetFile {
   const nodesById = new Map(dataset.levels.flatMap((level) => level.nodes.map((node) => [node.id, node])));
+  const correctedConnections = new Map([
+    ["b-corridor-6-corridor-1", { bearing: 270, corridorOffset: 22.5 }],
+    ["b-corridor-7-corridor-1", { bearing: 90 }],
+  ]);
+  const levels = dataset.levels.map((level) => ({
+    ...level,
+    edges: level.edges.map((edge) => {
+      const correction = correctedConnections.get(edge.id);
+      return correction ? { ...edge, ...correction } : edge;
+    }),
+  }));
   const crossLevelEdges = dataset.crossLevelEdges.filter((edge) => {
     const from = nodesById.get(edge.from);
     const to = nodesById.get(edge.to);
@@ -78,7 +89,7 @@ function keepPhysicalFloorConnections(dataset: BuildingDatasetFile): BuildingDat
       && edge.kind === from.kind;
   });
 
-  return { ...dataset, crossLevelEdges };
+  return { ...dataset, levels, crossLevelEdges };
 }
 
 function buildGraph(dataset: BuildingDatasetFile): BuildingGraph {

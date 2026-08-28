@@ -4921,11 +4921,11 @@
           "from": "b2-core",
           "to": "b-corridor-6",
           "weight": 17.2,
-          "bearing": 90,
+          "bearing": 270,
           "kind": "walk",
           "bidirectional": true,
           "side": "left",
-          "corridorOffset": 0,
+          "corridorOffset": 22.5,
           "toEndpoint": "start"
         },
         {
@@ -5433,7 +5433,7 @@
           "from": "b2-core",
           "to": "b-corridor-7",
           "weight": 16.1,
-          "bearing": 270,
+          "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
           "side": "right",

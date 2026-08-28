@@ -20,28 +20,39 @@ function relationPhrase(relation: string): string {
 
 function floorDirection(fromFloor: number, toFloor: number): string {
   if (toFloor > fromFloor) {
-    return `up to floor ${toFloor}`;
+    return `up from Level ${fromFloor} to Level ${toFloor}`;
   }
 
   if (toFloor < fromFloor) {
-    return `down to floor ${toFloor}`;
+    return `down from Level ${fromFloor} to Level ${toFloor}`;
   }
 
-  return `on floor ${toFloor}`;
+  return `on Level ${toFloor}`;
 }
 
 function specialEdgeText(
   kind: string,
-  fromNode: { floor: number; label: string },
-  toNode: { floor: number; label: string },
+  fromNode: BuildingNode,
+  toNode: BuildingNode,
   relation: string,
 ): string {
-  if (kind === "stairs") {
-    return `Take the stairs ${floorDirection(fromNode.floor, toNode.floor)}`;
-  }
+  if (kind === "stairs" || kind === "elevator") {
+    const transport = kind === "stairs" ? "stairs" : "elevator";
+    const specialNode = fromNode.kind === kind ? fromNode : toNode;
 
-  if (kind === "elevator") {
-    return `Take the elevator ${floorDirection(fromNode.floor, toNode.floor)}`;
+    if (fromNode.floor !== toNode.floor) {
+      return `Take ${specialNode.label} ${floorDirection(fromNode.floor, toNode.floor)}`;
+    }
+
+    if (toNode.kind === kind) {
+      return `Walk to ${toNode.label}`;
+    }
+
+    if (fromNode.kind === kind) {
+      return `Exit ${fromNode.label} on Level ${toNode.floor}`;
+    }
+
+    return `Continue toward the ${transport}`;
   }
 
   if (kind === "door") {
@@ -288,12 +299,15 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
   let straightRunDistance = 0;
   let straightRunFocusNode = start;
 
-  const flushStraightRun = (): void => {
+  const flushStraightRun = (landmark?: BuildingNode): void => {
     if (straightRunDistance <= 0) {
       return;
     }
 
-    addStep("Walk to the end of the corridor", straightRunDistance, straightRunFocusNode);
+    const text = landmark?.kind === "stairs" || landmark?.kind === "elevator"
+      ? `Continue along the hallway toward ${landmark.label}`
+      : "Continue along the hallway";
+    addStep(text, straightRunDistance, straightRunFocusNode);
     straightRunDistance = 0;
   };
 
@@ -314,14 +328,16 @@ export function describeRoute(graph: BuildingGraph, path: PathResult): Direction
     }
 
     if (currentEdgeIsSpecial && currentNode) {
-      flushStraightRun();
+      flushStraightRun(currentNode);
       addStep(specialEdgeText(currentEdge.kind, previousNode, currentNode, relation), currentEdge.weight, currentNode);
       continue;
     }
 
     if (turn === "straight" && !isRoomLikeNode(currentNode) && !currentNodeIsSpecial) {
+      if (straightRunDistance === 0) {
+        straightRunFocusNode = previousNode ?? start;
+      }
       straightRunDistance += currentEdge.weight;
-      straightRunFocusNode = currentNode ?? previousNode;
       continue;
     }
 

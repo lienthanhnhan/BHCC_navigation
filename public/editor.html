@@ -1150,9 +1150,16 @@
         }
       }
       function migrateDataset(data) {
+        const correctedConnections = {
+          'b-corridor-6-corridor-1': { bearing: 270, corridorOffset: 22.5 },
+          'b-corridor-7-corridor-1': { bearing: 90 }
+        };
         for (const level of data.levels) {
           for (const node of level.nodes) {
             if (node.kind === 'room' && /\brestrooms?\b/i.test(node.label)) node.kind = 'restroom';
+          }
+          for (const edge of level.edges) {
+            if (correctedConnections[edge.id]) Object.assign(edge, correctedConnections[edge.id]);
           }
         }
         const nodesById = new Map(data.levels.flatMap(level => level.nodes.map(node => [node.id, node])));

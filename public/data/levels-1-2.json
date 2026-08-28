@@ -3687,7 +3687,7 @@
           "kind": "corridor",
           "floor": 2,
           "x": -20,
-          "y": 4.3,
+          "y": 1,
           "orientation": "horizontal"
         },
         {
@@ -3696,7 +3696,7 @@
           "kind": "room",
           "floor": 2,
           "x": -19.8,
-          "y": 8.3,
+          "y": 5,
           "exitBearing": 0
         },
         {
@@ -3704,8 +3704,8 @@
           "label": "B Stairs 1-2",
           "kind": "stairs",
           "floor": 2,
-          "x": -27.3,
-          "y": 8.3,
+          "x": -25.9,
+          "y": 5,
           "exitBearing": 0
         },
         {
@@ -3714,7 +3714,7 @@
           "kind": "room",
           "floor": 2,
           "x": -24.7,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -3723,7 +3723,7 @@
           "kind": "room",
           "floor": 2,
           "x": -20.5,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -3732,7 +3732,7 @@
           "kind": "room",
           "floor": 2,
           "x": -17.8,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -3741,7 +3741,7 @@
           "kind": "room",
           "floor": 2,
           "x": -17.7,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -3750,7 +3750,7 @@
           "kind": "room",
           "floor": 2,
           "x": -13.7,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -3759,7 +3759,7 @@
           "kind": "room",
           "floor": 2,
           "x": -10,
-          "y": 0.3,
+          "y": -3,
           "exitBearing": 180
         },
         {
@@ -4172,9 +4172,9 @@
           "label": "B Restroom 2",
           "kind": "restroom",
           "floor": 2,
-          "x": -43.4,
-          "y": 1,
-          "exitBearing": 180
+          "x": -43.1,
+          "y": -3,
+          "exitBearing": 0
         },
         {
           "id": "b-corridor-7",
@@ -4208,9 +4208,9 @@
           "label": "Central Cafe",
           "kind": "room",
           "floor": 2,
-          "x": -50.7,
-          "y": 1,
-          "exitBearing": 180
+          "x": -50.4,
+          "y": -3,
+          "exitBearing": 0
         },
         {
           "id": "b-203",
@@ -4637,6 +4637,15 @@
           "x": 42.1,
           "y": 20,
           "exitBearing": 180
+        },
+        {
+          "id": "b-corridor-8",
+          "label": "B Corridor 8",
+          "kind": "corridor",
+          "floor": 2,
+          "x": -48,
+          "y": -7,
+          "orientation": "horizontal"
         }
       ],
       "edges": [
@@ -4811,12 +4820,12 @@
           "id": "b-corridor-5-corridor-1",
           "from": "b2-core",
           "to": "b-corridor-5",
-          "weight": 15.8,
+          "weight": 14.6,
           "bearing": 90,
           "kind": "walk",
           "bidirectional": true,
           "side": "left",
-          "corridorOffset": 86.4,
+          "corridorOffset": 70,
           "toEndpoint": "start"
         },
         {
@@ -4838,7 +4847,7 @@
           "bearing": 180,
           "kind": "stairs",
           "bidirectional": true,
-          "corridorOffset": 13.3,
+          "corridorOffset": 20.5,
           "side": "right"
         },
         {
@@ -5410,14 +5419,14 @@
         },
         {
           "id": "b-restroom-2-door-1",
-          "from": "b-corridor-7",
+          "from": "b-corridor-8",
           "to": "b-restroom-2",
           "weight": 4,
-          "bearing": 0,
+          "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 72.9,
-          "side": "left"
+          "corridorOffset": 74.7,
+          "side": "right"
         },
         {
           "id": "b-corridor-7-corridor-1",
@@ -5455,14 +5464,14 @@
         },
         {
           "id": "b-room-63-door-9",
-          "from": "b-corridor-7",
+          "from": "b-corridor-8",
           "to": "b-central-cafe",
           "weight": 4,
-          "bearing": 0,
+          "bearing": 180,
           "kind": "door",
           "bidirectional": true,
-          "corridorOffset": 36.4,
-          "side": "left"
+          "corridorOffset": 38,
+          "side": "right"
         },
         {
           "id": "b-room-64-door-2",
@@ -5997,6 +6006,18 @@
           "corridorOffset": 100,
           "toEndpoint": "start",
           "fromEndpoint": "end"
+        },
+        {
+          "id": "b-corridor-8-corridor-1",
+          "from": "b2-core",
+          "to": "b-corridor-8",
+          "weight": 14.6,
+          "bearing": 270,
+          "kind": "walk",
+          "bidirectional": true,
+          "side": "right",
+          "corridorOffset": 30,
+          "toEndpoint": "end"
         }
       ]
     }

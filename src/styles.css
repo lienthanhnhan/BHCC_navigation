@@ -890,6 +890,7 @@ h1 {
   }
 
   .map-frame {
+    height: clamp(320px, 62svh, 560px);
     max-height: none;
     overflow-x: auto;
     overflow-y: hidden;
@@ -919,6 +920,20 @@ h1 {
     min-width: 960px;
     height: auto !important;
     touch-action: pan-y;
+  }
+
+  .sign-map.is-map-zoomed {
+    touch-action: none;
+  }
+
+  .map-visual.is-map-zoomed .map-frame {
+    overflow: hidden;
+  }
+
+  .map-visual.is-map-zoomed .sign-map {
+    width: 100% !important;
+    min-width: 0;
+    height: 100% !important;
   }
 
   .card-header {

@@ -892,10 +892,9 @@ h1 {
   .map-frame {
     height: clamp(320px, 62svh, 560px);
     max-height: none;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: auto;
     overscroll-behavior: auto;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
   }
 
   .sign-map-frame {
@@ -919,7 +918,7 @@ h1 {
     width: 960px !important;
     min-width: 960px;
     height: auto !important;
-    touch-action: pan-y;
+    touch-action: pan-x pan-y;
   }
 
   .sign-map.is-map-zoomed {

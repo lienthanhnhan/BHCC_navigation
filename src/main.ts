@@ -313,6 +313,8 @@ function renderFloorMap(): void {
     startId: currentStartId,
     goalId: currentGoalId,
   });
+  elements.mapCanvas.scrollLeft = 0;
+  elements.mapCanvas.scrollTop = 0;
   const svg = elements.mapVisual.querySelector<SVGSVGElement>(".sign-map");
   if (svg) svg.dataset.fullViewBox = svg.getAttribute("viewBox") ?? "";
   setMapZoomControls(false);

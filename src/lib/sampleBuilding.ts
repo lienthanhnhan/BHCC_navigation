@@ -34,12 +34,13 @@ export async function loadBuildingDataset(): Promise<BuildingDataset> {
     throw new Error(`Could not load building data: ${response.status}`);
   }
 
-  const baseDataset = await response.json() as BuildingDatasetFile;
+  const baseDataset = keepPhysicalFloorConnections(await response.json() as BuildingDatasetFile);
   const savedDataset = readSavedDataset(baseDataset.schemaVersion);
 
   if (savedDataset) {
     try {
-      return { ...savedDataset, graph: buildGraph(savedDataset) };
+      const migratedDataset = keepPhysicalFloorConnections(savedDataset);
+      return { ...migratedDataset, graph: buildGraph(migratedDataset) };
     } catch {
       window.localStorage.removeItem(editorDatasetStorageKey);
     }
@@ -63,6 +64,21 @@ function readSavedDataset(schemaVersion: number): BuildingDatasetFile | undefine
     window.localStorage.removeItem(editorDatasetStorageKey);
     return undefined;
   }
+}
+
+function keepPhysicalFloorConnections(dataset: BuildingDatasetFile): BuildingDatasetFile {
+  const nodesById = new Map(dataset.levels.flatMap((level) => level.nodes.map((node) => [node.id, node])));
+  const crossLevelEdges = dataset.crossLevelEdges.filter((edge) => {
+    const from = nodesById.get(edge.from);
+    const to = nodesById.get(edge.to);
+    if (!from || !to || from.floor === to.floor) return false;
+
+    return (from.kind === "stairs" || from.kind === "elevator")
+      && from.kind === to.kind
+      && edge.kind === from.kind;
+  });
+
+  return { ...dataset, crossLevelEdges };
 }
 
 function buildGraph(dataset: BuildingDatasetFile): BuildingGraph {

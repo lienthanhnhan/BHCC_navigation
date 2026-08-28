@@ -6024,61 +6024,6 @@
   ],
   "crossLevelEdges": [
     {
-      "id": "b-vert-1",
-      "from": "b1-core",
-      "to": "b2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "start",
-      "toEndpoint": "end"
-    },
-    {
-      "id": "d-vert-1",
-      "from": "d1-core",
-      "to": "d2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "end",
-      "toEndpoint": "start"
-    },
-    {
-      "id": "e-vert-1",
-      "from": "e1-core",
-      "to": "e2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "end",
-      "toEndpoint": "start"
-    },
-    {
-      "id": "g-vert-1",
-      "from": "g1-core",
-      "to": "g2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "end",
-      "toEndpoint": "start"
-    },
-    {
-      "id": "n-vert-1",
-      "from": "n1-core",
-      "to": "n2-core",
-      "weight": 6,
-      "bearing": 0,
-      "kind": "stairs",
-      "bidirectional": true,
-      "fromEndpoint": "end",
-      "toEndpoint": "start"
-    },
-    {
       "id": "b-stairs-2-b-stairs-3-1",
       "from": "b-stairs-2-1",
       "to": "b-stairs-2-2",

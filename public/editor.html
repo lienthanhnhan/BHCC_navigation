@@ -1155,6 +1155,14 @@
             if (node.kind === 'room' && /\brestrooms?\b/i.test(node.label)) node.kind = 'restroom';
           }
         }
+        const nodesById = new Map(data.levels.flatMap(level => level.nodes.map(node => [node.id, node])));
+        data.crossLevelEdges = (data.crossLevelEdges || []).filter(edge => {
+          const from = nodesById.get(edge.from), to = nodesById.get(edge.to);
+          return from && to && from.floor !== to.floor
+            && (from.kind === 'stairs' || from.kind === 'elevator')
+            && from.kind === to.kind
+            && edge.kind === from.kind;
+        });
         return data;
       }
       function serializeDataset() { return JSON.stringify(state.data); }

@@ -90,6 +90,10 @@ function scoreMatch(query: string, candidate: string): number | undefined {
   return undefined;
 }
 
+function isSuggestibleLocation(node: BuildingNode): boolean {
+  return node.kind === "room";
+}
+
 export function searchLocations(graph: BuildingGraph, query: string, limit = 6): LocationSuggestion[] {
   const normalizedQuery = normalizeLocation(query);
   if (!normalizedQuery) {
@@ -99,6 +103,10 @@ export function searchLocations(graph: BuildingGraph, query: string, limit = 6):
   const suggestions: LocationSuggestion[] = [];
 
   for (const node of graph.nodes) {
+    if (!isSuggestibleLocation(node)) {
+      continue;
+    }
+
     const candidates = [node.label, node.id, ...(node.aliases ?? [])];
     let bestScore: number | undefined;
     let bestDetail = node.kind;

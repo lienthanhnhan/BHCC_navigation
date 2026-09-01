@@ -22,8 +22,6 @@ type MapPanState = {
   svg: SVGSVGElement;
   clientX: number;
   clientY: number;
-  originX: number;
-  originY: number;
   hasMoved: boolean;
 };
 type MapTouchPoint = {
@@ -37,6 +35,11 @@ type MapPinchState = {
   startMidpoint: { x: number; y: number };
   mapPoint: DOMPoint;
   startViewBox: MapViewBox;
+};
+type PendingMapPan = {
+  svg: SVGSVGElement;
+  deltaX: number;
+  deltaY: number;
 };
 type AppElements = {
   startInput: HTMLInputElement;
@@ -77,6 +80,8 @@ let currentStartId: string | undefined;
 let currentGoalId: string | undefined;
 let mapPanState: MapPanState | undefined;
 let mapPinchState: MapPinchState | undefined;
+let pendingMapPan: PendingMapPan | undefined;
+let mapPanFrame: number | undefined;
 const mapTouchPoints = new Map<number, MapTouchPoint>();
 
 void initializeApp();
@@ -306,6 +311,7 @@ function renderFloorMap(): void {
 
   mapPanState = undefined;
   mapPinchState = undefined;
+  clearQueuedMapPan();
   mapTouchPoints.clear();
   elements.mapCanvas.innerHTML = renderSignMap({
     map: currentFloorMap,
@@ -418,7 +424,8 @@ function panMapWithWheel(event: WheelEvent): void {
       : 1;
   const deltaX = (event.shiftKey ? event.deltaY : event.deltaX) * deltaScale;
   const deltaY = (event.shiftKey ? 0 : event.deltaY) * deltaScale;
-  if (panMapByPixels(svg, deltaX, deltaY)) event.preventDefault();
+  queueMapPan(svg, deltaX, deltaY);
+  event.preventDefault();
 }
 
 function startMapPan(event: PointerEvent): void {
@@ -465,10 +472,6 @@ function moveMapPan(event: PointerEvent): void {
 
   if (!mapPanState || mapPanState.pointerId !== event.pointerId) return;
   if (!mapPanState.hasMoved) {
-    const deltaFromStartX = event.clientX - mapPanState.originX;
-    const deltaFromStartY = event.clientY - mapPanState.originY;
-    const distance = Math.hypot(deltaFromStartX, deltaFromStartY);
-    if (distance < 4) return;
     mapPanState.hasMoved = true;
     mapPanState.svg.classList.add("is-panning");
   }
@@ -476,7 +479,7 @@ function moveMapPan(event: PointerEvent): void {
   const deltaY = mapPanState.clientY - event.clientY;
   mapPanState.clientX = event.clientX;
   mapPanState.clientY = event.clientY;
-  panMapByPixels(mapPanState.svg, deltaX, deltaY);
+  queueMapPan(mapPanState.svg, deltaX, deltaY);
   event.preventDefault();
 }
 
@@ -498,6 +501,7 @@ function finishMapPan(event: PointerEvent): void {
   }
 
   svg?.classList.remove("is-panning", "is-pinching");
+  flushQueuedMapPan();
 }
 
 function createMapPanState(event: PointerEvent, svg: SVGSVGElement): MapPanState {
@@ -506,8 +510,6 @@ function createMapPanState(event: PointerEvent, svg: SVGSVGElement): MapPanState
     svg,
     clientX: event.clientX,
     clientY: event.clientY,
-    originX: event.clientX,
-    originY: event.clientY,
     hasMoved: false,
   };
 }
@@ -524,6 +526,7 @@ function beginMapPinch(svg: SVGSVGElement, touches: Array<[number, MapTouchPoint
   if (!mapPoint) return;
 
   mapPanState = undefined;
+  clearQueuedMapPan();
   svg.classList.remove("is-panning");
   svg.classList.add("is-pinching");
   mapPinchState = {
@@ -629,6 +632,7 @@ function updateFullscreenControl(): void {
 }
 
 function restoreFullMapView(svg: SVGSVGElement, fullViewBox: MapViewBox): void {
+  clearQueuedMapPan();
   svg.setAttribute("viewBox", `${fullViewBox.x} ${fullViewBox.y} ${fullViewBox.width} ${fullViewBox.height}`);
   svg.classList.remove("is-building-focused", "is-map-zoomed", "is-panning", "is-pinching");
   for (const plate of svg.querySelectorAll<SVGGElement>(".building-plate.is-focused")) {
@@ -659,6 +663,43 @@ function panMapByPixels(svg: SVGSVGElement, deltaX: number, deltaY: number): boo
 
   svg.setAttribute("viewBox", `${x} ${y} ${current.width} ${current.height}`);
   return true;
+}
+
+function queueMapPan(svg: SVGSVGElement, deltaX: number, deltaY: number): void {
+  if (pendingMapPan?.svg === svg) {
+    pendingMapPan.deltaX += deltaX;
+    pendingMapPan.deltaY += deltaY;
+  } else {
+    pendingMapPan = { svg, deltaX, deltaY };
+  }
+
+  if (mapPanFrame !== undefined) return;
+
+  mapPanFrame = window.requestAnimationFrame(() => {
+    mapPanFrame = undefined;
+    const pan = pendingMapPan;
+    pendingMapPan = undefined;
+    if (pan) panMapByPixels(pan.svg, pan.deltaX, pan.deltaY);
+  });
+}
+
+function flushQueuedMapPan(): void {
+  if (mapPanFrame !== undefined) {
+    window.cancelAnimationFrame(mapPanFrame);
+    mapPanFrame = undefined;
+  }
+
+  const pan = pendingMapPan;
+  pendingMapPan = undefined;
+  if (pan) panMapByPixels(pan.svg, pan.deltaX, pan.deltaY);
+}
+
+function clearQueuedMapPan(): void {
+  if (mapPanFrame !== undefined) {
+    window.cancelAnimationFrame(mapPanFrame);
+    mapPanFrame = undefined;
+  }
+  pendingMapPan = undefined;
 }
 
 function isMapZoomed(svg: SVGSVGElement): boolean {

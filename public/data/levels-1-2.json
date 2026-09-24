@@ -1178,7 +1178,10 @@
           "floor": 1,
           "x": -25.9,
           "y": -21.2,
-          "exitBearing": 0
+          "exitBearing": 0,
+          "aliases": [
+            "Pradeep Professor's Office"
+          ]
         },
         {
           "id": "d-114",
